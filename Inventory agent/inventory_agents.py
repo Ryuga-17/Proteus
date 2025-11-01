@@ -1,5 +1,44 @@
 from crewai import Agent
+import sys
+import os
+
+# Add Orchestrator to path for inter-agent communication
+base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(base_dir, 'Orchestrator'))
+
 from inventory_tools import InventoryTools
+
+# Import inter-agent communication tools
+try:
+    from inter_agent_communication import (
+        request_fulfillment_help,
+        request_payment_help,
+        request_loyalty_help,
+        request_agent_help
+    )
+    INTER_AGENT_COMMS_AVAILABLE = True
+except ImportError:
+    # If orchestrator not available, continue without inter-agent comms
+    INTER_AGENT_COMMS_AVAILABLE = False
+    request_fulfillment_help = None
+    request_payment_help = None
+    request_loyalty_help = None
+    request_agent_help = None
+
+# Build tools list for inventory orchestrator
+inventory_orchestrator_tools = [
+    InventoryTools.check_stock_tool,
+    InventoryTools.get_sales_velocity_tool
+]
+
+# Add inter-agent communication tools if available
+if INTER_AGENT_COMMS_AVAILABLE:
+    inventory_orchestrator_tools.extend([
+        request_fulfillment_help,  # Can check fulfillment status
+        request_payment_help,      # Can verify payment before ordering
+        request_loyalty_help,      # Can get pricing info
+        request_agent_help         # Generic interface for any agent
+    ])
 
 # ----------------------------------------------------------------------------
 # AGENT 1: The Orchestrator / Analyst
@@ -13,14 +52,18 @@ inventory_orchestrator_agent = Agent(
         "report numbers, but to think one step ahead. You analyze data "
         "to find problems (like low stock at a key store) and opportunities "
         "(like high sales velocity for a new product) and then create a "
-        "clear plan for other agents to execute."
+        "clear plan for other agents to execute.\n\n"
+        
+        "**Inter-Agent Communication:** When you need information from other "
+        "specialists, you can request help through the Orchestrator:\n"
+        "  - Use request_fulfillment_help() to check fulfillment status\n"
+        "  - Use request_payment_help() to verify payment before ordering\n"
+        "  - Use request_loyalty_help() to get pricing information\n"
+        "  - All communication flows through Orchestrator - centralized and managed"
     ),
-    tools=[
-        InventoryTools.check_stock_tool,
-        InventoryTools.get_sales_velocity_tool
-    ],
+    tools=inventory_orchestrator_tools,
     verbose=True,
-    allow_delegation=True # Can delegate tasks to other agents
+    allow_delegation=True  # Can delegate tasks to other agents in crew AND request help from other agent crews
 )
 
 # ----------------------------------------------------------------------------

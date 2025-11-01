@@ -1,0 +1,49 @@
+# Quick Testing Commands 🚀
+
+## Method 1: Quick Test (Recommended)
+```bash
+python test_quick.py
+```
+
+## Method 2: Verify Environment First
+```bash
+# Check .env file setup
+python test_env_file.py
+
+# Then test
+python test_quick.py
+```
+
+## Method 3: Test Individual Agents
+```bash
+python test_basic_functionality.py
+```
+
+## Method 4: Test Inter-Agent Communication
+```bash
+python test_inter_agent_communication.py
+```
+
+## Method 5: Run Orchestrator Directly
+```bash
+cd Orchestrator
+python main.py
+```
+
+## Method 6: Python Script Example
+```python
+from Orchestrator.main import handle_custom_request
+
+# Test inventory
+result = handle_custom_request("Check stock for SKU-123")
+print(result)
+```
+
+## Troubleshooting
+
+If you see errors:
+1. Make sure you're in the project root: `/Users/viveksawant/Desktop/Sales Agent`
+2. Check .env file: `python test_env_file.py`
+3. Install dependencies if needed: `pip install 'crewai[google-genai]'`
+4. See detailed guide: `HOW_TO_TEST.md`
+
