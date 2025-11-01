@@ -45,15 +45,18 @@ openai_api_key = os.getenv("OPENAI_API_KEY")
 llm = None
 
 # First, try CrewAI's native Gemini support
+# Use models that are actually available with your API key
 if google_api_key:
-    try:
-        llm = LLM(
-            model="gemini/gemini-pro",
-            api_key=google_api_key
-        )
-    except (ImportError, Exception) as e:
-        # CrewAI Gemini not available or failed - try LangChain
-        pass
+    # Try newer models first (your API key supports gemini-2.0 and gemini-2.5)
+    for model_name in ["gemini-2.0-flash-exp", "gemini-2.0-flash", "gemini-2.5-flash", "gemini-2.5-pro", "gemini-pro-latest"]:
+        try:
+            llm = LLM(
+                model=f"gemini/{model_name}",
+                api_key=google_api_key
+            )
+            break  # Success - use this model
+        except (ImportError, Exception):
+            continue  # Try next model
 
 # If CrewAI Gemini failed, try LangChain ChatGoogleGenerativeAI
 # Create a wrapper class that CrewAI can use
@@ -61,11 +64,23 @@ if llm is None and google_api_key:
     try:
         from langchain_google_genai import ChatGoogleGenerativeAI
         
-        # Create LangChain LLM
-        langchain_llm_base = ChatGoogleGenerativeAI(
-            model="gemini-pro",
-            google_api_key=google_api_key
-        )
+        # Try models that are actually available with your API key
+        # Based on API listing, these should work:
+        langchain_llm_base = None
+        for model_name in ["gemini-2.0-flash-exp", "gemini-2.0-flash", "gemini-2.5-flash", "gemini-2.5-pro", "gemini-pro-latest"]:
+            try:
+                langchain_llm_base = ChatGoogleGenerativeAI(
+                    model=model_name,
+                    google_api_key=google_api_key
+                )
+                # Test it works by checking the object
+                if langchain_llm_base:
+                    break  # Success - use this model
+            except Exception:
+                continue  # Try next model
+        
+        if langchain_llm_base is None:
+            raise Exception("Could not initialize any Gemini model")
         
         # Create a wrapper class that has supports_stop_words
         class LangChainLLMWrapper:
