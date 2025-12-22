@@ -26,6 +26,9 @@ sys.path.insert(0, os.path.join(base_dir, 'Fullfillment_agent'))
 sys.path.insert(0, os.path.join(base_dir, 'payment_agent'))
 sys.path.insert(0, os.path.join(base_dir, 'loyalty and offers agent'))
 sys.path.insert(0, os.path.join(base_dir, 'post purchase support agent'))
+sys.path.insert(0, os.path.join(base_dir, 'Recommendation agent'))
+sys.path.insert(0, os.path.join(base_dir, 'recommendation agent 2'))
+# Note: Orchestrator directory is already in path since we're running from it
 
 from crewai.tools import tool
 
@@ -54,18 +57,26 @@ def route_to_inventory(customer_request: str) -> str:
         >>> result = route_to_inventory("Check stock for red shirts size small")
         >>> print(result)  # Shows stock levels across all locations
     """
+    print("\n" + "="*70)
+    print("📦 ROUTING TO INVENTORY AGENT")
+    print("="*70)
+    print(f"📝 Request: {customer_request}")
+    print(f"🔍 Analyzing inventory request...")
+    print("="*70 + "\n")
+    
     try:
-        # Import what we need to create an inventory crew
         from crewai import Crew, Process
         from inventory_agents import (
-            inventory_orchestrator_agent,  # The planner/analyst
-            logistics_agent,               # Handles transfers
-            procurement_agent              # Handles orders
+            inventory_orchestrator_agent,
+            logistics_agent,
+            procurement_agent
         )
         from crewai import Task
         
-        # Create a task that describes what we want the inventory team to do
-        # Note: This request is coming through the Orchestrator Agent
+        print(f"🔧 [INVENTORY] Setting up inventory crew...")
+        print(f"   - Agents: Orchestrator, Logistics, Procurement")
+        print(f"   - Request: '{customer_request}'")
+        
         inventory_task = Task(
             description=(
                 f"This request is being processed through the Orchestrator Agent. "
@@ -76,23 +87,27 @@ def route_to_inventory(customer_request: str) -> str:
                 "or procurement orders - whatever is needed for this request. "
                 "This response will be sent back to the Orchestrator for final formatting."
             ),
-            agent=inventory_orchestrator_agent  # Start with the orchestrator who plans things
+            agent=inventory_orchestrator_agent
         )
         
-        # Assemble the inventory crew - these agents work together
+        print(f"🚀 [INVENTORY] Starting inventory processing...")
         inventory_crew = Crew(
             agents=[
-                inventory_orchestrator_agent,  # Plans what needs to happen
-                logistics_agent,               # Executes transfers
-                procurement_agent              # Places orders
+                inventory_orchestrator_agent,
+                logistics_agent,
+                procurement_agent
             ],
             tasks=[inventory_task],
-            process=Process.sequential,  # One task at a time
-            verbose=False  # Keep it quiet since we're calling from orchestrator
+            process=Process.sequential,
+            verbose=False
         )
         
-        # Let the inventory team do their work!
+        print(f"⚙️  [INVENTORY] Processing inventory request...")
         result = inventory_crew.kickoff()
+        
+        print(f"\n✅ [INVENTORY] Inventory processing complete!")
+        print("="*70 + "\n")
+        
         return str(result)
         
     except ImportError as e:
@@ -138,13 +153,22 @@ def route_to_fulfillment(customer_request: str) -> str:
         ... )
         >>> print(result)  # Shows tracking number and delivery estimate
     """
+    print("\n" + "="*70)
+    print("🚚 ROUTING TO FULFILLMENT AGENT")
+    print("="*70)
+    print(f"📝 Request: {customer_request}")
+    print(f"🔍 Analyzing fulfillment request...")
+    print("="*70 + "\n")
+    
     try:
         from crewai import Crew, Process
         from agents import fulfillment_agent
         from crewai import Task
         
-        # Create the fulfillment task
-        # Note: This request is coming through the Orchestrator Agent
+        print(f"🔧 [FULFILLMENT] Setting up fulfillment task...")
+        print(f"   - Request: '{customer_request}'")
+        print(f"   - Agent: Fulfillment Agent")
+        
         fulfillment_task = Task(
             description=(
                 f"This request is being processed through the Orchestrator Agent. "
@@ -159,16 +183,20 @@ def route_to_fulfillment(customer_request: str) -> str:
             agent=fulfillment_agent
         )
         
-        # Set up the fulfillment crew
+        print(f"🚀 [FULFILLMENT] Starting fulfillment processing...")
         fulfillment_crew = Crew(
             agents=[fulfillment_agent],
             tasks=[fulfillment_task],
             process=Process.sequential,
-            verbose=False  # Quiet mode when called from orchestrator
+            verbose=False
         )
         
-        # Run it and get the results
+        print(f"⚙️  [FULFILLMENT] Processing fulfillment request...")
         result = fulfillment_crew.kickoff()
+        
+        print(f"\n✅ [FULFILLMENT] Fulfillment processing complete!")
+        print("="*70 + "\n")
+        
         return str(result)
         
     except ImportError as e:
@@ -209,18 +237,23 @@ def route_to_payment(customer_request: str) -> str:
         ... )
         >>> print(result)  # Shows transaction ID and status
     """
+    print("\n" + "="*70)
+    print("💳 ROUTING TO PAYMENT AGENT")
+    print("="*70)
+    print(f"📝 Request: {customer_request}")
+    print(f"🔍 Analyzing payment request...")
+    print("="*70 + "\n")
+    
     try:
         from crewai import Crew, Process
         from crewai import Task
-        
-        # Import from the payment_agent directory
-        # The payment crew has: sales_agent, payment_agent, and loyalty_agent
-        # (Note: This loyalty_agent is for deducting points during payment)
         from agents import sales_agent, payment_agent, loyalty_agent
         
-        # The payment crew uses hierarchical processing - sales agent coordinates,
-        # payment agent handles transactions, loyalty agent manages points
-        # Note: This request is coming through the Orchestrator Agent
+        print(f"🔧 [PAYMENT] Setting up payment crew...")
+        print(f"   - Agents: Sales (coordinator), Payment, Loyalty")
+        print(f"   - Request: '{customer_request}'")
+        print(f"   - Process: Hierarchical (Sales manages Payment & Loyalty)")
+        
         payment_task = Task(
             description=(
                 f"This request is being processed through the Orchestrator Agent. "
@@ -232,19 +265,23 @@ def route_to_payment(customer_request: str) -> str:
                 "handoff URLs if this is a kiosk-to-mobile scenario. "
                 "This response will be sent back to the Orchestrator for final formatting."
             ),
-            agent=sales_agent  # Sales agent orchestrates the payment flow
+            agent=sales_agent
         )
         
-        # Set up the payment crew with hierarchical structure
+        print(f"🚀 [PAYMENT] Starting payment processing...")
         payment_crew = Crew(
             agents=[sales_agent, payment_agent, loyalty_agent],
             tasks=[payment_task],
-            process=Process.hierarchical,  # Sales agent manages the others
+            process=Process.hierarchical,
             verbose=False
         )
         
-        # Process the payment!
+        print(f"⚙️  [PAYMENT] Processing payment transaction...")
         result = payment_crew.kickoff()
+        
+        print(f"\n✅ [PAYMENT] Payment processing complete!")
+        print("="*70 + "\n")
+        
         return str(result)
         
     except ImportError as e:
@@ -370,13 +407,34 @@ def route_to_support(customer_request: str) -> str:
         ... )
         >>> print(result)  # Shows tracking info in a friendly way
     """
+    print("\n" + "="*70)
+    print("🎧 ROUTING TO SUPPORT AGENT")
+    print("="*70)
+    print(f"📝 Request: {customer_request}")
+    print(f"🔍 Analyzing support request...")
+    print("="*70 + "\n")
+    
     try:
         from crewai import Crew, Process
         from agents import post_purchase_agent
         from crewai import Task
         
-        # Create the support task
-        # Note: This request is coming through the Orchestrator Agent
+        request_lower = customer_request.lower()
+        support_type = "general"
+        if "track" in request_lower or "where" in request_lower:
+            support_type = "order_tracking"
+        elif "return" in request_lower:
+            support_type = "return"
+        elif "exchange" in request_lower:
+            support_type = "exchange"
+        elif "feedback" in request_lower or "survey" in request_lower:
+            support_type = "feedback"
+        
+        print(f"🔧 [SUPPORT] Setting up support task...")
+        print(f"   - Request: '{customer_request}'")
+        print(f"   - Support type: {support_type}")
+        print(f"   - Agent: Post Purchase Support Agent")
+        
         support_task = Task(
             description=(
                 f"This request is being processed through the Orchestrator Agent. "
@@ -392,16 +450,20 @@ def route_to_support(customer_request: str) -> str:
             agent=post_purchase_agent
         )
         
-        # Set up the support crew
+        print(f"🚀 [SUPPORT] Starting support processing...")
         support_crew = Crew(
             agents=[post_purchase_agent],
             tasks=[support_task],
             process=Process.sequential,
-            verbose=False  # Keep it quiet from orchestrator level
+            verbose=False
         )
         
-        # Help that customer! 🎧
+        print(f"⚙️  [SUPPORT] Processing support request...")
         result = support_crew.kickoff()
+        
+        print(f"\n✅ [SUPPORT] Support processing complete!")
+        print("="*70 + "\n")
+        
         return str(result)
         
     except ImportError as e:
@@ -418,8 +480,178 @@ def route_to_support(customer_request: str) -> str:
         )
 
 
+@tool("Route to Recommendation Agent")
+def route_to_recommendation(customer_request: str, user_id: str = "default_user") -> str:
+    """
+    Send product recommendation requests to the Recommendation Agent 🎯
+    
+    This handles voice-based and natural language product queries. The Recommendation
+    Agent processes voice input, understands user intent, and returns personalized
+    product recommendations based on user context and query.
+    
+    Args:
+        customer_request: The product query in natural language
+                        Examples:
+                        - "looking for a shirt for date"
+                        - "I need formal pants for office"
+                        - "show me workout shoes"
+                        - "find a casual dress"
+        user_id: Optional user identifier for personalization (default: "default_user")
+    
+    Returns:
+        A list of personalized product recommendations with scores and reasoning
+    
+    Example:
+        >>> result = route_to_recommendation(
+        ...     "looking for a shirt for date",
+        ...     user_id="USER-123"
+        ... )
+        >>> print(result)  # Shows ranked recommendations
+    """
+    print("\n" + "="*70)
+    print("🎯 ROUTING TO RECOMMENDATION AGENT")
+    print("="*70)
+    print(f"📝 Query: {customer_request}")
+    print(f"👤 User ID: {user_id}")
+    print(f"🔍 Analyzing query for product recommendations...")
+    print("="*70 + "\n")
+    
+    try:
+        from crewai import Crew, Process
+        from agents import recommendation_agent
+        from crewai import Task
+        
+        print(f"🔧 [RECOMMENDATION] Setting up recommendation task...")
+        print(f"   - Query: '{customer_request}'")
+        print(f"   - User: {user_id}")
+        print(f"   - Agent: Recommendation Agent")
+        
+        recommendation_task = Task(
+            description=(
+                f"This request is being processed through the Orchestrator Agent. "
+                f"User ID: {user_id}. "
+                f"Query: {customer_request}"
+            ),
+            expected_output=(
+                "A list of personalized product recommendations with item IDs, "
+                "relevance scores, and explanations of why each product was recommended. "
+                "This response will be sent back to the Orchestrator for final formatting."
+            ),
+            agent=recommendation_agent
+        )
+        
+        print(f"🚀 [RECOMMENDATION] Starting recommendation crew...")
+        recommendation_crew = Crew(
+            agents=[recommendation_agent],
+            tasks=[recommendation_task],
+            process=Process.sequential,
+            verbose=False
+        )
+        
+        print(f"⚙️  [RECOMMENDATION] Processing recommendation request...")
+        result = recommendation_crew.kickoff()
+        
+        print(f"\n✅ [RECOMMENDATION] Recommendation complete!")
+        print(f"   - Results received: {len(str(result))} characters")
+        print("="*70 + "\n")
+        
+        return str(result)
+        
+    except ImportError as e:
+        print(f"\n❌ [RECOMMENDATION] Import error: {str(e)}")
+        print("="*70 + "\n")
+        return (
+            f"⚠️  Recommendation Agent modules not found. "
+            f"Please verify the 'Recommendation agent' folder is set up. "
+            f"Error: {str(e)}"
+        )
+    except Exception as e:
+        print(f"\n❌ [RECOMMENDATION] Processing error: {str(e)}")
+        print("="*70 + "\n")
+        return (
+            f"❌ Recommendation request couldn't be processed. "
+            f"The recommendation system might be unavailable or misconfigured. "
+            f"Error: {str(e)}"
+        )
+
+
+@tool("Route to Recommendation Agent 2")
+def route_to_recommendation_v2(customer_request: str, user_id: str = "default_user") -> str:
+    """
+    Send product recommendation requests to the Advanced Recommendation Agent 2 🎯
+    
+    This uses real Ollama embeddings and Qdrant vector database for highly accurate,
+    personalized product recommendations. It leverages real product data and customer
+    profiles for superior personalization.
+    
+    Args:
+        customer_request: The product query in natural language
+                        Examples:
+                        - "looking for a shirt for date"
+                        - "I need formal pants for office"
+                        - "show me workout shoes"
+                        - "find a casual dress"
+        user_id: Optional user identifier for personalization (default: "default_user")
+    
+    Returns:
+        A list of personalized product recommendations with scores and reasoning
+    
+    Example:
+        >>> result = route_to_recommendation_v2(
+        ...     "looking for a shirt for date",
+        ...     user_id="CUST001"
+        ... )
+        >>> print(result)  # Shows ranked recommendations
+    """
+    try:
+        from crewai import Crew, Process
+        from agents import recommendation_agent_2
+        from crewai import Task
+        
+        # Create the recommendation task
+        recommendation_task = Task(
+            description=(
+                f"This request is being processed through the Orchestrator Agent. "
+                f"User ID: {user_id}. "
+                f"Query: {customer_request}"
+            ),
+            expected_output=(
+                "A list of personalized product recommendations with product IDs, titles, "
+                "prices, relevance scores, and explanations of why each product was recommended. "
+                "This response will be sent back to the Orchestrator for final formatting."
+            ),
+            agent=recommendation_agent_2
+        )
+        
+        # Set up the recommendation crew
+        recommendation_crew = Crew(
+            agents=[recommendation_agent_2],
+            tasks=[recommendation_task],
+            process=Process.sequential,
+            verbose=False  # Keep it quiet from orchestrator level
+        )
+        
+        # Process the recommendation request! 🎯
+        result = recommendation_crew.kickoff()
+        return str(result)
+        
+    except ImportError as e:
+        return (
+            f"⚠️  Recommendation Agent 2 modules not found. "
+            f"Please verify the 'recommendation agent 2' folder is set up. "
+            f"Error: {str(e)}"
+        )
+    except Exception as e:
+        return (
+            f"❌ Recommendation request couldn't be processed. "
+            f"The recommendation system might be unavailable or misconfigured. "
+            f"Error: {str(e)}"
+        )
+
+
 @tool("Analyze Request Intent")
 def analyze_intent(customer_request: str) -> str:
+    print(f"\n🔍 [ORCHESTRATOR] Analyzing intent for: '{customer_request}'")
     """
     Figure out which agent should handle this request - the smart way! 🧠
     
@@ -502,6 +734,18 @@ def analyze_intent(customer_request: str) -> str:
             "reason": "Request contains post-purchase support-related keywords"
         })
     
+    # Look for recommendation-related keywords
+    # Things like: looking for, find, show me, recommend, suggest, search for products
+    recommendation_keywords = ['looking for', 'find', 'show me', 'recommend', 'suggest', 'search for', 'need a', 'want a']
+    if any(keyword in request_lower for keyword in recommendation_keywords):
+        # Prefer Agent 2 (production-ready) if available, otherwise use Agent 1
+        return json.dumps({
+            "primary_agent": "recommendation_v2",
+            "confidence": "high",
+            "reason": "Request contains product search/recommendation-related keywords",
+            "note": "Using Recommendation Agent 2 (production-ready with real data)"
+        })
+    
     # If we can't figure it out, let the orchestrator know it needs manual review
     return json.dumps({
         "primary_agent": "unknown",
@@ -531,5 +775,7 @@ class OrchestratorTools:
     route_to_payment = route_to_payment
     route_to_loyalty = route_to_loyalty
     route_to_support = route_to_support
+    route_to_recommendation = route_to_recommendation
+    route_to_recommendation_v2 = route_to_recommendation_v2
     analyze_intent = analyze_intent
 

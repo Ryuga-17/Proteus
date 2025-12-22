@@ -122,3 +122,50 @@ class InventoryTools:
         # In a real app, this would trigger a procurement API
         time.sleep(1) 
         return f"SUCCESS: Purchase Order PO-10{int(time.time())} placed for {quantity} units of {sku}."
+
+    @BaseTool
+    def reduce_stock_on_purchase_tool(sku: str, quantity: int, location_id: str = "store_main_street") -> str:
+        """
+        Reduces stock when a customer makes a purchase.
+        This is called automatically when a purchase is completed.
+        
+        Args:
+            sku: Product SKU (e.g., "sku_123" or "PROD101")
+            quantity: Number of units purchased
+            location_id: Location where purchase occurred (default: "store_main_street")
+        
+        Returns:
+            Success or error message
+        """
+        # Normalize SKU format (handle both "sku_123" and "PROD101" formats)
+        normalized_sku = sku.lower()
+        if normalized_sku.startswith("prod"):
+            # Convert PROD101 to sku format if needed
+            # For now, we'll try both formats
+            sku_variants = [sku, normalized_sku, f"sku_{sku.replace('PROD', '').replace('prod', '')}"]
+        else:
+            sku_variants = [sku, normalized_sku]
+        
+        # Try to update stock with any matching SKU format
+        success = False
+        updated_sku = None
+        
+        for sku_variant in sku_variants:
+            if db.update_stock(location_id, sku_variant, -quantity):
+                success = True
+                updated_sku = sku_variant
+                break
+        
+        if success:
+            # Update sales history
+            if updated_sku not in db.sales_history:
+                db.sales_history[updated_sku] = []
+            db.sales_history[updated_sku].append(quantity)
+            # Keep only last 30 days of history
+            if len(db.sales_history[updated_sku]) > 30:
+                db.sales_history[updated_sku] = db.sales_history[updated_sku][-30:]
+            
+            current_stock = db.inventory.get(location_id, {}).get(updated_sku, 0)
+            return f"SUCCESS: Reduced stock for {updated_sku} by {quantity} units at {location_id}. Current stock: {current_stock} units."
+        else:
+            return f"ERROR: Could not reduce stock for {sku}. SKU may not exist or insufficient stock available."
