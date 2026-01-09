@@ -11,9 +11,23 @@ import asyncio
 import json
 import time
 import random
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 DEMO_MODE = os.getenv("DEMO_MODE", "True").lower() == "true"
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+# Get frontend URL from environment variable
+# Supports single URL or comma-separated list
+FRONTEND_URL = os.getenv("FRONTEND_URL", "")
+if FRONTEND_URL:
+    # Split by comma and strip whitespace
+    allowed_origins = [url.strip() for url in FRONTEND_URL.split(",") if url.strip()]
+else:
+    # Default fallback origins
+    allowed_origins = ["http://localhost:5173", "http://localhost:3000", "http://127.0.0.1:5173"]
 
 app = FastAPI(
     title="Proteus Agentic System API",
@@ -23,7 +37,7 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:3000", "http://127.0.0.1:5173"],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
