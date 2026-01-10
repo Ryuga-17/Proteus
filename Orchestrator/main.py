@@ -12,6 +12,11 @@ It's like having a super-smart assistant who knows exactly who to talk to!
 import os
 import sys
 
+# Add current directory to Python path for imports
+orchestrator_dir = os.path.dirname(os.path.abspath(__file__))
+if orchestrator_dir not in sys.path:
+    sys.path.insert(0, orchestrator_dir)
+
 # Load environment variables from .env file if it exists
 try:
     from dotenv import load_dotenv
@@ -74,8 +79,8 @@ def run_orchestrator(task, task_name: str = "Orchestrator Task"):
         agents=[Orchestrator],  # Our one agent who coordinates everything
         tasks=[task],                 # The task we want to complete
         process=Process.sequential,   # One step at a time (nice and organized)
-        memory=True,                   # Remember what we talked about earlier
-        verbose=True                      # Show us what's happening (good for debugging)
+        memory=False,                  # Disable memory (requires OPENAI_API_KEY even for Gemini)
+        verbose=True                   # Show us what's happening (good for debugging)
     )
     
     print(f"🚀 Starting orchestrator crew for: {task_name}")

@@ -17,9 +17,8 @@ All communication flows through Orchestrator - agents never talk directly to eac
 import sys
 import os
 
-# Add parent directory to path for imports
-base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, os.path.join(base_dir, 'orchestrator'))
+# Add Orchestrator to path (we're already in Orchestrator directory)
+# No need to add it to path since we're importing from same directory
 
 from crewai.tools import tool
 
