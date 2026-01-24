@@ -2,6 +2,7 @@
 WhatsApp Webhook Interface - FastAPI endpoints for WhatsApp Business API
 """
 import logging
+import os
 from typing import Optional, Dict, Any
 from datetime import datetime
 from fastapi import FastAPI, HTTPException, Request, Header
@@ -66,7 +67,7 @@ class SimulateMessageRequest(BaseModel):
 # Webhook Verification (WhatsApp Business API requirement)
 # ============================================================================
 
-WEBHOOK_VERIFY_TOKEN = "your_secure_verify_token_here"  # Set via env var in production
+WEBHOOK_VERIFY_TOKEN = os.getenv("WHATSAPP_WEBHOOK_VERIFY_TOKEN", "your_secure_verify_token_here")
 
 
 @app.get("/webhook")
