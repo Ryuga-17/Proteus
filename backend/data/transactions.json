@@ -1,0 +1,348 @@
+{
+  "transactions": {
+    "TXN-12F8B30991": {
+      "created_at": "2026-01-18T19:00:17.315404Z",
+      "errors": [],
+      "inventory": {},
+      "order": {},
+      "payload": {
+        "channel": "online",
+        "items": [
+          {
+            "product_id": "PROD-123",
+            "quantity": 1,
+            "sku": "sku_123"
+          }
+        ],
+        "location_id": "store_main_street"
+      },
+      "payment": {},
+      "state": "INITIATED",
+      "transaction_id": "TXN-12F8B30991",
+      "updated_at": "2026-01-18T19:00:17.315406Z",
+      "user_id": "circuit-test-8739-1",
+      "version": 1
+    },
+    "TXN-3438D7B338": {
+      "created_at": "2026-01-18T19:00:17.260771Z",
+      "errors": [],
+      "inventory": {
+        "location_id": "store_main_street",
+        "reservation_id": "RSV-7545E51257"
+      },
+      "order": {
+        "order_id": "ORD-77CF3BE1A1"
+      },
+      "payload": {
+        "channel": "online",
+        "items": [
+          {
+            "product_id": "PROD-456",
+            "quantity": 20,
+            "sku": "sku_456"
+          }
+        ],
+        "location_id": "store_main_street"
+      },
+      "payment": {
+        "amount": 100.0,
+        "attempt": 1,
+        "channel": "upi",
+        "created_at": "2026-01-18T19:00:17.267342Z",
+        "currency": "USD",
+        "status": "success",
+        "transaction_id": "PAY-CD14833E0250"
+      },
+      "state": "ORDER_CONFIRMED",
+      "transaction_id": "TXN-3438D7B338",
+      "updated_at": "2026-01-18T19:00:17.276582Z",
+      "user_id": "race-test-5226-2",
+      "version": 5
+    },
+    "TXN-34AA3F3CDB": {
+      "created_at": "2026-01-18T19:00:17.299932Z",
+      "errors": [],
+      "inventory": {
+        "location_id": "store_main_street",
+        "reservation_id": "RSV-0A628F3A90"
+      },
+      "order": {
+        "order_id": "ORD-210658AEB2"
+      },
+      "payload": {
+        "channel": "online",
+        "items": [
+          {
+            "product_id": "PROD-123",
+            "quantity": 1,
+            "sku": "sku_123"
+          }
+        ],
+        "location_id": "store_main_street"
+      },
+      "payment": {
+        "amount": 100.0,
+        "attempt": 1,
+        "channel": "upi",
+        "created_at": "2026-01-18T19:00:17.302874Z",
+        "currency": "USD",
+        "status": "success",
+        "transaction_id": "PAY-960F446521BC"
+      },
+      "state": "ORDER_CONFIRMED",
+      "transaction_id": "TXN-34AA3F3CDB",
+      "updated_at": "2026-01-18T19:00:17.306132Z",
+      "user_id": "failure-test-9896",
+      "version": 5
+    },
+    "TXN-44B000A440": {
+      "created_at": "2026-01-18T19:00:17.318262Z",
+      "errors": [],
+      "inventory": {},
+      "order": {},
+      "payload": {
+        "channel": "online",
+        "items": [
+          {
+            "product_id": "PROD-123",
+            "quantity": 1,
+            "sku": "sku_123"
+          }
+        ],
+        "location_id": "store_main_street"
+      },
+      "payment": {},
+      "state": "INITIATED",
+      "transaction_id": "TXN-44B000A440",
+      "updated_at": "2026-01-18T19:00:17.318264Z",
+      "user_id": "circuit-test-8739-2",
+      "version": 1
+    },
+    "TXN-4847734C94": {
+      "created_at": "2026-01-18T19:00:17.292901Z",
+      "errors": [],
+      "inventory": {
+        "location_id": "store_main_street",
+        "reservation_id": "RSV-69235DDBCB"
+      },
+      "order": {
+        "order_id": "ORD-42D776781E"
+      },
+      "payload": {
+        "channel": "online",
+        "items": [
+          {
+            "product_id": "PROD-123",
+            "quantity": 1,
+            "sku": "sku_123"
+          }
+        ],
+        "location_id": "store_main_street"
+      },
+      "payment": {
+        "amount": 100.0,
+        "attempt": 1,
+        "channel": "upi",
+        "created_at": "2026-01-18T19:00:17.285902Z",
+        "currency": "USD",
+        "status": "success",
+        "transaction_id": "PAY-82C551EE5168"
+      },
+      "state": "ORDER_CONFIRMED",
+      "transaction_id": "TXN-4847734C94",
+      "updated_at": "2026-01-18T19:00:17.298070Z",
+      "user_id": "idempotent-test-1984",
+      "version": 5
+    },
+    "TXN-4EAA377A65": {
+      "created_at": "2026-01-18T19:00:17.281120Z",
+      "errors": [],
+      "inventory": {
+        "location_id": "store_main_street",
+        "reservation_id": "RSV-2BE653BB16"
+      },
+      "order": {
+        "order_id": "ORD-56864CF423"
+      },
+      "payload": {
+        "channel": "online",
+        "items": [
+          {
+            "product_id": "PROD-123",
+            "quantity": 1,
+            "sku": "sku_123"
+          }
+        ],
+        "location_id": "store_main_street"
+      },
+      "payment": {
+        "amount": 100.0,
+        "attempt": 1,
+        "channel": "upi",
+        "created_at": "2026-01-18T19:00:17.285902Z",
+        "currency": "USD",
+        "status": "success",
+        "transaction_id": "PAY-82C551EE5168"
+      },
+      "state": "ORDER_CONFIRMED",
+      "transaction_id": "TXN-4EAA377A65",
+      "updated_at": "2026-01-18T19:00:17.290108Z",
+      "user_id": "idempotent-test-1984",
+      "version": 5
+    },
+    "TXN-7877BC4B4F": {
+      "created_at": "2026-01-18T19:00:17.325947Z",
+      "errors": [],
+      "inventory": {},
+      "order": {},
+      "payload": {
+        "channel": "online",
+        "items": [
+          {
+            "product_id": "PROD-456",
+            "quantity": 1,
+            "sku": "sku_456"
+          }
+        ],
+        "location_id": "store_main_street"
+      },
+      "payment": {},
+      "state": "INITIATED",
+      "transaction_id": "TXN-7877BC4B4F",
+      "updated_at": "2026-01-18T19:00:17.325949Z",
+      "user_id": "revalidate-test-6839",
+      "version": 1
+    },
+    "TXN-8522FA73BF": {
+      "created_at": "2026-01-18T19:00:16.943778Z",
+      "errors": [],
+      "inventory": {
+        "location_id": "store_main_street",
+        "reservation_id": "RSV-84F69A073F"
+      },
+      "order": {
+        "order_id": "ORD-05BD25DC85"
+      },
+      "payload": {
+        "channel": "online",
+        "items": [
+          {
+            "product_id": "PROD-456",
+            "quantity": 2,
+            "sku": "sku_456"
+          }
+        ],
+        "location_id": "store_main_street"
+      },
+      "payment": {
+        "amount": 100.0,
+        "attempt": 3,
+        "channel": "upi",
+        "created_at": "2026-01-18T19:00:17.248122Z",
+        "currency": "USD",
+        "status": "success",
+        "transaction_id": "PAY-86656A87C4AF"
+      },
+      "state": "ORDER_CONFIRMED",
+      "transaction_id": "TXN-8522FA73BF",
+      "updated_at": "2026-01-18T19:00:17.254887Z",
+      "user_id": "race-test-5226",
+      "version": 5
+    },
+    "TXN-9DB934EAA6": {
+      "created_at": "2026-01-18T19:00:16.937436Z",
+      "errors": [],
+      "inventory": {
+        "location_id": "store_main_street",
+        "reservation_id": "RSV-79F621A0FC"
+      },
+      "order": {
+        "order_id": "ORD-B41210CB32"
+      },
+      "payload": {
+        "channel": "online",
+        "items": [
+          {
+            "product_id": "PROD-123",
+            "quantity": 1,
+            "sku": "sku_123"
+          }
+        ],
+        "location_id": "store_main_street"
+      },
+      "payment": {
+        "amount": 100.0,
+        "attempt": 1,
+        "channel": "upi",
+        "created_at": "2026-01-18T19:00:16.940131Z",
+        "currency": "USD",
+        "status": "success",
+        "transaction_id": "PAY-5658D2040E5C"
+      },
+      "state": "ORDER_CONFIRMED",
+      "transaction_id": "TXN-9DB934EAA6",
+      "updated_at": "2026-01-18T19:00:16.942027Z",
+      "user_id": "test-user-1",
+      "version": 5
+    },
+    "TXN-BE161F0A61": {
+      "created_at": "2026-01-18T19:00:17.307919Z",
+      "errors": [],
+      "inventory": {
+        "location_id": "store_main_street",
+        "reservation_id": "RSV-A79F61145C"
+      },
+      "order": {
+        "order_id": "ORD-F1AACF4BDC"
+      },
+      "payload": {
+        "channel": "online",
+        "items": [
+          {
+            "product_id": "PROD-123",
+            "quantity": 1,
+            "sku": "sku_123"
+          }
+        ],
+        "location_id": "store_main_street"
+      },
+      "payment": {
+        "amount": 100.0,
+        "attempt": 1,
+        "channel": "upi",
+        "created_at": "2026-01-18T19:00:17.310232Z",
+        "currency": "USD",
+        "status": "success",
+        "transaction_id": "PAY-2892C5AEBA65"
+      },
+      "state": "ORDER_CONFIRMED",
+      "transaction_id": "TXN-BE161F0A61",
+      "updated_at": "2026-01-18T19:00:17.313484Z",
+      "user_id": "circuit-test-8739-0",
+      "version": 5
+    },
+    "TXN-F65EB5AE85": {
+      "created_at": "2026-01-18T19:00:17.320757Z",
+      "errors": [],
+      "inventory": {},
+      "order": {},
+      "payload": {
+        "channel": "online",
+        "items": [
+          {
+            "product_id": "PROD-123",
+            "quantity": 1,
+            "sku": "sku_123"
+          }
+        ],
+        "location_id": "store_main_street"
+      },
+      "payment": {},
+      "state": "INITIATED",
+      "transaction_id": "TXN-F65EB5AE85",
+      "updated_at": "2026-01-18T19:00:17.320759Z",
+      "user_id": "circuit-test-8739-queued",
+      "version": 1
+    }
+  }
+}

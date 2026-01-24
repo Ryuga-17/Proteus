@@ -1,0 +1,61 @@
+{
+  "queue": {
+    "JOB-56E7F9FD1F": {
+      "attempts": 0,
+      "created_at": "2026-01-18T19:00:17.319434Z",
+      "job_id": "JOB-56E7F9FD1F",
+      "operation_type": "inventory_reserve",
+      "payload": {
+        "items": [
+          {
+            "product_id": "PROD-123",
+            "quantity": 1,
+            "sku": "sku_123"
+          }
+        ],
+        "location_id": "store_main_street",
+        "transaction_id": "TXN-44B000A440"
+      },
+      "status": "queued",
+      "updated_at": "2026-01-18T19:00:17.319436Z"
+    },
+    "JOB-8B13292CFE": {
+      "attempts": 0,
+      "created_at": "2026-01-18T19:00:17.321624Z",
+      "job_id": "JOB-8B13292CFE",
+      "operation_type": "inventory_reserve",
+      "payload": {
+        "items": [
+          {
+            "product_id": "PROD-123",
+            "quantity": 1,
+            "sku": "sku_123"
+          }
+        ],
+        "location_id": "store_main_street",
+        "transaction_id": "TXN-F65EB5AE85"
+      },
+      "status": "queued",
+      "updated_at": "2026-01-18T19:00:17.321626Z"
+    },
+    "JOB-D797EDE585": {
+      "attempts": 0,
+      "created_at": "2026-01-18T19:00:17.326894Z",
+      "job_id": "JOB-D797EDE585",
+      "operation_type": "inventory_reserve",
+      "payload": {
+        "items": [
+          {
+            "product_id": "PROD-456",
+            "quantity": 1,
+            "sku": "sku_456"
+          }
+        ],
+        "location_id": "store_main_street",
+        "transaction_id": "TXN-7877BC4B4F"
+      },
+      "status": "queued",
+      "updated_at": "2026-01-18T19:00:17.326896Z"
+    }
+  }
+}

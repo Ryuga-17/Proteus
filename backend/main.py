@@ -11,7 +11,19 @@ import asyncio
 import json
 import time
 import random
+from datetime import datetime, timedelta
 from dotenv import load_dotenv
+
+from resilience.storage import FileBackedStore
+from resilience.transactions import TransactionManager, TransactionState
+from resilience.inventory import InventoryManager
+from resilience.payments import PaymentGateway
+from resilience.sessions import SessionManager
+from resilience.orders import OrderManager
+from resilience.queue import OperationQueue
+from resilience.customers import CustomerIdentityResolver
+from resilience.logging import log_event
+from resilience.circuit_breaker import CircuitBreaker
 
 # Load environment variables from .env file
 load_dotenv()
@@ -42,6 +54,61 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# ============================================================================
+# Resilience Stores & Managers
+# ============================================================================
+DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
+
+transaction_store = FileBackedStore(
+    os.path.join(DATA_DIR, "transactions.json"),
+    lambda: {"transactions": {}},
+)
+inventory_store = FileBackedStore(
+    os.path.join(DATA_DIR, "inventory.json"),
+    lambda: {
+        "stock": {
+            "store_main_street": {"sku_123": 5, "sku_456": 25},
+            "store_westside_mall": {"sku_123": 8, "sku_456": 30},
+            "godown_central": {"sku_123": 500, "sku_456": 300},
+        },
+        "reservations": {},
+    },
+)
+payment_store = FileBackedStore(
+    os.path.join(DATA_DIR, "payments.json"),
+    lambda: {"idempotency": {}, "group_success": {}},
+)
+session_store = FileBackedStore(
+    os.path.join(DATA_DIR, "sessions.json"),
+    lambda: {"sessions": {}, "carts": {}},
+)
+order_store = FileBackedStore(
+    os.path.join(DATA_DIR, "orders.json"),
+    lambda: {"orders": {}, "returns": {}},
+)
+queue_store = FileBackedStore(
+    os.path.join(DATA_DIR, "queue.json"),
+    lambda: {"queue": {}},
+)
+customer_store = FileBackedStore(
+    os.path.join(DATA_DIR, "customers.json"),
+    lambda: {"customers": {}},
+)
+breaker_store = FileBackedStore(
+    os.path.join(DATA_DIR, "circuit_breakers.json"),
+    lambda: {},
+)
+
+transaction_manager = TransactionManager(transaction_store)
+inventory_manager = InventoryManager(inventory_store)
+payment_gateway = PaymentGateway(payment_store)
+session_manager = SessionManager(session_store)
+order_manager = OrderManager(order_store)
+queue_manager = OperationQueue(queue_store)
+customer_resolver = CustomerIdentityResolver(customer_store)
+payment_breaker = CircuitBreaker("payment_gateway", breaker_store)
+inventory_breaker = CircuitBreaker("inventory_service", breaker_store)
 
 class VoiceQueryRequest(BaseModel):
     query: str
@@ -1365,145 +1432,273 @@ class PurchaseRequest(BaseModel):
     items: List[PurchaseItem]
     user_id: Optional[str] = "default_user"
     location_id: Optional[str] = "store_main_street"
+    transaction_id: Optional[str] = None
+    payment_channel: Optional[str] = "upi"
+    idempotency_key: Optional[str] = None
+    device_id: Optional[str] = None
+    session_id: Optional[str] = None
+    action_ts: Optional[str] = None
+    purchase_channel: Optional[str] = "online"
+    simulate_payment_timeout: Optional[bool] = False
+    simulate_payment_failure: Optional[bool] = False
+    simulate_inventory_unavailable: Optional[bool] = False
 
 class PurchaseResponse(BaseModel):
     success: bool
     message: str
+    transaction_id: Optional[str] = None
+    transaction_state: Optional[str] = None
     order_id: Optional[str] = None
     items_processed: List[Dict[str, Any]]
     errors: Optional[List[str]] = None
+    reconciliation_required: Optional[bool] = None
+    reservation_id: Optional[str] = None
+
+
+class SessionRegisterRequest(BaseModel):
+    user_id: str
+    device_id: str
+    session_id: str
+
+
+class SessionRegisterResponse(BaseModel):
+    success: bool
+    conflict: Optional[Dict[str, Any]] = None
+
+
+class CartSyncRequest(BaseModel):
+    user_id: str
+    cart: Dict[str, Any]
+    action_ts: str
+
+
+class CartSyncResponse(BaseModel):
+    success: bool
+    cart: Optional[Dict[str, Any]] = None
+    conflict: Optional[Dict[str, Any]] = None
+
+
+class TransactionStatusResponse(BaseModel):
+    transaction_id: str
+    state: str
+    payment: Dict[str, Any]
+    inventory: Dict[str, Any]
+    order: Dict[str, Any]
+
+
+class OrderUpdateRequest(BaseModel):
+    reason: Optional[str] = None
+    delivery_method: Optional[str] = None
+
+
+class FulfillmentUpdateRequest(BaseModel):
+    status: str
+    reason: Optional[str] = None
 
 
 @app.post("/api/purchase", response_model=PurchaseResponse)
 async def process_purchase(request: PurchaseRequest):
     try:
-        if DEMO_MODE:
-            await asyncio.sleep(0.8)
-            items_processed = []
-            for item in request.items:
-                items_processed.append({
-                    "product_id": item.product_id,
-                    "sku": item.sku or f"PROD{item.product_id}",
-                    "quantity": item.quantity,
-                    "status": "stock_reduced"
-                })
-            
-            order_id = f"ORD-{int(time.time())}"
-            
-            return PurchaseResponse(
-                success=True,
-                message=f"Purchase completed successfully. Order ID: {order_id}",
-                order_id=order_id,
-                items_processed=items_processed,
-                errors=None
+        items_payload = [
+            {"product_id": item.product_id, "sku": item.sku or item.product_id, "quantity": item.quantity}
+            for item in request.items
+        ]
+        transaction = None
+        if request.transaction_id:
+            transaction = transaction_manager.get(request.transaction_id)
+
+        if not transaction:
+            transaction = transaction_manager.create(
+                request.user_id,
+                {
+                    "items": items_payload,
+                    "location_id": request.location_id,
+                    "channel": request.purchase_channel or "online",
+                },
             )
-        else:
-            class MockInventoryDB:
-                def __init__(self):
-                    self.inventory = {
-                        "store_main_street": {"sku_123": 5, "sku_456": 25},
-                        "store_westside_mall": {"sku_123": 8, "sku_456": 30},
-                        "godown_central": {"sku_123": 500, "sku_456": 300},
-                    }
-                def get_stock(self, sku: str) -> dict:
-                    results = {}
-                    for location, stock in self.inventory.items():
-                        if sku in stock:
-                            results[location] = stock[sku]
-                    return results
-                def update_stock(self, location_id: str, sku: str, quantity_change: int) -> bool:
-                    if location_id in self.inventory and sku in self.inventory[location_id]:
-                        if self.inventory[location_id][sku] + quantity_change < 0:
-                            return False
-                        self.inventory[location_id][sku] += quantity_change
-                        return True
-                    return False
-            
-            class InventoryTools:
-                @staticmethod
-                def reduce_stock_on_purchase_tool(sku: str, quantity: int, location_id: str = "store_main_street") -> str:
-                    if db.update_stock(location_id, sku, -quantity):
-                        current_stock = db.inventory.get(location_id, {}).get(sku, 0)
-                        return f"SUCCESS: Reduced stock for {sku} by {quantity} units at {location_id}. Current stock: {current_stock} units."
-                    return f"ERROR: Could not reduce stock for {sku}."
-            
-            db = MockInventoryDB()
-        
-            items_processed = []
-            errors = []
-            
-            for item in request.items:
-                sku = item.sku or item.product_id
-                stock_data = db.get_stock(sku)
-                total_stock = sum(stock_data.values()) if stock_data else 0
-                
-                if total_stock < item.quantity:
-                    errors.append(f"Insufficient stock for {item.product_id}. Available: {total_stock}, Requested: {item.quantity}")
-                    continue
-                
-                items_processed.append({
-                    "product_id": item.product_id,
-                    "sku": sku,
-                    "quantity": item.quantity,
-                    "status": "validated"
-                })
-            
-            if errors:
-                return PurchaseResponse(
-                    success=False,
-                    message="Purchase failed: Stock validation errors",
-                    items_processed=items_processed,
-                    errors=errors
+
+        transaction_id = transaction["transaction_id"]
+        log_event("transaction_initiated", details={"transaction_id": transaction_id})
+
+        if request.device_id and request.session_id:
+            session_manager.register_device(request.user_id, request.device_id, request.session_id)
+            conflict = session_manager.detect_conflict(request.user_id, request.device_id)
+            if conflict:
+                log_event(
+                    "session_conflict_detected",
+                    level="warning",
+                    details={"transaction_id": transaction_id, "conflict": conflict},
                 )
-            
-            try:
-                from Orchestrator.main import handle_custom_request
-                total_amount = sum(item.quantity * 100 for item in request.items)
-                payment_request = f"Process payment of ${total_amount:.2f} for order with {len(request.items)} items"
-                payment_result = handle_custom_request(payment_request)
-            except Exception as e:
-                print(f"Payment processing note: {e}")
-            
-            stock_reductions = []
-            for item in items_processed:
-                sku = item["sku"]
-                quantity = item["quantity"]
-                result = InventoryTools.reduce_stock_on_purchase_tool(sku=sku, quantity=quantity, location_id=request.location_id)
-                
-                if "SUCCESS" in result:
-                    item["status"] = "stock_reduced"
-                    stock_reductions.append(result)
-                else:
-                    item["status"] = "stock_reduction_failed"
-                    errors.append(f"Failed to reduce stock for {item['product_id']}: {result}")
-            
-            order_id = f"ORD-{int(time.time())}"
-            
-            try:
-                from Orchestrator.main import handle_custom_request
-                
-                items_summary = ", ".join([f"{i['quantity']}x {i['product_id']}" for i in items_processed])
-                fulfillment_request = f"Ship order {order_id} with items: {items_summary} to customer {request.user_id}"
-                
-                fulfillment_result = handle_custom_request(fulfillment_request)
-            except Exception as e:
-                print(f"Fulfillment processing note: {e}")
-            
-            if errors:
-                return PurchaseResponse(
-                    success=False,
-                    message="Purchase partially completed with errors",
-                    order_id=order_id,
-                    items_processed=items_processed,
-                    errors=errors
-                )
-            
+
+        customer_resolver.resolve({"customer_id": request.user_id, "name": None})
+
+        # Circuit breaker prevents cascading failures when inventory is down.
+        if request.simulate_inventory_unavailable:
+            inventory_breaker.record_failure(max_failures=2)
+        if not inventory_breaker.allow_request(max_failures=2, open_duration_seconds=120):
+            queue_manager.enqueue(
+                "inventory_reserve",
+                {"transaction_id": transaction_id, "items": items_payload, "location_id": request.location_id},
+            )
+            return PurchaseResponse(
+                success=False,
+                message="Inventory system is temporarily unavailable. Your cart is saved and will retry.",
+                transaction_id=transaction_id,
+                transaction_state=transaction.get("state"),
+                items_processed=[],
+                errors=["inventory_unavailable"],
+            )
+
+        # Soft reservation (TTL lock) avoids race conditions while user pays.
+        reservation_ok, reservation_id, conflicts = inventory_manager.reserve_items(
+            request.location_id, items_payload, ttl_seconds=600
+        )
+        if not reservation_ok:
+            inventory_breaker.record_failure(max_failures=2)
+            return PurchaseResponse(
+                success=False,
+                message="Unable to reserve inventory. Items may have just sold out.",
+                transaction_id=transaction_id,
+                transaction_state=transaction.get("state"),
+                items_processed=[],
+                errors=conflicts,
+            )
+        inventory_breaker.record_success()
+        log_event("inventory_reserved", details={"transaction_id": transaction_id, "reservation_id": reservation_id})
+        transaction_manager.update_inventory(
+            transaction_id,
+            {"reservation_id": reservation_id, "location_id": request.location_id},
+        )
+
+        transaction_manager.transition(transaction_id, TransactionState.PAYMENT_PENDING)
+
+        revalidate_ok, revalidate_reason = inventory_manager.revalidate_reservation(reservation_id)
+        if not revalidate_ok:
+            inventory_manager.release_reservation(reservation_id)
+            transaction_manager.transition(transaction_id, TransactionState.FAILED)
+            return PurchaseResponse(
+                success=False,
+                message="Inventory changed during checkout. Please review your cart.",
+                transaction_id=transaction_id,
+                transaction_state=TransactionState.FAILED.value,
+                items_processed=[],
+                errors=[revalidate_reason],
+            )
+
+        if request.simulate_payment_timeout or request.simulate_payment_failure:
+            payment_breaker.record_failure(max_failures=2)
+        if not payment_breaker.allow_request(max_failures=2, open_duration_seconds=120):
+            queue_manager.enqueue(
+                "payment_process",
+                {"transaction_id": transaction_id, "amount": len(items_payload) * 100},
+            )
+            return PurchaseResponse(
+                success=False,
+                message="Payment service is temporarily unavailable. We saved your order for retry.",
+                transaction_id=transaction_id,
+                transaction_state=TransactionState.PAYMENT_PENDING.value,
+                items_processed=[],
+                errors=["payment_unavailable"],
+            )
+
+        existing_payment = transaction_manager.get(transaction_id).get("payment", {})
+        if existing_payment.get("status") == "success":
             return PurchaseResponse(
                 success=True,
-                message=f"Purchase completed successfully. Order ID: {order_id}",
-                order_id=order_id,
-                items_processed=items_processed,
-                errors=None
+                message="Payment already completed for this transaction.",
+                transaction_id=transaction_id,
+                transaction_state=TransactionState.PAYMENT_SUCCESS.value,
+                order_id=transaction_manager.get(transaction_id).get("order", {}).get("order_id"),
+                items_processed=[],
+                errors=None,
+                reconciliation_required=False,
+                reservation_id=reservation_id,
+            )
+
+        # Idempotency + group key allow safe channel switching without double charge.
+        idempotency_key = request.idempotency_key or f"{transaction_id}:{request.payment_channel or 'upi'}"
+        group_key = f"{transaction_id}:payment-group"
+        payment_result = None
+        for attempt in range(1, 4):
+            simulate_timeout = request.simulate_payment_timeout and attempt < 3
+            simulate_failure = request.simulate_payment_failure and attempt >= 3
+            payment_result = payment_gateway.process_payment(
+                amount=float(len(items_payload) * 100),
+                currency="USD",
+                channel=request.payment_channel or "upi",
+                idempotency_key=idempotency_key,
+                group_key=group_key,
+                simulate_timeout=simulate_timeout,
+                simulate_failure=simulate_failure,
+                attempt=attempt,
+            )
+            if payment_result["status"] == "timeout":
+                await asyncio.sleep(0.1 * (2 ** (attempt - 1)))
+                continue
+            break
+
+        transaction_manager.update_payment(transaction_id, payment_result)
+
+        if payment_result["status"] != "success":
+            payment_breaker.record_failure(max_failures=2)
+            inventory_manager.release_reservation(reservation_id)
+            transaction_manager.transition(transaction_id, TransactionState.FAILED)
+            return PurchaseResponse(
+                success=False,
+                message="Payment could not be completed. No charges were made.",
+                transaction_id=transaction_id,
+                transaction_state=TransactionState.FAILED.value,
+                items_processed=[],
+                errors=[payment_result["status"]],
+            )
+        payment_breaker.record_success()
+        log_event("payment_success", details={"transaction_id": transaction_id, "payment_id": payment_result.get("transaction_id")})
+        transaction_manager.transition(transaction_id, TransactionState.PAYMENT_SUCCESS)
+
+        confirm_ok, confirm_reason = inventory_manager.confirm_reservation(reservation_id)
+        if not confirm_ok:
+            queue_manager.enqueue(
+                "reconcile_payment",
+                {"transaction_id": transaction_id, "reason": confirm_reason},
+            )
+            return PurchaseResponse(
+                success=False,
+                message="Payment succeeded but inventory confirmation failed. We are reconciling.",
+                transaction_id=transaction_id,
+                transaction_state=TransactionState.PAYMENT_SUCCESS.value,
+                items_processed=[],
+                errors=[confirm_reason],
+                reconciliation_required=True,
+                reservation_id=reservation_id,
+            )
+
+        transaction_manager.transition(transaction_id, TransactionState.INVENTORY_CONFIRMED)
+
+        order_record = order_manager.create_order(
+            request.user_id,
+            items_payload,
+            total_amount=float(len(items_payload) * 100),
+            channel=request.purchase_channel or "online",
+        )
+        transaction_manager.update_order(transaction_id, {"order_id": order_record["order_id"]})
+        transaction_manager.transition(transaction_id, TransactionState.ORDER_CONFIRMED)
+        log_event("order_confirmed", details={"transaction_id": transaction_id, "order_id": order_record["order_id"]})
+
+        items_processed = [
+            {"product_id": item["product_id"], "sku": item["sku"], "quantity": item["quantity"], "status": "confirmed"}
+            for item in items_payload
+        ]
+
+        return PurchaseResponse(
+            success=True,
+            message=f"Purchase completed successfully. Order ID: {order_record['order_id']}",
+            transaction_id=transaction_id,
+            transaction_state=TransactionState.ORDER_CONFIRMED.value,
+            order_id=order_record["order_id"],
+            items_processed=items_processed,
+            errors=None,
+            reconciliation_required=False,
+            reservation_id=reservation_id,
             )
         
     except Exception as e:
@@ -1513,26 +1708,202 @@ async def process_purchase(request: PurchaseRequest):
         )
 
 
+@app.post("/api/session/register", response_model=SessionRegisterResponse)
+async def register_session(request: SessionRegisterRequest):
+    session_manager.register_device(request.user_id, request.device_id, request.session_id)
+    conflict = session_manager.detect_conflict(request.user_id, request.device_id)
+    return SessionRegisterResponse(success=True, conflict=conflict)
+
+
+@app.post("/api/cart/sync", response_model=CartSyncResponse)
+async def sync_cart(request: CartSyncRequest):
+    result = session_manager.sync_cart(request.user_id, request.cart, request.action_ts)
+    return CartSyncResponse(success=True, cart=result.get("cart"), conflict=result.get("conflict"))
+
+
+@app.get("/api/transactions/{transaction_id}", response_model=TransactionStatusResponse)
+async def get_transaction_status(transaction_id: str):
+    record = transaction_manager.get(transaction_id)
+    if not record:
+        raise HTTPException(status_code=404, detail="Transaction not found")
+    return TransactionStatusResponse(
+        transaction_id=transaction_id,
+        state=record.get("state", ""),
+        payment=record.get("payment", {}),
+        inventory=record.get("inventory", {}),
+        order=record.get("order", {}),
+    )
+
+
+@app.post("/api/transactions/{transaction_id}/reconcile")
+async def reconcile_transaction(transaction_id: str):
+    record = transaction_manager.get(transaction_id)
+    if not record:
+        raise HTTPException(status_code=404, detail="Transaction not found")
+    if record.get("state") != TransactionState.PAYMENT_SUCCESS.value:
+        return {"success": False, "message": "No reconciliation required", "transaction_id": transaction_id}
+    inventory = record.get("inventory", {})
+    reservation_id = inventory.get("reservation_id")
+    if reservation_id:
+        confirm_ok, confirm_reason = inventory_manager.confirm_reservation(reservation_id)
+        if not confirm_ok:
+            return {"success": False, "message": "Inventory confirmation failed", "reason": confirm_reason}
+    order_record = order_manager.create_order(
+        record.get("user_id", "unknown"),
+        record.get("payload", {}).get("items", []),
+        total_amount=float(len(record.get("payload", {}).get("items", [])) * 100),
+        channel=record.get("payload", {}).get("channel", "online"),
+    )
+    transaction_manager.update_order(transaction_id, {"order_id": order_record["order_id"]})
+    transaction_manager.transition(transaction_id, TransactionState.ORDER_CONFIRMED)
+    return {"success": True, "order_id": order_record["order_id"], "transaction_id": transaction_id}
+
+
+@app.post("/api/orders/{order_id}/cancel")
+async def cancel_order(order_id: str, request: OrderUpdateRequest):
+    order = order_manager.get_order(order_id)
+    if not order:
+        raise HTTPException(status_code=404, detail="Order not found")
+    if order.get("fulfillment_status") != "pending":
+        return {"success": False, "message": "Order already in fulfillment"}
+    created_at = order.get("created_at", "")
+    if created_at:
+        created_dt = datetime.fromisoformat(created_at.replace("Z", "+00:00"))
+        if datetime.utcnow().replace(tzinfo=created_dt.tzinfo) > created_dt + timedelta(minutes=order_manager.grace_minutes):
+            return {"success": False, "message": "Grace window expired for cancellation"}
+    order = order_manager.update_order(order_id, {"status": "cancelled", "cancel_reason": request.reason})
+    return {"success": True, "order": order}
+
+
+@app.post("/api/orders/{order_id}/delivery")
+async def change_delivery_method(order_id: str, request: OrderUpdateRequest):
+    order = order_manager.get_order(order_id)
+    if not order:
+        raise HTTPException(status_code=404, detail="Order not found")
+    if order.get("fulfillment_status") != "pending":
+        return {"success": False, "message": "Delivery changes locked after fulfillment starts"}
+    order = order_manager.update_order(order_id, {"delivery_method": request.delivery_method or "standard"})
+    return {"success": True, "order": order}
+
+
+@app.post("/api/orders/{order_id}/fulfillment")
+async def update_fulfillment(order_id: str, request: FulfillmentUpdateRequest):
+    order = order_manager.get_order(order_id)
+    if not order:
+        raise HTTPException(status_code=404, detail="Order not found")
+    updates = {"fulfillment_status": request.status}
+    if request.reason:
+        updates["fulfillment_note"] = request.reason
+    order = order_manager.update_order(order_id, updates)
+    return {"success": True, "order": order}
+
+
+@app.post("/api/orders/{order_id}/return")
+async def request_return(order_id: str, request: OrderUpdateRequest):
+    order = order_manager.get_order(order_id)
+    if not order:
+        raise HTTPException(status_code=404, detail="Order not found")
+    result = order_manager.request_return(order_id, request.reason or "not specified", return_type="refund")
+    return {"success": True, "return": result}
+
+
+@app.post("/api/orders/{order_id}/exchange")
+async def request_exchange(order_id: str, request: OrderUpdateRequest):
+    order = order_manager.get_order(order_id)
+    if not order:
+        raise HTTPException(status_code=404, detail="Order not found")
+    result = order_manager.request_return(order_id, request.reason or "not specified", return_type="exchange")
+    return {"success": True, "exchange": result}
+
+
+@app.post("/api/recovery/queue/process")
+async def process_queue():
+    jobs = queue_manager.list_jobs()
+    processed = []
+    for job in jobs:
+        if job.get("status") != "queued":
+            continue
+        op_type = job.get("operation_type")
+        payload = job.get("payload", {})
+        if op_type == "inventory_reserve":
+            ok, reservation_id, conflicts = inventory_manager.reserve_items(
+                payload.get("location_id", "store_main_street"),
+                payload.get("items", []),
+                ttl_seconds=600,
+            )
+            if ok:
+                transaction_manager.update_inventory(
+                    payload.get("transaction_id", ""),
+                    {"reservation_id": reservation_id, "location_id": payload.get("location_id")},
+                )
+                queue_manager.mark_done(job["job_id"], status="completed")
+            else:
+                queue_manager.mark_done(job["job_id"], status="failed")
+        elif op_type == "payment_process":
+            transaction_id = payload.get("transaction_id", "")
+            payment_result = payment_gateway.process_payment(
+                amount=float(payload.get("amount", 0)),
+                currency="USD",
+                channel="recovery",
+                idempotency_key=f"{transaction_id}:recovery",
+                group_key=f"{transaction_id}:payment-group",
+            )
+            transaction_manager.update_payment(transaction_id, payment_result)
+            queue_manager.mark_done(job["job_id"], status="completed")
+        elif op_type == "reconcile_payment":
+            transaction_id = payload.get("transaction_id", "")
+            record = transaction_manager.get(transaction_id) or {}
+            order_record = order_manager.create_order(
+                record.get("user_id", "unknown"),
+                record.get("payload", {}).get("items", []),
+                total_amount=float(len(record.get("payload", {}).get("items", [])) * 100),
+                channel=record.get("payload", {}).get("channel", "online"),
+            )
+            transaction_manager.update_order(transaction_id, {"order_id": order_record["order_id"]})
+            transaction_manager.transition(transaction_id, TransactionState.ORDER_CONFIRMED)
+            queue_manager.mark_done(job["job_id"], status="completed")
+        else:
+            queue_manager.mark_done(job["job_id"], status="skipped")
+        processed.append(job["job_id"])
+    return {"success": True, "processed_jobs": processed}
+
+
+@app.post("/api/inventory/adjust")
+async def adjust_inventory(payload: Dict[str, Any]):
+    location_id = payload.get("location_id", "store_main_street")
+    sku = payload.get("sku")
+    delta = int(payload.get("delta", 0))
+    if not sku:
+        raise HTTPException(status_code=400, detail="sku required")
+    inventory_manager.adjust_stock(location_id, sku, delta)
+    return {"success": True, "location_id": location_id, "sku": sku}
+
+
+@app.post("/api/customers/resolve")
+async def resolve_customer(payload: Dict[str, Any]):
+    result = customer_resolver.resolve(payload)
+    return {"success": True, "profile": result.get("profile"), "warnings": result.get("warnings")}
+
+
+@app.post("/api/customers/merge")
+async def merge_customers(payload: Dict[str, Any]):
+    primary_id = payload.get("primary_id")
+    secondary_id = payload.get("secondary_id")
+    if not primary_id or not secondary_id:
+        raise HTTPException(status_code=400, detail="primary_id and secondary_id required")
+    result = customer_resolver.merge_profiles(primary_id, secondary_id)
+    return result
+
+
 @app.get("/api/inventory/stock/{sku}")
 async def get_stock(sku: str):
     try:
-        sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(__file__)), "Inventory agent"))
-        class MockInventoryDB:
-            def __init__(self):
-                self.inventory = {
-                    "store_main_street": {"sku_123": 5, "sku_456": 25},
-                    "store_westside_mall": {"sku_123": 8, "sku_456": 30},
-                    "godown_central": {"sku_123": 500, "sku_456": 300},
-                }
-            def get_stock(self, sku: str) -> dict:
-                results = {}
-                for location, stock in self.inventory.items():
-                    if sku in stock:
-                        results[location] = stock[sku]
-                return results
-        db = MockInventoryDB()
-        
-        stock_data = db.get_stock(sku)
+        stock_snapshot = inventory_manager.get_stock_snapshot()
+        stock_data = {
+            location: items.get(sku, 0)
+            for location, items in stock_snapshot.items()
+            if sku in items
+        }
         total_stock = sum(stock_data.values()) if stock_data else 0
         
         return {
@@ -1546,6 +1917,36 @@ async def get_stock(sku: str):
             status_code=500,
             detail=f"Error fetching stock: {str(e)}"
         )
+
+
+# ============================================================================
+# WhatsApp Integration
+# ============================================================================
+try:
+    # Add WhatsApp integration directory to path
+    whatsapp_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "whatsapp_integration")
+    if whatsapp_path not in sys.path:
+        sys.path.insert(0, whatsapp_path)
+    
+    # Import WhatsApp webhook router
+    from whatsapp_integration.webhook import app as whatsapp_app
+    from whatsapp_integration.main import initialize_whatsapp_integration
+    
+    # Mount WhatsApp webhook endpoints
+    app.mount("/whatsapp", whatsapp_app)
+    
+    # Initialize WhatsApp integration database tables
+    try:
+        initialize_whatsapp_integration()
+    except Exception as e:
+        print(f"⚠️  Warning: Could not initialize WhatsApp integration: {e}")
+        print("   WhatsApp endpoints will still be available but may not work correctly.")
+    
+    print("✅ WhatsApp integration loaded")
+except ImportError as e:
+    print(f"⚠️  Warning: WhatsApp integration not available: {e}")
+except Exception as e:
+    print(f"⚠️  Warning: Error loading WhatsApp integration: {e}")
 
 
 if __name__ == "__main__":

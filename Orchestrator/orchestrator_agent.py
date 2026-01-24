@@ -121,7 +121,10 @@ Orchestrator = Agent(
         "You analyze requests, decide which specialist agents should handle them, "
         "route requests to the right places, and bring everything together into "
         "clear, helpful responses. You're also great at coordinating complex workflows "
-        "that need multiple agents working together."
+        "that need multiple agents working together.\n\n"
+        "You must handle errors deterministically: detect error types from structured "
+        "tool responses, decide retry vs rollback vs human handoff, and respond to "
+        "customers with clear, non-technical messaging."
     ),
     backstory=(
         "You're the Master Orchestrator of a comprehensive retail ecosystem - and you love it! "
@@ -166,7 +169,12 @@ Orchestrator = Agent(
         "for all system operations!\n\n"
         
         "You're friendly, efficient, and always focused on getting the best outcome "
-        "for everyone involved!"
+        "for everyone involved!\n\n"
+        "IMPORTANT ERROR HANDLING RULES:\n"
+        "  - Every tool returns a JSON object with success/result/error.\n"
+        "  - Never expose internal error details or stack traces to the user.\n"
+        "  - If error.retryable is true, you may retry once; otherwise, hand off.\n"
+        "  - If a payment succeeds but order confirmation fails, trigger reconciliation."
     ),
     tools=[
         analyze_intent,           # Figure out what the customer needs

@@ -1,0 +1,131 @@
+{
+  "orders": {
+    "ORD-05BD25DC85": {
+      "channel": "online",
+      "created_at": "2026-01-18T19:00:17.253445Z",
+      "delivery_method": "standard",
+      "fulfillment_status": "pending",
+      "items": [
+        {
+          "product_id": "PROD-456",
+          "quantity": 2,
+          "sku": "sku_456"
+        }
+      ],
+      "order_id": "ORD-05BD25DC85",
+      "status": "confirmed",
+      "total_amount": 100.0,
+      "updated_at": "2026-01-18T19:00:17.253452Z",
+      "user_id": "race-test-5226"
+    },
+    "ORD-210658AEB2": {
+      "channel": "online",
+      "created_at": "2026-01-18T19:00:17.305344Z",
+      "delivery_method": "standard",
+      "fulfillment_status": "pending",
+      "items": [
+        {
+          "product_id": "PROD-123",
+          "quantity": 1,
+          "sku": "sku_123"
+        }
+      ],
+      "order_id": "ORD-210658AEB2",
+      "status": "confirmed",
+      "total_amount": 100.0,
+      "updated_at": "2026-01-18T19:00:17.305345Z",
+      "user_id": "failure-test-9896"
+    },
+    "ORD-42D776781E": {
+      "channel": "online",
+      "created_at": "2026-01-18T19:00:17.297236Z",
+      "delivery_method": "standard",
+      "fulfillment_status": "pending",
+      "items": [
+        {
+          "product_id": "PROD-123",
+          "quantity": 1,
+          "sku": "sku_123"
+        }
+      ],
+      "order_id": "ORD-42D776781E",
+      "status": "confirmed",
+      "total_amount": 100.0,
+      "updated_at": "2026-01-18T19:00:17.297237Z",
+      "user_id": "idempotent-test-1984"
+    },
+    "ORD-56864CF423": {
+      "channel": "online",
+      "created_at": "2026-01-18T19:00:17.289175Z",
+      "delivery_method": "standard",
+      "fulfillment_status": "pending",
+      "items": [
+        {
+          "product_id": "PROD-123",
+          "quantity": 1,
+          "sku": "sku_123"
+        }
+      ],
+      "order_id": "ORD-56864CF423",
+      "status": "confirmed",
+      "total_amount": 100.0,
+      "updated_at": "2026-01-18T19:00:17.289178Z",
+      "user_id": "idempotent-test-1984"
+    },
+    "ORD-77CF3BE1A1": {
+      "channel": "online",
+      "created_at": "2026-01-18T19:00:17.275388Z",
+      "delivery_method": "standard",
+      "fulfillment_status": "pending",
+      "items": [
+        {
+          "product_id": "PROD-456",
+          "quantity": 20,
+          "sku": "sku_456"
+        }
+      ],
+      "order_id": "ORD-77CF3BE1A1",
+      "status": "confirmed",
+      "total_amount": 100.0,
+      "updated_at": "2026-01-18T19:00:17.275391Z",
+      "user_id": "race-test-5226-2"
+    },
+    "ORD-B41210CB32": {
+      "channel": "online",
+      "created_at": "2026-01-18T19:00:16.941487Z",
+      "delivery_method": "standard",
+      "fulfillment_status": "pending",
+      "items": [
+        {
+          "product_id": "PROD-123",
+          "quantity": 1,
+          "sku": "sku_123"
+        }
+      ],
+      "order_id": "ORD-B41210CB32",
+      "status": "confirmed",
+      "total_amount": 100.0,
+      "updated_at": "2026-01-18T19:00:16.941488Z",
+      "user_id": "test-user-1"
+    },
+    "ORD-F1AACF4BDC": {
+      "channel": "online",
+      "created_at": "2026-01-18T19:00:17.312653Z",
+      "delivery_method": "standard",
+      "fulfillment_status": "pending",
+      "items": [
+        {
+          "product_id": "PROD-123",
+          "quantity": 1,
+          "sku": "sku_123"
+        }
+      ],
+      "order_id": "ORD-F1AACF4BDC",
+      "status": "confirmed",
+      "total_amount": 100.0,
+      "updated_at": "2026-01-18T19:00:17.312654Z",
+      "user_id": "circuit-test-8739-0"
+    }
+  },
+  "returns": {}
+}

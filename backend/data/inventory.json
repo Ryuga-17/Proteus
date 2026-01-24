@@ -1,0 +1,23 @@
+{
+  "last_reservation_error": {
+    "conflicts": [
+      "sku_123: available 0, requested 1"
+    ],
+    "reservation_id": "RSV-3E0B6DEDB5"
+  },
+  "reservations": {},
+  "stock": {
+    "godown_central": {
+      "sku_123": 500,
+      "sku_456": 300
+    },
+    "store_main_street": {
+      "sku_123": 0,
+      "sku_456": 3
+    },
+    "store_westside_mall": {
+      "sku_123": 8,
+      "sku_456": 30
+    }
+  }
+}

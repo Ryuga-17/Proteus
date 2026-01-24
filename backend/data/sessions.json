@@ -1,0 +1,17 @@
+{
+  "carts": {},
+  "sessions": {
+    "session-test-1448": {
+      "device-mobile-123": {
+        "device_id": "device-mobile-123",
+        "last_seen": "2026-01-18T19:00:17.323184Z",
+        "session_id": "session-6417"
+      },
+      "device-tablet-456": {
+        "device_id": "device-tablet-456",
+        "last_seen": "2026-01-18T19:00:17.324352Z",
+        "session_id": "session-6417"
+      }
+    }
+  }
+}

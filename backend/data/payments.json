@@ -1,0 +1,114 @@
+{
+  "group_success": {
+    "TXN-3438D7B338:payment-group": {
+      "amount": 100.0,
+      "attempt": 1,
+      "channel": "upi",
+      "created_at": "2026-01-18T19:00:17.267342Z",
+      "currency": "USD",
+      "status": "success",
+      "transaction_id": "PAY-CD14833E0250"
+    },
+    "TXN-34AA3F3CDB:payment-group": {
+      "amount": 100.0,
+      "attempt": 1,
+      "channel": "upi",
+      "created_at": "2026-01-18T19:00:17.302874Z",
+      "currency": "USD",
+      "status": "success",
+      "transaction_id": "PAY-960F446521BC"
+    },
+    "TXN-4EAA377A65:payment-group": {
+      "amount": 100.0,
+      "attempt": 1,
+      "channel": "upi",
+      "created_at": "2026-01-18T19:00:17.285902Z",
+      "currency": "USD",
+      "status": "success",
+      "transaction_id": "PAY-82C551EE5168"
+    },
+    "TXN-8522FA73BF:payment-group": {
+      "amount": 100.0,
+      "attempt": 3,
+      "channel": "upi",
+      "created_at": "2026-01-18T19:00:17.248122Z",
+      "currency": "USD",
+      "status": "success",
+      "transaction_id": "PAY-86656A87C4AF"
+    },
+    "TXN-9DB934EAA6:payment-group": {
+      "amount": 100.0,
+      "attempt": 1,
+      "channel": "upi",
+      "created_at": "2026-01-18T19:00:16.940131Z",
+      "currency": "USD",
+      "status": "success",
+      "transaction_id": "PAY-5658D2040E5C"
+    },
+    "TXN-BE161F0A61:payment-group": {
+      "amount": 100.0,
+      "attempt": 1,
+      "channel": "upi",
+      "created_at": "2026-01-18T19:00:17.310232Z",
+      "currency": "USD",
+      "status": "success",
+      "transaction_id": "PAY-2892C5AEBA65"
+    }
+  },
+  "idempotency": {
+    "TEST-IDEMPOTENT-123": {
+      "amount": 100.0,
+      "attempt": 1,
+      "channel": "upi",
+      "created_at": "2026-01-18T19:00:17.285902Z",
+      "currency": "USD",
+      "status": "success",
+      "transaction_id": "PAY-82C551EE5168"
+    },
+    "TXN-3438D7B338:upi": {
+      "amount": 100.0,
+      "attempt": 1,
+      "channel": "upi",
+      "created_at": "2026-01-18T19:00:17.267342Z",
+      "currency": "USD",
+      "status": "success",
+      "transaction_id": "PAY-CD14833E0250"
+    },
+    "TXN-34AA3F3CDB:upi": {
+      "amount": 100.0,
+      "attempt": 1,
+      "channel": "upi",
+      "created_at": "2026-01-18T19:00:17.302874Z",
+      "currency": "USD",
+      "status": "success",
+      "transaction_id": "PAY-960F446521BC"
+    },
+    "TXN-8522FA73BF:upi": {
+      "amount": 100.0,
+      "attempt": 3,
+      "channel": "upi",
+      "created_at": "2026-01-18T19:00:17.248122Z",
+      "currency": "USD",
+      "status": "success",
+      "transaction_id": "PAY-86656A87C4AF"
+    },
+    "TXN-9DB934EAA6:upi": {
+      "amount": 100.0,
+      "attempt": 1,
+      "channel": "upi",
+      "created_at": "2026-01-18T19:00:16.940131Z",
+      "currency": "USD",
+      "status": "success",
+      "transaction_id": "PAY-5658D2040E5C"
+    },
+    "TXN-BE161F0A61:upi": {
+      "amount": 100.0,
+      "attempt": 1,
+      "channel": "upi",
+      "created_at": "2026-01-18T19:00:17.310232Z",
+      "currency": "USD",
+      "status": "success",
+      "transaction_id": "PAY-2892C5AEBA65"
+    }
+  }
+}

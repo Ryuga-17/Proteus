@@ -1,0 +1,12 @@
+{
+  "inventory_service": {
+    "failure_count": 3,
+    "opened_at": "2026-01-18T19:00:17.319062Z",
+    "state": "open"
+  },
+  "payment_gateway": {
+    "failure_count": 0,
+    "opened_at": "",
+    "state": "closed"
+  }
+}

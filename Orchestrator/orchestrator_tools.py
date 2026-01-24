@@ -33,6 +33,26 @@ sys.path.insert(0, os.path.join(base_dir, 'recommendation agent 2'))
 from crewai.tools import tool
 
 
+def _structured_success(result: Any) -> str:
+    return json.dumps({"success": True, "result": result, "error": None})
+
+
+def _structured_error(error_type: str, message: str, retryable: bool, user_message: str, details: Optional[Dict[str, Any]] = None) -> str:
+    return json.dumps(
+        {
+            "success": False,
+            "result": None,
+            "error": {
+                "type": error_type,
+                "message": message,
+                "retryable": retryable,
+                "user_message": user_message,
+                "details": details or {},
+            },
+        }
+    )
+
+
 @tool("Route to Inventory Agent")
 def route_to_inventory(customer_request: str) -> str:
     """
@@ -108,21 +128,22 @@ def route_to_inventory(customer_request: str) -> str:
         print(f"\n✅ [INVENTORY] Inventory processing complete!")
         print("="*70 + "\n")
         
-        return str(result)
+        return _structured_success(str(result))
         
     except ImportError as e:
         # Couldn't find the inventory agent modules
-        return (
-            f"⚠️  Oops! I couldn't find the Inventory Agent modules. "
-            f"This usually means the 'Inventory agent' folder is missing or not set up correctly. "
-            f"Error details: {str(e)}"
+        return _structured_error(
+            "dependency_missing",
+            str(e),
+            retryable=False,
+            user_message="Inventory service is temporarily unavailable. Please try again later.",
         )
     except Exception as e:
-        # Something unexpected went wrong
-        return (
-            f"❌ Hmm, we ran into an issue while routing to the Inventory Agent. "
-            f"The agent might be busy or there could be a configuration problem. "
-            f"Here's what happened: {str(e)}"
+        return _structured_error(
+            "inventory_error",
+            str(e),
+            retryable=True,
+            user_message="We hit a snag while checking inventory. I'm retrying, or I can connect you to support.",
         )
 
 
@@ -197,18 +218,21 @@ def route_to_fulfillment(customer_request: str) -> str:
         print(f"\n✅ [FULFILLMENT] Fulfillment processing complete!")
         print("="*70 + "\n")
         
-        return str(result)
+        return _structured_success(str(result))
         
     except ImportError as e:
-        return (
-            f"⚠️  Couldn't find the Fulfillment Agent. "
-            f"Make sure the 'Fullfillment_agent' folder exists and is properly set up. "
-            f"Error: {str(e)}"
+        return _structured_error(
+            "dependency_missing",
+            str(e),
+            retryable=False,
+            user_message="Fulfillment service is unavailable. We can confirm your order once it is back.",
         )
     except Exception as e:
-        return (
-            f"❌ Something went wrong while contacting the Fulfillment Agent. "
-            f"They might be experiencing issues. Error: {str(e)}"
+        return _structured_error(
+            "fulfillment_error",
+            str(e),
+            retryable=True,
+            user_message="There was an issue scheduling fulfillment. I can retry or follow up later.",
         )
 
 
@@ -282,19 +306,21 @@ def route_to_payment(customer_request: str) -> str:
         print(f"\n✅ [PAYMENT] Payment processing complete!")
         print("="*70 + "\n")
         
-        return str(result)
+        return _structured_success(str(result))
         
     except ImportError as e:
-        return (
-            f"⚠️  Payment Agent modules not found. "
-            f"Please check that the 'payment_agent' folder is set up correctly. "
-            f"Error: {str(e)}"
+        return _structured_error(
+            "dependency_missing",
+            str(e),
+            retryable=False,
+            user_message="Payment service is not available. Please try another method later.",
         )
     except Exception as e:
-        return (
-            f"❌ Payment processing encountered an issue. "
-            f"This could be a configuration problem or the payment system might be unavailable. "
-            f"Error: {str(e)}"
+        return _structured_error(
+            "payment_error",
+            str(e),
+            retryable=True,
+            user_message="We couldn't complete the payment. I can retry or use a different method.",
         )
 
 
@@ -363,19 +389,21 @@ def route_to_loyalty(customer_request: str) -> str:
         
         # Calculate those savings!
         result = loyalty_crew.kickoff()
-        return str(result)
+        return _structured_success(str(result))
         
     except ImportError as e:
-        return (
-            f"⚠️  Loyalty Agent not found. "
-            f"Check that the 'loyalty and offers agent' folder exists and is configured. "
-            f"Error: {str(e)}"
+        return _structured_error(
+            "dependency_missing",
+            str(e),
+            retryable=False,
+            user_message="Loyalty pricing is unavailable right now. We'll proceed with standard pricing.",
         )
     except Exception as e:
-        return (
-            f"❌ Couldn't process loyalty/pricing request. "
-            f"The loyalty system might be experiencing issues. "
-            f"Error: {str(e)}"
+        return _structured_error(
+            "loyalty_error",
+            str(e),
+            retryable=True,
+            user_message="We couldn't apply loyalty benefits. I can retry or continue without them.",
         )
 
 
@@ -464,19 +492,21 @@ def route_to_support(customer_request: str) -> str:
         print(f"\n✅ [SUPPORT] Support processing complete!")
         print("="*70 + "\n")
         
-        return str(result)
+        return _structured_success(str(result))
         
     except ImportError as e:
-        return (
-            f"⚠️  Support Agent modules not found. "
-            f"Please verify the 'post purchase support agent' folder is set up. "
-            f"Error: {str(e)}"
+        return _structured_error(
+            "dependency_missing",
+            str(e),
+            retryable=False,
+            user_message="Support service is temporarily unavailable. We can follow up later.",
         )
     except Exception as e:
-        return (
-            f"❌ Support request couldn't be processed. "
-            f"The support system might be unavailable or misconfigured. "
-            f"Error: {str(e)}"
+        return _structured_error(
+            "support_error",
+            str(e),
+            retryable=True,
+            user_message="Support couldn't complete your request right now. I can retry or escalate.",
         )
 
 
@@ -555,23 +585,25 @@ def route_to_recommendation(customer_request: str, user_id: str = "default_user"
         print(f"   - Results received: {len(str(result))} characters")
         print("="*70 + "\n")
         
-        return str(result)
+        return _structured_success(str(result))
         
     except ImportError as e:
         print(f"\n❌ [RECOMMENDATION] Import error: {str(e)}")
         print("="*70 + "\n")
-        return (
-            f"⚠️  Recommendation Agent modules not found. "
-            f"Please verify the 'Recommendation agent' folder is set up. "
-            f"Error: {str(e)}"
+        return _structured_error(
+            "dependency_missing",
+            str(e),
+            retryable=False,
+            user_message="Recommendations are unavailable at the moment. We can browse manually.",
         )
     except Exception as e:
         print(f"\n❌ [RECOMMENDATION] Processing error: {str(e)}")
         print("="*70 + "\n")
-        return (
-            f"❌ Recommendation request couldn't be processed. "
-            f"The recommendation system might be unavailable or misconfigured. "
-            f"Error: {str(e)}"
+        return _structured_error(
+            "recommendation_error",
+            str(e),
+            retryable=True,
+            user_message="We couldn't fetch recommendations right now. I can retry.",
         )
 
 
@@ -633,19 +665,21 @@ def route_to_recommendation_v2(customer_request: str, user_id: str = "default_us
         
         # Process the recommendation request! 🎯
         result = recommendation_crew.kickoff()
-        return str(result)
+        return _structured_success(str(result))
         
     except ImportError as e:
-        return (
-            f"⚠️  Recommendation Agent 2 modules not found. "
-            f"Please verify the 'recommendation agent 2' folder is set up. "
-            f"Error: {str(e)}"
+        return _structured_error(
+            "dependency_missing",
+            str(e),
+            retryable=False,
+            user_message="Advanced recommendations are unavailable. I can use basic suggestions.",
         )
     except Exception as e:
-        return (
-            f"❌ Recommendation request couldn't be processed. "
-            f"The recommendation system might be unavailable or misconfigured. "
-            f"Error: {str(e)}"
+        return _structured_error(
+            "recommendation_error",
+            str(e),
+            retryable=True,
+            user_message="We couldn't fetch recommendations right now. I can retry.",
         )
 
 
