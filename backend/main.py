@@ -14,22 +14,42 @@ import random
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
 
-from resilience.storage import FileBackedStore
-from resilience.transactions import TransactionManager, TransactionState
-from resilience.inventory import InventoryManager
-from resilience.payments import PaymentGateway
-from resilience.sessions import SessionManager
-from resilience.orders import OrderManager
-from resilience.queue import OperationQueue
-from resilience.customers import CustomerIdentityResolver
-from resilience.logging import log_event
-from resilience.circuit_breaker import CircuitBreaker
+try:
+    from risk_engine.storage import FileBackedStore
+    from risk_engine.transactions import TransactionManager, TransactionState
+    from risk_engine.inventory import InventoryManager
+    from risk_engine.payments import PaymentGateway
+    from risk_engine.sessions import SessionManager
+    from risk_engine.orders import OrderManager
+    from risk_engine.queue import OperationQueue
+    from risk_engine.customers import CustomerIdentityResolver
+    from risk_engine.logging import log_event
+    from risk_engine.circuit_breaker import CircuitBreaker
+except ImportError:
+    from resilience.storage import FileBackedStore
+    from resilience.transactions import TransactionManager, TransactionState
+    from resilience.inventory import InventoryManager
+    from resilience.payments import PaymentGateway
+    from resilience.sessions import SessionManager
+    from resilience.orders import OrderManager
+    from resilience.queue import OperationQueue
+    from resilience.customers import CustomerIdentityResolver
+    from resilience.logging import log_event
+    from resilience.circuit_breaker import CircuitBreaker
 
 # Load environment variables from .env file
 load_dotenv()
 
 DEMO_MODE = os.getenv("DEMO_MODE", "True").lower() == "true"
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+_BACKEND_DIR = os.path.dirname(os.path.abspath(__file__))
+_REPO_ROOT = os.path.dirname(_BACKEND_DIR)
+sys.path.insert(0, _REPO_ROOT)
+# Prefer new structure: agentic-core/risk_engine over legacy resilience
+_agentic_core = os.path.join(_BACKEND_DIR, "agentic-core")
+if os.path.isdir(_agentic_core):
+    sys.path.insert(0, _agentic_core)
+# Legacy resilience (when risk_engine not used)
+sys.path.insert(0, _BACKEND_DIR)
 
 # Get frontend URL from environment variable
 # Supports single URL or comma-separated list
@@ -1920,33 +1940,45 @@ async def get_stock(sku: str):
 
 
 # ============================================================================
-# WhatsApp Integration
+# WhatsApp Integration (backend/integrations/whatsapp or legacy whatsapp_integration)
 # ============================================================================
 try:
-    # Add WhatsApp integration directory to path
-    whatsapp_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "whatsapp_integration")
-    if whatsapp_path not in sys.path:
-        sys.path.insert(0, whatsapp_path)
-    
-    # Import WhatsApp webhook router
-    from whatsapp_integration.webhook import app as whatsapp_app
-    from whatsapp_integration.main import initialize_whatsapp_integration
-    
-    # Mount WhatsApp webhook endpoints
+    _integrations = os.path.join(_BACKEND_DIR, "integrations")
+    _whatsapp_path = os.path.join(_integrations, "whatsapp")
+    _legacy_whatsapp = os.path.join(_REPO_ROOT, "whatsapp_integration")
+    if os.path.isdir(_whatsapp_path) and _integrations not in sys.path:
+        sys.path.insert(0, _integrations)
+        _use_whatsapp_path = _whatsapp_path
+    elif os.path.isdir(_legacy_whatsapp):
+        if _legacy_whatsapp not in sys.path:
+            sys.path.insert(0, _legacy_whatsapp)
+        _use_whatsapp_path = _legacy_whatsapp
+    else:
+        raise ImportError("No WhatsApp integration found")
+    # Import webhook app (package name is whatsapp when from integrations/)
+    from whatsapp.webhook import app as whatsapp_app
+    from whatsapp.main import initialize_whatsapp_integration
     app.mount("/whatsapp", whatsapp_app)
-    
-    # Initialize WhatsApp integration database tables
     try:
         initialize_whatsapp_integration()
     except Exception as e:
         print(f"⚠️  Warning: Could not initialize WhatsApp integration: {e}")
-        print("   WhatsApp endpoints will still be available but may not work correctly.")
-    
     print("✅ WhatsApp integration loaded")
 except ImportError as e:
-    print(f"⚠️  Warning: WhatsApp integration not available: {e}")
+    try:
+        sys.path.insert(0, os.path.join(_REPO_ROOT, "whatsapp_integration"))
+        from whatsapp_integration.webhook import app as whatsapp_app
+        from whatsapp_integration.main import initialize_whatsapp_integration
+        app.mount("/whatsapp", whatsapp_app)
+        try:
+            initialize_whatsapp_integration()
+        except Exception as e2:
+            print(f"⚠️  Warning: Could not initialize WhatsApp integration: {e2}")
+        print("✅ WhatsApp integration loaded (legacy)")
+    except Exception as e2:
+        print(f"⚠️  WhatsApp integration not available: {e2}")
 except Exception as e:
-    print(f"⚠️  Warning: Error loading WhatsApp integration: {e}")
+    print(f"⚠️  Error loading WhatsApp integration: {e}")
 
 
 if __name__ == "__main__":
