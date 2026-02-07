@@ -3,7 +3,7 @@ FastAPI Backend Server
 """
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import Optional, List, Dict, Any
 import sys
 import os
@@ -153,6 +153,18 @@ class AgentResponse(BaseModel):
     success: bool
     response: str
     agent_used: Optional[str] = None
+
+
+# Copilot Studio (Microsoft) webhook payload
+class CopilotStudioRequest(BaseModel):
+    message: str = Field(..., description="User message from Copilot Studio")
+    userId: Optional[str] = Field("default_user", description="User/conversation ID")
+    conversationId: Optional[str] = None
+
+
+class CopilotStudioResponse(BaseModel):
+    reply: str = Field(..., description="Reply to send back to Copilot Studio")
+
 
 class SizeRecommendationRequest(BaseModel):
     product_id: str
@@ -1937,6 +1949,23 @@ async def get_stock(sku: str):
             status_code=500,
             detail=f"Error fetching stock: {str(e)}"
         )
+
+
+# ============================================================================
+# Copilot Studio (Microsoft) webhook - agentic backend for Copilot Studio bots
+# ============================================================================
+@app.post("/copilot-studio/webhook", response_model=CopilotStudioResponse)
+async def copilot_studio_webhook(request: CopilotStudioRequest):
+    """Webhook for Microsoft Copilot Studio: forwards message to orchestrator and returns reply."""
+    try:
+        _orch_path = os.path.join(_REPO_ROOT, "Orchestrator")
+        if _orch_path not in sys.path:
+            sys.path.insert(0, _orch_path)
+        from Orchestrator.main import handle_custom_request
+        response = handle_custom_request(request.message)
+        return CopilotStudioResponse(reply=str(response))
+    except Exception as e:
+        return CopilotStudioResponse(reply=f"Sorry, I couldn't process that: {str(e)[:200]}")
 
 
 # ============================================================================

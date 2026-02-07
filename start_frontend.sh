@@ -5,7 +5,7 @@
 echo "🎨 Starting Proteus Frontend..."
 echo ""
 
-cd "Proteus_EY/frontend"
+cd "frontend/frontend"
 
 # Check if node_modules exists
 if [ ! -d "node_modules" ]; then

@@ -382,32 +382,50 @@ class WhatsAppDatabase:
 
 
 # Global database instance
-# Try to use PostgreSQL, fallback to in-memory if not available
+# Priority: Redis (if REDIS_URL) -> PostgreSQL -> in-memory
 db = None
 
-try:
-    # Try to create PostgreSQL connection
-    test_db = WhatsAppDatabase()
-    # Test connection (quick test)
+# 1) Try Redis when REDIS_URL or REDIS_HOST is set
+if os.getenv("REDIS_URL") or os.getenv("REDIS_HOST"):
     try:
-        with test_db.get_connection():
+        from whatsapp_integration.redis_store import WhatsAppRedisStore
+        _pg_for_customer_lookup = None
+        try:
+            _pg = WhatsAppDatabase()
+            with _pg.get_connection():
+                pass
+            _pg_for_customer_lookup = _pg
+        except Exception:
             pass
-        db = test_db
-        logger.info("✅ Using PostgreSQL database")
-    except Exception as conn_error:
-        # Connection failed, use in-memory
-        raise conn_error
-except Exception as e:
-    # Fallback to in-memory database
-    logger.warning(f"⚠️  PostgreSQL not available ({str(e)[:100]}), using in-memory database")
+        db = WhatsAppRedisStore(fallback_db=_pg_for_customer_lookup)
+        logger.info("✅ Using Redis-backed session/OTP store")
+    except Exception as redis_err:
+        logger.warning(f"⚠️  Redis not available ({str(redis_err)[:80]}), trying PostgreSQL")
+        db = None
+
+# 2) Try PostgreSQL if Redis not used
+if db is None:
+    try:
+        test_db = WhatsAppDatabase()
+        try:
+            with test_db.get_connection():
+                pass
+            db = test_db
+            logger.info("✅ Using PostgreSQL database")
+        except Exception as conn_error:
+            raise conn_error
+    except Exception as e:
+        logger.warning(f"⚠️  PostgreSQL not available ({str(e)[:100]}), using in-memory database")
+        db = None
+
+# 3) Fallback to in-memory
+if db is None:
     try:
         from whatsapp_integration.database_memory import WhatsAppDatabaseMemory
         db = WhatsAppDatabaseMemory()
-        logger.info("✅ Using in-memory database (no PostgreSQL required)")
+        logger.info("✅ Using in-memory database (no PostgreSQL/Redis required)")
     except ImportError as import_error:
-        # If memory module doesn't exist, create a simple fallback
         logger.error(f"❌ Could not load in-memory database fallback: {import_error}")
-        # Create a minimal fallback
         class MinimalDB:
             def initialize_tables(self): return True
             def get_session(self, *args): return None

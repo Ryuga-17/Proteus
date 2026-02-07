@@ -59,36 +59,61 @@ except:
 
 google_api_key = os.getenv("GOOGLE_API_KEY") or os.environ.get("GOOGLE_API_KEY")
 openai_api_key = os.getenv("OPENAI_API_KEY") or os.environ.get("OPENAI_API_KEY")
+# Azure OpenAI (optional): AZURE_OPENAI_API_KEY, AZURE_OPENAI_ENDPOINT, AZURE_OPENAI_DEPLOYMENT
+azure_api_key = os.getenv("AZURE_OPENAI_API_KEY") or os.environ.get("AZURE_OPENAI_API_KEY")
+azure_base = os.getenv("AZURE_OPENAI_ENDPOINT") or os.environ.get("AZURE_OPENAI_BASE") or os.getenv("AZURE_API_BASE")
+azure_deployment = os.getenv("AZURE_OPENAI_DEPLOYMENT", "gpt-35-turbo")
 
 # Initialize llm variable
 llm = None
 
-# Use OpenAI as primary LLM (Google API key is invalid)
-# Initialize LLM with OpenAI
-if openai_api_key:
+# 1) Prefer Azure OpenAI when configured (for Copilot Studio / Azure AI alignment)
+if azure_api_key and azure_base:
+    try:
+        # CrewAI/LangChain: base_url + api_key for Azure OpenAI
+        base = azure_base.rstrip("/")
+        if "/deployments/" not in base:
+            base = base + "/openai/deployments/" + azure_deployment
+        llm = LLM(model=azure_deployment, api_key=azure_api_key, base_url=base)
+        import sys
+        print("Using Azure OpenAI for Orchestrator", file=sys.stderr)
+    except TypeError:
+        # Older CrewAI may not have base_url; try openai_api_base
+        try:
+            llm = LLM(model=azure_deployment, api_key=azure_api_key, openai_api_base=azure_base)
+            import sys
+            print("Using Azure OpenAI for Orchestrator (openai_api_base)", file=sys.stderr)
+        except Exception as e:
+            import sys
+            print(f"Azure OpenAI fallback failed: {e}", file=sys.stderr)
+            llm = None
+    except Exception as e:
+        import sys
+        print(f"Azure OpenAI initialization failed: {e}", file=sys.stderr)
+        llm = None
+
+# 2) Use OpenAI when Azure not set or failed
+if llm is None and openai_api_key:
     try:
         llm = LLM(
             model="gpt-3.5-turbo",
             api_key=openai_api_key
         )
-        # Verify it was created
         if llm is None:
             import sys
             print("ERROR: LLM object is None after creation!", file=sys.stderr)
     except Exception as e:
-        # OpenAI initialization failed - log it
         import sys
         print(f"ERROR: OpenAI LLM initialization failed: {e}", file=sys.stderr)
         import traceback
         traceback.print_exc(file=sys.stderr)
         llm = None
-else:
+elif llm is None:
     import sys
     print("ERROR: openai_api_key is None!", file=sys.stderr)
 
 # Final check - ensure we have an LLM before creating Agent
 if llm is None:
-    # One final attempt with explicit key retrieval
     try:
         from dotenv import load_dotenv
         load_dotenv(override=True)
@@ -98,11 +123,10 @@ if llm is None:
     except Exception as e:
         import sys
         print(f"Final OpenAI attempt failed: {e}", file=sys.stderr)
-    
+
     if llm is None:
         raise ValueError(
-            "Orchestrator requires an LLM. Please set OPENAI_API_KEY in .env file.\n"
-            f"Current status: OpenAI key is {'SET' if openai_api_key else 'NOT SET'}"
+            "Orchestrator requires an LLM. Set OPENAI_API_KEY or AZURE_OPENAI_API_KEY + AZURE_OPENAI_ENDPOINT in .env"
         )
 
 # Debug: Print llm status before Agent creation

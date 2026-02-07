@@ -1,3 +1,0 @@
-crewai
-crewai[tools]
-langchain_community

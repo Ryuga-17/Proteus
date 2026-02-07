@@ -106,7 +106,7 @@ def get_db_cursor():
 
 ### Example: Inventory Tools with Database
 
-Replace `Inventory agent/inventory_tools.py` MockDB with:
+Replace `backend/agentic-core/worker_agents/inventory/inventory_tools.py` MockDB with:
 
 ```python
 from database.db_session import SessionLocal

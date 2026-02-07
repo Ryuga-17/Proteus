@@ -14,9 +14,11 @@ from crewai.llm import LLM
 import sys
 import os
 
-# Add Orchestrator to path for inter-agent communication
-base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, os.path.join(base_dir, 'Orchestrator'))
+# Add master_agent (orchestrator) to path for inter-agent communication
+_agentic_core = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+_master = os.path.join(_agentic_core, 'master_agent')
+if _master not in sys.path:
+    sys.path.insert(0, _master)
 
 from tools import book_shipment, reserve_in_store, notify_staff
 

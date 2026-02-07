@@ -1,0 +1,8 @@
+# Keep Vercel CLI upload small – only upload source, not build artifacts or deps
+node_modules
+dist
+.git
+*.log
+.env.local
+.env.*.local
+.DS_Store

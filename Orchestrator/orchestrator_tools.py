@@ -18,17 +18,12 @@ import os
 import json
 from typing import Dict, Any, Optional
 
-# First, we need to make sure Python can find all our agent modules
-# We add each agent's directory to the Python path so we can import them
-base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, os.path.join(base_dir, 'Inventory agent'))
-sys.path.insert(0, os.path.join(base_dir, 'Fullfillment_agent'))
-sys.path.insert(0, os.path.join(base_dir, 'payment_agent'))
-sys.path.insert(0, os.path.join(base_dir, 'loyalty and offers agent'))
-sys.path.insert(0, os.path.join(base_dir, 'post purchase support agent'))
-sys.path.insert(0, os.path.join(base_dir, 'Recommendation agent'))
-sys.path.insert(0, os.path.join(base_dir, 'recommendation agent 2'))
-# Note: Orchestrator directory is already in path since we're running from it
+# Agent paths: use backend/agentic-core/worker_agents for the five worker agents,
+# and repo root for Recommendation agents. Paths are added per-route so imports resolve correctly.
+_base_file = os.path.abspath(__file__)
+base_dir = os.path.dirname(os.path.dirname(_base_file))  # repo root when run from Orchestrator/
+_repo_root = base_dir
+_workers = os.path.join(base_dir, 'backend', 'agentic-core', 'worker_agents')
 
 from crewai.tools import tool
 
@@ -85,6 +80,9 @@ def route_to_inventory(customer_request: str) -> str:
     print("="*70 + "\n")
     
     try:
+        _inv_path = os.path.join(_workers, 'inventory')
+        if _inv_path not in sys.path:
+            sys.path.insert(0, _inv_path)
         from crewai import Crew, Process
         from inventory_agents import (
             inventory_orchestrator_agent,
@@ -182,6 +180,9 @@ def route_to_fulfillment(customer_request: str) -> str:
     print("="*70 + "\n")
     
     try:
+        _ful_path = os.path.join(_workers, 'fulfillment')
+        if _ful_path not in sys.path:
+            sys.path.insert(0, _ful_path)
         from crewai import Crew, Process
         from agents import fulfillment_agent
         from crewai import Task
@@ -269,9 +270,16 @@ def route_to_payment(customer_request: str) -> str:
     print("="*70 + "\n")
     
     try:
+        _pay_path = os.path.join(_workers, 'payment')
+        _loy_path = os.path.join(_workers, 'loyalty')
+        if _pay_path not in sys.path:
+            sys.path.insert(0, _pay_path)
         from crewai import Crew, Process
         from crewai import Task
-        from agents import sales_agent, payment_agent, loyalty_agent
+        from agents import sales_agent, payment_agent
+        if _loy_path not in sys.path:
+            sys.path.insert(0, _loy_path)
+        from agents import loyalty_agent
         
         print(f"🔧 [PAYMENT] Setting up payment crew...")
         print(f"   - Agents: Sales (coordinator), Payment, Loyalty")
@@ -351,16 +359,11 @@ def route_to_loyalty(customer_request: str) -> str:
         >>> print(result)  # Shows detailed price breakdown
     """
     try:
+        _loy_path = os.path.join(_workers, 'loyalty')
+        if _loy_path not in sys.path:
+            sys.path.insert(0, _loy_path)
         from crewai import Crew, Process
         from crewai import Task
-        
-        # Import from the 'loyalty and offers agent' folder
-        # Note: We need to import from the correct directory
-        import sys
-        loyalty_agent_dir = os.path.join(base_dir, 'loyalty and offers agent')
-        if loyalty_agent_dir not in sys.path:
-            sys.path.insert(0, loyalty_agent_dir)
-        
         from agents import sales_agent, loyalty_agent
         
         # Create the loyalty/pricing task
@@ -443,6 +446,9 @@ def route_to_support(customer_request: str) -> str:
     print("="*70 + "\n")
     
     try:
+        _sup_path = os.path.join(_workers, 'support')
+        if _sup_path not in sys.path:
+            sys.path.insert(0, _sup_path)
         from crewai import Crew, Process
         from agents import post_purchase_agent
         from crewai import Task
@@ -547,6 +553,9 @@ def route_to_recommendation(customer_request: str, user_id: str = "default_user"
     print("="*70 + "\n")
     
     try:
+        _rec_path = os.path.join(_repo_root, 'Recommendation agent')
+        if _rec_path not in sys.path:
+            sys.path.insert(0, _rec_path)
         from crewai import Crew, Process
         from agents import recommendation_agent
         from crewai import Task
@@ -636,6 +645,9 @@ def route_to_recommendation_v2(customer_request: str, user_id: str = "default_us
         >>> print(result)  # Shows ranked recommendations
     """
     try:
+        _rec2_path = os.path.join(_repo_root, 'recommendation agent 2')
+        if _rec2_path not in sys.path:
+            sys.path.insert(0, _rec2_path)
         from crewai import Crew, Process
         from agents import recommendation_agent_2
         from crewai import Task
