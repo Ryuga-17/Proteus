@@ -86,50 +86,46 @@ const Header = () => {
 
         {/* Desktop Header */}
         <div className="hidden lg:block">
-          {/* Logo */}
-          <div className="flex justify-center mb-3">
+          <div className="flex items-center justify-between gap-8">
+            {/* Left: Logo (same color theme as before) */}
             <Link to="/" className="group">
-              <h1 className="font-kurale text-4xl tracking-wide text-[#B55A00] transition-colors group-hover:text-primary">
+              <h1 className="font-kurale text-3xl tracking-wide text-[#B55A00] transition-colors group-hover:text-primary">
                 Proteus
               </h1>
             </Link>
-          </div>
 
-          {/* Navigation */}
-          <nav className="flex items-center justify-between">
-            <ul className="flex items-center gap-8">
-              {navLinks.map((link) => (
-                <li key={link.name}>
-                  <Link
-                    to={link.path}
-                    className={cn(
-                      "font-sans text-sm tracking-widest transition-all duration-300 relative py-1",
-                      location.pathname === link.path
-                        ? "text-[#b55a00] font-medium"
-                        : "text-muted-[#b55a00] hover:text-foreground"
-                    )}
-                  >
-                    {link.name}
-                    <span
-                      className={cn(
-                        "absolute bottom-0 left-0 h-0.5 bg-[#b55a00] transition-all duration-300",
-                        location.pathname === link.path ? "w-full" : "w-0 group-hover:w-full"
-                      )}
-                    />
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            {/* Center: Nav, now arranged in one line */}
+            <nav className="flex-1 flex justify-center">
+              <ul className="flex items-center gap-6">
+                {navLinks.map((link) => {
+                  const active = location.pathname === link.path;
+                  return (
+                    <li key={link.name}>
+                      <Link
+                        to={link.path}
+                        className={cn(
+                          "font-sans text-sm tracking-widest px-4 py-1 rounded-full transition-all",
+                          active
+                            ? "bg-[#F7E1BE] text-[#B55A00] shadow-sm"
+                            : "text-muted-foreground hover:text-foreground hover:bg-white/60"
+                        )}
+                      >
+                        {link.name}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </nav>
 
-            {/* Right side icons */}
-            <div className="flex items-center gap-4">
-              <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground">
-                <Search className="h-5 w-5" />
-              </Button>
-              <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground">
-                <User className="h-5 w-5" />
-              </Button>
-              <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground relative" asChild>
+            {/* Right: Cart + Auth buttons, using existing light theme */}
+            <div className="flex items-center gap-3">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-muted-foreground hover:text-foreground relative"
+                asChild
+              >
                 <Link to="/cart">
                   <ShoppingBag className="h-5 w-5" />
                   {itemCount > 0 && (
@@ -139,8 +135,17 @@ const Header = () => {
                   )}
                 </Link>
               </Button>
+              <Button
+                variant="outline"
+                className="rounded-full px-5"
+              >
+                Login
+              </Button>
+              <Button className="rounded-full px-5">
+                Sign up
+              </Button>
             </div>
-          </nav>
+          </div>
         </div>
       </div>
     </header>
