@@ -1,0 +1,28 @@
+# ABFRL Agentic Commerce - Backend API
+# Build from repo root: docker build -f infra/docker/Dockerfile.backend -t abfrl-backend .
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# System deps
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY backend/requirements.txt backend/
+COPY backend/main.py backend/
+COPY backend/data backend/data
+COPY backend/resilience backend/resilience
+COPY backend/agentic-core backend/agentic-core
+COPY backend/integrations backend/integrations
+
+RUN pip install --no-cache-dir -r backend/requirements.txt
+RUN pip install --no-cache-dir -r backend/integrations/whatsapp/requirements.txt 2>/dev/null || true
+
+ENV PYTHONPATH=/app
+ENV PYTHONUNBUFFERED=1
+
+EXPOSE 8000
+
+WORKDIR /app/backend
+CMD ["python", "main.py"]
