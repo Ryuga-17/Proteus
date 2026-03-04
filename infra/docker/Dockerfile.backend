@@ -9,19 +9,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-# Repo layout: backend, Orchestrator, whatsapp_integration, agents at root
 COPY backend/requirements.txt backend/
 COPY backend/main.py backend/
 COPY backend/data backend/data
 COPY backend/resilience backend/resilience
 COPY backend/agentic-core backend/agentic-core
 COPY backend/integrations backend/integrations
-COPY Orchestrator /app/Orchestrator
-COPY whatsapp_integration /app/whatsapp_integration
-
-# Agents used at runtime by main.py
-COPY "Recommendation agent" "/app/Recommendation agent"
-COPY "recommendation agent 2" "/app/recommendation agent 2"
 
 RUN pip install --no-cache-dir -r backend/requirements.txt
 RUN pip install --no-cache-dir -r backend/integrations/whatsapp/requirements.txt 2>/dev/null || true

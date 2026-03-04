@@ -41,22 +41,16 @@ except ImportError:
 load_dotenv()
 
 DEMO_MODE = os.getenv("DEMO_MODE", "True").lower() == "true"
-_BACKEND_DIR = os.path.dirname(os.path.abspath(__file__))
+_THIS_DIR = os.path.dirname(os.path.abspath(__file__))
+_BACKEND_DIR = os.path.dirname(_THIS_DIR) if os.path.basename(_THIS_DIR) == "api-gateway" else _THIS_DIR
 _REPO_ROOT = os.path.dirname(_BACKEND_DIR)
-
-# Ensure repo root and backend are on path
-if _REPO_ROOT not in sys.path:
-    sys.path.insert(0, _REPO_ROOT)
-if _BACKEND_DIR not in sys.path:
-    sys.path.insert(0, _BACKEND_DIR)
-
-# Prefer new structure: agentic-core (risk_engine, orchestration, worker agents)
-_AGENTIC_CORE_DIR = os.path.join(_BACKEND_DIR, "agentic-core")
-_WORKER_AGENTS_DIR = os.path.join(_AGENTIC_CORE_DIR, "worker_agents")
-_RECOMMENDATION_AGENT2_DIR = os.path.join(_WORKER_AGENTS_DIR, "recommendation_agent2")
-
-if os.path.isdir(_AGENTIC_CORE_DIR) and _AGENTIC_CORE_DIR not in sys.path:
-    sys.path.insert(0, _AGENTIC_CORE_DIR)
+_RECOMMENDATION_PATH = os.path.join(_BACKEND_DIR, "agentic-core", "worker_agents", "recommendation_agent2")
+_ORCHESTRATION_PATH = os.path.join(_BACKEND_DIR, "agentic-core", "orchestration")
+sys.path.insert(0, _REPO_ROOT)
+_agentic_core = os.path.join(_BACKEND_DIR, "agentic-core")
+if os.path.isdir(_agentic_core):
+    sys.path.insert(0, _agentic_core)
+sys.path.insert(0, _BACKEND_DIR)
 
 # Get frontend URL from environment variable
 # Supports single URL or comma-separated list
@@ -954,9 +948,8 @@ async def voice_recommendations(request: VoiceQueryRequest):
                 message=f"Found {len(formatted_results)} recommendations"
             )
         else:
-            print("🔧 Processing with Recommendation Agent 2 (worker agent)...")
-            if os.path.isdir(_RECOMMENDATION_AGENT2_DIR) and _RECOMMENDATION_AGENT2_DIR not in sys.path:
-                sys.path.insert(0, _RECOMMENDATION_AGENT2_DIR)
+            print("🔧 Processing with Recommendation Agent 2...")
+            sys.path.insert(0, _RECOMMENDATION_PATH)
             from voice_processor_v2 import process_voice_query_v2
             
             print(f"🔍 Starting voice query processing...")
@@ -1045,7 +1038,8 @@ async def agent_query(request: AgentRequest):
         # Try using MCP client if enabled
         if use_mcp and not DEMO_MODE:
             try:
-                from orchestration.mcp_client import SimpleOrchestratorClient
+                sys.path.insert(0, _ORCHESTRATION_PATH)
+                from mcp_client import SimpleOrchestratorClient
                 
                 print("🔌 Using MCP client for request handling...")
                 client = SimpleOrchestratorClient()
@@ -1184,7 +1178,8 @@ async def agent_query(request: AgentRequest):
             # Try using MCP client if enabled
             if use_mcp:
                 try:
-                    from orchestration.mcp_client import SimpleOrchestratorClient
+                    sys.path.insert(0, _ORCHESTRATION_PATH)
+                    from mcp_client import SimpleOrchestratorClient
                     
                     print("🔌 Using MCP client for request handling...")
                     client = SimpleOrchestratorClient()
@@ -1213,9 +1208,11 @@ async def agent_query(request: AgentRequest):
                 except Exception as e:
                     print(f"⚠️  MCP client error, falling back to standard orchestrator: {e}")
             
-            print("🔧 Processing with Orchestrator (agentic-core/orchestration)...")
+            print("🔧 Processing with Orchestrator...")
             print(f"🔍 Analyzing request: '{request.request}'")
-            from orchestration.main import handle_custom_request
+            
+            sys.path.insert(0, _ORCHESTRATION_PATH)
+            from main import handle_custom_request
             
             print(f"🚀 Calling orchestrator...")
             response = handle_custom_request(request.request)
@@ -1307,8 +1304,7 @@ async def get_products(
             return {"products": products[:limit]}
         
         if search:
-            if os.path.isdir(_RECOMMENDATION_AGENT2_DIR) and _RECOMMENDATION_AGENT2_DIR not in sys.path:
-                sys.path.insert(0, _RECOMMENDATION_AGENT2_DIR)
+            sys.path.insert(0, _RECOMMENDATION_PATH)
             from voice_processor_v2 import process_voice_query_v2
             
             results = await process_voice_query_v2(
@@ -1337,7 +1333,7 @@ async def get_products(
             return {"products": products[:limit]}
         
         import json
-        product_file = os.path.join(_RECOMMENDATION_AGENT2_DIR, "product.json")
+        product_file = os.path.join(_RECOMMENDATION_PATH, "product.json")
         
         if os.path.exists(product_file):
             with open(product_file, 'r') as f:
@@ -1382,7 +1378,7 @@ async def get_products(
 async def get_product(product_id: str):
     try:
         import json
-        product_file = os.path.join(_RECOMMENDATION_AGENT2_DIR, "product.json")
+        product_file = os.path.join(_RECOMMENDATION_PATH, "product.json")
         
         if os.path.exists(product_file):
             with open(product_file, 'r') as f:
@@ -1429,7 +1425,7 @@ async def get_product(product_id: str):
 async def get_categories():
     try:
         import json
-        product_file = os.path.join(_RECOMMENDATION_AGENT2_DIR, "product.json")
+        product_file = os.path.join(_RECOMMENDATION_PATH, "product.json")
         
         if os.path.exists(product_file):
             with open(product_file, 'r') as f:
@@ -1952,7 +1948,9 @@ async def get_stock(sku: str):
 async def copilot_studio_webhook(request: CopilotStudioRequest):
     """Webhook for Microsoft Copilot Studio: forwards message to orchestrator and returns reply."""
     try:
-        from orchestration.main import handle_custom_request
+        if _ORCHESTRATION_PATH not in sys.path:
+            sys.path.insert(0, _ORCHESTRATION_PATH)
+        from main import handle_custom_request
         response = handle_custom_request(request.message)
         return CopilotStudioResponse(reply=str(response))
     except Exception as e:
@@ -1960,14 +1958,12 @@ async def copilot_studio_webhook(request: CopilotStudioRequest):
 
 
 # ============================================================================
-# WhatsApp Integration (backend/integrations/whatsapp only)
+# WhatsApp Integration (backend/integrations/whatsapp)
 # ============================================================================
 try:
     _integrations = os.path.join(_BACKEND_DIR, "integrations")
     _whatsapp_path = os.path.join(_integrations, "whatsapp")
-    if not os.path.isdir(_whatsapp_path):
-        raise ImportError("No WhatsApp integration found")
-    if _integrations not in sys.path:
+    if os.path.isdir(_whatsapp_path) and _integrations not in sys.path:
         sys.path.insert(0, _integrations)
     from whatsapp.webhook import app as whatsapp_app
     from whatsapp.main import initialize_whatsapp_integration
@@ -1977,8 +1973,10 @@ try:
     except Exception as e:
         print(f"⚠️  Warning: Could not initialize WhatsApp integration: {e}")
     print("✅ WhatsApp integration loaded")
-except Exception as e:
+except ImportError as e:
     print(f"⚠️  WhatsApp integration not available: {e}")
+except Exception as e:
+    print(f"⚠️  Error loading WhatsApp integration: {e}")
 
 
 if __name__ == "__main__":

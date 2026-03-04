@@ -1,0 +1,538 @@
+[
+  {
+    "customer_id": "CUST001",
+    "customer_name": "Emily Thompson",
+    "past_purchases": ["PROD101", "PROD205", "PROD308", "PROD412", "PROD520"],
+    "user_interactions": [
+      {"product_id": "PROD101", "review": "Absolutely love this dress! Perfect fit and amazing quality."},
+      {"product_id": "PROD205", "review": "Great jacket, but sizing runs a bit small."},
+      {"product_id": "PROD308", "review": "Beautiful color and fabric. Highly recommend!"},
+      {"product_id": "PROD412", "review": "Good quality jeans, very comfortable."}
+    ],
+    "summary": "Loyal customer with a preference for casual and formal wear. Frequently purchases dresses and jackets. Leaves positive reviews and values quality over price."
+  },
+  {
+    "customer_id": "CUST002",
+    "customer_name": "Marcus Johnson",
+    "past_purchases": ["PROD102", "PROD215", "PROD330"],
+    "user_interactions": [
+      {"product_id": "PROD102", "review": "Solid shoes, comfortable for all-day wear."},
+      {"product_id": "PROD215", "review": "Nice shirt but fabric wrinkles easily."}
+    ],
+    "summary": "Male customer focused on footwear and casual shirts. Appreciates comfort and practicality. Moderate shopping frequency."
+  },
+  {
+    "customer_id": "CUST003",
+    "customer_name": "Sarah Chen",
+    "past_purchases": ["PROD110", "PROD225", "PROD340", "PROD450", "PROD560", "PROD670"],
+    "user_interactions": [
+      {"product_id": "PROD110", "review": "Gorgeous evening gown! Received so many compliments."},
+      {"product_id": "PROD225", "review": "Love the design but price is a bit high."},
+      {"product_id": "PROD340", "review": "Perfect handbag for everyday use."},
+      {"product_id": "PROD450", "review": "Elegant and versatile piece."}
+    ],
+    "summary": "High-value customer with preference for premium fashion items. Interested in evening wear and accessories. Price-conscious but willing to invest in quality pieces."
+  },
+  {
+    "customer_id": "CUST004",
+    "customer_name": "James Mitchell",
+    "past_purchases": ["PROD115", "PROD220"],
+    "user_interactions": [
+      {"product_id": "PROD115", "review": "Great fit, exactly what I was looking for."}
+    ],
+    "summary": "New customer with minimal purchase history. Interested in men's casual wear. Positive initial experience with the brand."
+  },
+  {
+    "customer_id": "CUST005",
+    "customer_name": "Olivia Rodriguez",
+    "past_purchases": ["PROD125", "PROD235", "PROD345", "PROD455", "PROD565", "PROD675", "PROD785"],
+    "user_interactions": [
+      {"product_id": "PROD125", "review": "Beautiful summer dress! Light and airy."},
+      {"product_id": "PROD235", "review": "Love this brand! Always great quality."},
+      {"product_id": "PROD345", "review": "Perfect blazer for work meetings."},
+      {"product_id": "PROD455", "review": "Stylish and comfortable heels."},
+      {"product_id": "PROD565", "review": "Amazing quality scarf, very soft."}
+    ],
+    "summary": "VIP customer with extensive purchase history. Strong brand loyalty and consistently positive reviews. Interested in both casual and professional attire."
+  },
+  {
+    "customer_id": "CUST006",
+    "customer_name": "David Park",
+    "past_purchases": ["PROD130", "PROD240", "PROD350"],
+    "user_interactions": [
+      {"product_id": "PROD130", "review": "Good quality polo shirts."},
+      {"product_id": "PROD240", "review": "Decent pants but could be better."}
+    ],
+    "summary": "Regular male customer preferring business casual attire. Mixed reviews suggest selective about quality. Moderate spending pattern."
+  },
+  {
+    "customer_id": "CUST007",
+    "customer_name": "Isabella Martinez",
+    "past_purchases": ["PROD140", "PROD250", "PROD360", "PROD470"],
+    "user_interactions": [
+      {"product_id": "PROD140", "review": "Cute sundress, perfect for summer!"},
+      {"product_id": "PROD250", "review": "Love the floral pattern!"},
+      {"product_id": "PROD360", "review": "Comfortable sandals for beach vacations."}
+    ],
+    "summary": "Young customer with preference for casual summer wear and floral patterns. Values comfort and style. Regular seasonal shopper."
+  },
+  {
+    "customer_id": "CUST008",
+    "customer_name": "William Anderson",
+    "past_purchases": ["PROD145", "PROD255", "PROD365", "PROD475", "PROD585"],
+    "user_interactions": [
+      {"product_id": "PROD145", "review": "Excellent suit for business meetings."},
+      {"product_id": "PROD255", "review": "High-quality dress shirt, worth the price."},
+      {"product_id": "PROD365", "review": "Perfect tie collection."}
+    ],
+    "summary": "Professional male customer focused on formal business attire. Values quality and professional appearance. High-value customer segment."
+  },
+  {
+    "customer_id": "CUST009",
+    "customer_name": "Sophia Taylor",
+    "past_purchases": ["PROD150", "PROD260"],
+    "user_interactions": [
+      {"product_id": "PROD150", "review": "Nice sweater but color faded after few washes."}
+    ],
+    "summary": "Customer with limited purchase history. Had quality concerns with recent purchase. Requires follow-up to improve satisfaction."
+  },
+  {
+    "customer_id": "CUST010",
+    "customer_name": "Ethan Brown",
+    "past_purchases": ["PROD155", "PROD265", "PROD375", "PROD485"],
+    "user_interactions": [
+      {"product_id": "PROD155", "review": "Great casual jeans!"},
+      {"product_id": "PROD265", "review": "Comfortable sneakers for daily wear."},
+      {"product_id": "PROD375", "review": "Love the fit of these t-shirts."}
+    ],
+    "summary": "Young male customer focused on casual streetwear. Values comfort and style. Regular shopper with consistent positive feedback."
+  },
+  {
+    "customer_id": "CUST011",
+    "customer_name": "Ava Wilson",
+    "past_purchases": ["PROD160", "PROD270", "PROD380", "PROD490", "PROD600", "PROD710"],
+    "user_interactions": [
+      {"product_id": "PROD160", "review": "Stunning cocktail dress!"},
+      {"product_id": "PROD270", "review": "Beautiful jewelry collection."},
+      {"product_id": "PROD380", "review": "Perfect clutch for evening events."},
+      {"product_id": "PROD490", "review": "Love the designer collaboration pieces!"}
+    ],
+    "summary": "Premium customer interested in occasion wear and accessories. High average order value. Strong engagement with designer collections."
+  },
+  {
+    "customer_id": "CUST012",
+    "customer_name": "Noah Davis",
+    "past_purchases": ["PROD165", "PROD275"],
+    "user_interactions": [
+      {"product_id": "PROD165", "review": "Good quality workout gear."}
+    ],
+    "summary": "Fitness-focused customer interested in activewear. New to brand but showing potential for repeat purchases."
+  },
+  {
+    "customer_id": "CUST013",
+    "customer_name": "Mia Garcia",
+    "past_purchases": ["PROD170", "PROD280", "PROD390", "PROD500"],
+    "user_interactions": [
+      {"product_id": "PROD170", "review": "Love this brand's sustainable fashion line!"},
+      {"product_id": "PROD280", "review": "Eco-friendly materials, great quality."},
+      {"product_id": "PROD390", "review": "Happy to support ethical fashion."}
+    ],
+    "summary": "Environmentally conscious customer focused on sustainable fashion. Values ethical production. Brand advocate for eco-friendly collections."
+  },
+  {
+    "customer_id": "CUST014",
+    "customer_name": "Liam Martinez",
+    "past_purchases": ["PROD175", "PROD285", "PROD395"],
+    "user_interactions": [
+      {"product_id": "PROD175", "review": "Decent quality for the price."},
+      {"product_id": "PROD285", "review": "Average product, nothing special."}
+    ],
+    "summary": "Price-sensitive customer with moderate brand engagement. Looks for value deals. Mixed satisfaction levels."
+  },
+  {
+    "customer_id": "CUST015",
+    "customer_name": "Charlotte Lee",
+    "past_purchases": ["PROD180", "PROD290", "PROD400", "PROD510", "PROD620"],
+    "user_interactions": [
+      {"product_id": "PROD180", "review": "Perfect professional wardrobe staples."},
+      {"product_id": "PROD290", "review": "Great quality blazers for work."},
+      {"product_id": "PROD400", "review": "Love the minimalist designs."}
+    ],
+    "summary": "Professional female customer building work wardrobe. Prefers minimalist and classic styles. Regular purchaser with strong brand preference."
+  },
+  {
+    "customer_id": "CUST016",
+    "customer_name": "Benjamin White",
+    "past_purchases": ["PROD185", "PROD295", "PROD405", "PROD515", "PROD625", "PROD735"],
+    "user_interactions": [
+      {"product_id": "PROD185", "review": "Excellent winter coat, very warm."},
+      {"product_id": "PROD295", "review": "Best quality sweaters I've owned."},
+      {"product_id": "PROD405", "review": "Great seasonal collection!"},
+      {"product_id": "PROD515", "review": "Worth every penny."}
+    ],
+    "summary": "Loyal customer with strong seasonal shopping patterns. Values quality over quantity. High satisfaction and engagement with winter collections."
+  },
+  {
+    "customer_id": "CUST017",
+    "customer_name": "Amelia Harris",
+    "past_purchases": ["PROD190", "PROD300"],
+    "user_interactions": [
+      {"product_id": "PROD190", "review": "Sizing was off, had to return."}
+    ],
+    "summary": "Customer with sizing concerns. Recent return indicates need for better size guidance. Potential for retention with improved customer service."
+  },
+  {
+    "customer_id": "CUST018",
+    "customer_name": "Lucas Clark",
+    "past_purchases": ["PROD195", "PROD305", "PROD415", "PROD525"],
+    "user_interactions": [
+      {"product_id": "PROD195", "review": "Great athletic wear for gym."},
+      {"product_id": "PROD305", "review": "Durable and comfortable."},
+      {"product_id": "PROD415", "review": "Perfect for running."}
+    ],
+    "summary": "Active lifestyle customer focused on performance wear. Consistent purchaser of athletic apparel. Values durability and functionality."
+  },
+  {
+    "customer_id": "CUST019",
+    "customer_name": "Harper Walker",
+    "past_purchases": ["PROD200", "PROD310", "PROD420", "PROD530", "PROD640", "PROD750", "PROD860"],
+    "user_interactions": [
+      {"product_id": "PROD200", "review": "Obsessed with this brand!"},
+      {"product_id": "PROD310", "review": "Best online shopping experience."},
+      {"product_id": "PROD420", "review": "Love everything I've purchased."},
+      {"product_id": "PROD530", "review": "Excellent customer service too!"},
+      {"product_id": "PROD640", "review": "Always my go-to fashion store."}
+    ],
+    "summary": "Brand enthusiast and loyal advocate. Extensive purchase history with consistently positive reviews. High lifetime value customer."
+  },
+  {
+    "customer_id": "CUST020",
+    "customer_name": "Mason Hall",
+    "past_purchases": ["PROD210", "PROD320"],
+    "user_interactions": [
+      {"product_id": "PROD210", "review": "Good basics for everyday wear."}
+    ],
+    "summary": "Practical customer focused on wardrobe basics. Steady but infrequent purchaser. Satisfied with product quality."
+  },
+  {
+    "customer_id": "CUST021",
+    "customer_name": "Evelyn Allen",
+    "past_purchases": ["PROD215", "PROD325", "PROD435", "PROD545"],
+    "user_interactions": [
+      {"product_id": "PROD215", "review": "Trendy pieces that are Instagram-worthy!"},
+      {"product_id": "PROD325", "review": "Love the bold prints."},
+      {"product_id": "PROD435", "review": "Always on-trend with this brand."}
+    ],
+    "summary": "Fashion-forward customer who follows trends. Social media engaged. Interested in statement pieces and bold designs."
+  },
+  {
+    "customer_id": "CUST022",
+    "customer_name": "Alexander Young",
+    "past_purchases": ["PROD220", "PROD330", "PROD440"],
+    "user_interactions": [
+      {"product_id": "PROD220", "review": "Classic styles that never go out of fashion."},
+      {"product_id": "PROD330", "review": "Timeless pieces."}
+    ],
+    "summary": "Customer preferring classic and timeless fashion. Values longevity over trends. Selective purchaser with good brand affinity."
+  },
+  {
+    "customer_id": "CUST023",
+    "customer_name": "Abigail King",
+    "past_purchases": ["PROD225", "PROD335", "PROD445", "PROD555", "PROD665"],
+    "user_interactions": [
+      {"product_id": "PROD225", "review": "Perfect maternity wear options."},
+      {"product_id": "PROD335", "review": "Comfortable and stylish for pregnancy."},
+      {"product_id": "PROD445", "review": "Great quality nursing-friendly clothes."}
+    ],
+    "summary": "Customer in maternity/nursing phase. Values comfort and practicality. Strong engagement with specialized collections."
+  },
+  {
+    "customer_id": "CUST024",
+    "customer_name": "Daniel Wright",
+    "past_purchases": ["PROD230", "PROD340", "PROD450", "PROD560", "PROD670", "PROD780"],
+    "user_interactions": [
+      {"product_id": "PROD230", "review": "Premium quality leather goods."},
+      {"product_id": "PROD340", "review": "Investment pieces worth the cost."},
+      {"product_id": "PROD450", "review": "Exceptional craftsmanship."},
+      {"product_id": "PROD560", "review": "Best accessories I've purchased."}
+    ],
+    "summary": "Luxury customer segment focused on premium accessories and leather goods. High spending pattern. Values craftsmanship and quality."
+  },
+  {
+    "customer_id": "CUST025",
+    "customer_name": "Elizabeth Scott",
+    "past_purchases": ["PROD235", "PROD345"],
+    "user_interactions": [
+      {"product_id": "PROD235", "review": "Delivery was delayed, but product is good."}
+    ],
+    "summary": "Customer experienced shipping delay. Product satisfaction is positive. Opportunity to improve with better logistics communication."
+  },
+  {
+    "customer_id": "CUST026",
+    "customer_name": "Matthew Green",
+    "past_purchases": ["PROD240", "PROD350", "PROD460", "PROD570"],
+    "user_interactions": [
+      {"product_id": "PROD240", "review": "Smart casual pieces for tech industry."},
+      {"product_id": "PROD350", "review": "Perfect for startup culture."},
+      {"product_id": "PROD460", "review": "Comfortable yet professional."}
+    ],
+    "summary": "Professional in tech industry seeking smart casual attire. Values comfort in professional settings. Regular purchaser with specific style needs."
+  },
+  {
+    "customer_id": "CUST027",
+    "customer_name": "Sofia Adams",
+    "past_purchases": ["PROD245", "PROD355", "PROD465", "PROD575", "PROD685"],
+    "user_interactions": [
+      {"product_id": "PROD245", "review": "Love shopping the sale section!"},
+      {"product_id": "PROD355", "review": "Great deals on quality items."},
+      {"product_id": "PROD465", "review": "Always wait for promotions."}
+    ],
+    "summary": "Deal-seeking customer who primarily shops during sales. Price-sensitive but appreciates quality. Responds well to promotional campaigns."
+  },
+  {
+    "customer_id": "CUST028",
+    "customer_name": "Joseph Baker",
+    "past_purchases": ["PROD250", "PROD360"],
+    "user_interactions": [
+      {"product_id": "PROD250", "review": "First time buyer, impressed so far!"}
+    ],
+    "summary": "New customer with positive first impression. Early stage in customer journey. High potential for conversion to regular customer."
+  },
+  {
+    "customer_id": "CUST029",
+    "customer_name": "Victoria Nelson",
+    "past_purchases": ["PROD255", "PROD365", "PROD475", "PROD585", "PROD695", "PROD805"],
+    "user_interactions": [
+      {"product_id": "PROD255", "review": "Perfect plus-size options!"},
+      {"product_id": "PROD365", "review": "Finally, fashionable clothes in my size."},
+      {"product_id": "PROD475", "review": "Love the inclusive sizing."},
+      {"product_id": "PROD585", "review": "Great fit and style."}
+    ],
+    "summary": "Customer appreciating inclusive sizing options. Strong brand loyalty due to size availability. Advocate for plus-size fashion offerings."
+  },
+  {
+    "customer_id": "CUST030",
+    "customer_name": "Christopher Carter",
+    "past_purchases": ["PROD260", "PROD370", "PROD480"],
+    "user_interactions": [
+      {"product_id": "PROD260", "review": "Decent quality, reasonable prices."},
+      {"product_id": "PROD370", "review": "Good value for money."}
+    ],
+    "summary": "Value-conscious customer with balanced expectations. Appreciates fair pricing. Moderate engagement level with brand."
+  },
+  {
+    "customer_id": "CUST031",
+    "customer_name": "Grace Mitchell",
+    "past_purchases": ["PROD265", "PROD375", "PROD485", "PROD595", "PROD705"],
+    "user_interactions": [
+      {"product_id": "PROD265", "review": "Elegant formal wear collection."},
+      {"product_id": "PROD375", "review": "Perfect for special occasions."},
+      {"product_id": "PROD485", "review": "Beautiful evening attire."}
+    ],
+    "summary": "Customer focused on formal and special occasion wear. Higher price tolerance for quality pieces. Seasonal purchaser around events."
+  },
+  {
+    "customer_id": "CUST032",
+    "customer_name": "Andrew Perez",
+    "past_purchases": ["PROD270", "PROD380", "PROD490", "PROD600"],
+    "user_interactions": [
+      {"product_id": "PROD270", "review": "Great outdoor apparel."},
+      {"product_id": "PROD380", "review": "Durable hiking gear."},
+      {"product_id": "PROD490", "review": "Perfect for adventure travel."}
+    ],
+    "summary": "Outdoor enthusiast interested in adventure wear. Values durability and functionality. Niche customer segment with specific needs."
+  },
+  {
+    "customer_id": "CUST033",
+    "customer_name": "Scarlett Roberts",
+    "past_purchases": ["PROD275", "PROD385"],
+    "user_interactions": [
+      {"product_id": "PROD275", "review": "Colors don't match website photos."}
+    ],
+    "summary": "Customer disappointed with color accuracy. Indicates need for better product photography. Retention at risk without resolution."
+  },
+  {
+    "customer_id": "CUST034",
+    "customer_name": "Ryan Turner",
+    "past_purchases": ["PROD280", "PROD390", "PROD500", "PROD610", "PROD720"],
+    "user_interactions": [
+      {"product_id": "PROD280", "review": "Minimalist wardrobe essentials."},
+      {"product_id": "PROD390", "review": "Quality basics that last."},
+      {"product_id": "PROD500", "review": "Perfect capsule wardrobe pieces."}
+    ],
+    "summary": "Minimalist customer focused on essential wardrobe pieces. Values quality and versatility. Consistent purchaser of core items."
+  },
+  {
+    "customer_id": "CUST035",
+    "customer_name": "Aria Phillips",
+    "past_purchases": ["PROD285", "PROD395", "PROD505", "PROD615", "PROD725", "PROD835"],
+    "user_interactions": [
+      {"product_id": "PROD285", "review": "Vintage-inspired pieces are amazing!"},
+      {"product_id": "PROD395", "review": "Love the retro collections."},
+      {"product_id": "PROD505", "review": "Unique finds every season."},
+      {"product_id": "PROD615", "review": "Best vintage-style fashion online."}
+    ],
+    "summary": "Customer with strong preference for vintage-inspired fashion. Brand advocate for retro collections. High engagement with special edition releases."
+  },
+  {
+    "customer_id": "CUST036",
+    "customer_name": "Jack Campbell",
+    "past_purchases": ["PROD290", "PROD400"],
+    "user_interactions": [
+      {"product_id": "PROD290", "review": "Product arrived damaged, awaiting replacement."}
+    ],
+    "summary": "Customer experiencing quality issue with recent order. Active return/exchange in progress. Critical touchpoint for retention."
+  },
+  {
+    "customer_id": "CUST037",
+    "customer_name": "Zoe Parker",
+    "past_purchases": ["PROD295", "PROD405", "PROD515", "PROD625"],
+    "user_interactions": [
+      {"product_id": "PROD295", "review": "Bohemian style collection is perfect!"},
+      {"product_id": "PROD405", "review": "Love the free-spirited designs."},
+      {"product_id": "PROD515", "review": "Comfortable and unique pieces."}
+    ],
+    "summary": "Customer attracted to bohemian and free-spirited designs. Values unique styling. Regular purchaser with distinct aesthetic preferences."
+  },
+  {
+    "customer_id": "CUST038",
+    "customer_name": "Henry Evans",
+    "past_purchases": ["PROD300", "PROD410", "PROD520", "PROD630", "PROD740"],
+    "user_interactions": [
+      {"product_id": "PROD300", "review": "Excellent tailored suits."},
+      {"product_id": "PROD410", "review": "Professional and well-fitted."},
+      {"product_id": "PROD520", "review": "Best formal wear for executives."}
+    ],
+    "summary": "Executive customer requiring high-quality formal wear. Premium segment with focus on tailoring. Strong brand loyalty for professional attire."
+  },
+  {
+    "customer_id": "CUST039",
+    "customer_name": "Penelope Edwards",
+    "past_purchases": ["PROD305", "PROD415", "PROD525"],
+    "user_interactions": [
+      {"product_id": "PROD305", "review": "Cute teen fashion options."},
+      {"product_id": "PROD415", "review": "Trendy and age-appropriate."}
+    ],
+    "summary": "Young customer (teen/young adult) following current trends. Price-conscious segment. Influenced by social media and peer preferences."
+  },
+  {
+    "customer_id": "CUST040",
+    "customer_name": "Samuel Collins",
+    "past_purchases": ["PROD310", "PROD420", "PROD530", "PROD640", "PROD750", "PROD860", "PROD970"],
+    "user_interactions": [
+      {"product_id": "PROD310", "review": "Streetwear collection is fire!"},
+      {"product_id": "PROD420", "review": "Best urban fashion online."},
+      {"product_id": "PROD530", "review": "Limited editions sell out too fast!"},
+      {"product_id": "PROD640", "review": "Quality streetwear at good prices."},
+      {"product_id": "PROD750", "review": "Love the collaborations."}
+    ],
+    "summary": "Streetwear enthusiast and brand advocate. High engagement with limited editions. Strong social media presence. VIP customer for urban fashion segment."
+  },
+  {
+    "customer_id": "CUST041",
+    "customer_name": "Luna Stewart",
+    "past_purchases": ["PROD315", "PROD425"],
+    "user_interactions": [
+      {"product_id": "PROD315", "review": "Wish there were more petite options."}
+    ],
+    "summary": "Customer seeking more petite sizing options. Product feedback indicates unmet needs. Opportunity for category expansion."
+  },
+  {
+    "customer_id": "CUST042",
+    "customer_name": "Nathan Morris",
+    "past_purchases": ["PROD320", "PROD430", "PROD540", "PROD650"],
+    "user_interactions": [
+      {"product_id": "PROD320", "review": "Great big and tall selection."},
+      {"product_id": "PROD430", "review": "Finally, clothes that fit properly!"},
+      {"product_id": "PROD540", "review": "Appreciate the extended sizes."}
+    ],
+    "summary": "Customer appreciating big and tall sizing. Strong loyalty due to size availability. Advocate for inclusive sizing options."
+  },
+  {
+    "customer_id": "CUST043",
+    "customer_name": "Layla Sanchez",
+    "past_purchases": ["PROD325", "PROD435", "PROD545", "PROD655", "PROD765"],
+    "user_interactions": [
+      {"product_id": "PROD325", "review": "Workwear that transitions to evening perfectly."},
+      {"product_id": "PROD435", "review": "Versatile pieces for busy lifestyle."},
+      {"product_id": "PROD545", "review": "Professional yet stylish."}
+    ],
+    "summary": "Busy professional seeking versatile wardrobe options. Values pieces that work for multiple occasions. Regular purchaser with consistent needs."
+  },
+  {
+    "customer_id": "CUST044",
+    "customer_name": "Isaiah Rogers",
+    "past_purchases": ["PROD330", "PROD440"],
+    "user_interactions": [
+      {"product_id": "PROD330", "review": "Good quality but wish shipping was faster."}
+    ],
+    "summary": "Satisfied with products but concerned about shipping speed. Opportunity to improve with faster delivery options."
+  },
+  {
+    "customer_id": "CUST045",
+    "customer_name": "Stella Reed",
+    "past_purchases": ["PROD335", "PROD445", "PROD555", "PROD665", "PROD775", "PROD885"],
+    "user_interactions": [
+      {"product_id": "PROD335", "review": "Luxury fabrics at accessible prices."},
+      {"product_id": "PROD445", "review": "Feels expensive, priced fairly."},
+      {"product_id": "PROD555", "review": "Quality rivals designer brands."},
+      {"product_id": "PROD665", "review": "My secret for looking expensive on budget."}
+    ],
+    "summary": "Customer attracted to luxury aesthetic at accessible price points. Values perceived value. Brand advocate for affordable luxury positioning."
+  },
+  {
+    "customer_id": "CUST046",
+    "customer_name": "Caleb Cook",
+    "past_purchases": ["PROD340", "PROD450", "PROD560"],
+    "user_interactions": [
+      {"product_id": "PROD340", "review": "Solid basics, nothing fancy."},
+      {"product_id": "PROD450", "review": "Gets the job done."}
+    ],
+    "summary": "Practical customer with straightforward needs. Focuses on functionality over fashion. Steady but unexciting engagement."
+  },
+  {
+    "customer_id": "CUST047",
+    "customer_name": "Hazel Morgan",
+    "past_purchases": ["PROD345", "PROD455", "PROD565", "PROD675", "PROD785"],
+    "user_interactions": [
+      {"product_id": "PROD345", "review": "Sustainable fashion that's actually stylish!"},
+      {"product_id": "PROD455", "review": "Love the recycled materials initiative."},
+      {"product_id": "PROD565", "review": "Ethical production matters to me."},
+      {"product_id": "PROD675", "review": "Transparency in supply chain is appreciated."}
+    ],
+    "summary": "Highly engaged with sustainability initiatives. Brand advocate for ethical fashion. Values transparency and environmental responsibility. Premium customer for eco-collections."
+  },
+  {
+    "customer_id": "CUST048",
+    "customer_name": "Wyatt Bell",
+    "past_purchases": ["PROD350", "PROD460", "PROD570", "PROD680"],
+    "user_interactions": [
+      {"product_id": "PROD350", "review": "Travel-friendly wrinkle-free clothes."},
+      {"product_id": "PROD460", "review": "Perfect for frequent business travel."},
+      {"product_id": "PROD570", "review": "Pack light with these versatile pieces."}
+    ],
+    "summary": "Frequent traveler seeking practical fashion solutions. Values wrinkle-resistant and versatile pieces. Consistent purchaser with specific lifestyle needs."
+  },
+  {
+    "customer_id": "CUST049",
+    "customer_name": "Violet Bailey",
+    "past_purchases": ["PROD355", "PROD465"],
+    "user_interactions": [
+      {"product_id": "PROD355", "review": "Return process was easy and hassle-free."}
+    ],
+    "summary": "Customer who utilized return process successfully. Positive experience with customer service. Potential for continued engagement despite return."
+  },
+  {
+    "customer_id": "CUST050",
+    "customer_name": "Elijah Rivera",
+    "past_purchases": ["PROD360", "PROD470", "PROD580", "PROD690", "PROD800", "PROD910", "PROD1020", "PROD1130"],
+    "user_interactions": [
+      {"product_id": "PROD360", "review": "Loyalty program rewards are excellent!"},
+      {"product_id": "PROD470", "review": "Love earning points with every purchase."},
+      {"product_id": "PROD580", "review": "VIP perks make me feel valued."},
+      {"product_id": "PROD690", "review": "Best fashion rewards program."},
+      {"product_id": "PROD800", "review": "Will continue shopping here for life!"}
+    ],
+    "summary": "Highly engaged loyalty program member. Motivated by rewards and VIP benefits. Brand evangelist with highest lifetime value. Consistent positive reviews and advocacy."
+  }
+]
