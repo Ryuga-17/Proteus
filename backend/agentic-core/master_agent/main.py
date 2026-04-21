@@ -1,5 +1,5 @@
 """
-Main Orchestrator - Your Friendly Central Command Center 🎛️
+Main Orchestrator - Your Friendly Central Command Center 
 
 This is where all the magic happens! Think of this file as the main control room
 that coordinates all your retail agents. Whether it's checking inventory, processing
@@ -48,7 +48,7 @@ from orchestrator_tasks import (
 
 def run_orchestrator(task, task_name: str = "Orchestrator Task"):
     """
-    Run a single task through our orchestrator - the friendly way! 😊
+    Run a single task through our orchestrator - the friendly way! 
     
     This function takes any task and runs it through our orchestrator agent,
     which will figure out the best way to handle it. It's like sending a request
@@ -68,7 +68,7 @@ def run_orchestrator(task, task_name: str = "Orchestrator Task"):
     """
     # Let's make it pretty with a nice header
     print("=" * 60)
-    print(f"  🎯 {task_name}")
+    print(f"   {task_name}")
     print("=" * 60)
     print()
     
@@ -83,7 +83,7 @@ def run_orchestrator(task, task_name: str = "Orchestrator Task"):
         verbose=True                   # Show us what's happening (good for debugging)
     )
     
-    print(f"🚀 Starting orchestrator crew for: {task_name}")
+    print(f" Starting orchestrator crew for: {task_name}")
     print("-" * 60)
     
     # Try to run the task and catch any issues that come up
@@ -93,9 +93,9 @@ def run_orchestrator(task, task_name: str = "Orchestrator Task"):
         
         # Show a nice success message with the results
         print("\n" + "=" * 60)
-        print(f"✅ {task_name} - COMPLETED")
+        print(f" {task_name} - COMPLETED")
         print("=" * 60)
-        print("\n📋 Final Result:")
+        print("\n Final Result:")
         print(result)
         print("\n" + "=" * 60)
         
@@ -103,14 +103,14 @@ def run_orchestrator(task, task_name: str = "Orchestrator Task"):
         
     except Exception as e:
         # Oops, something went wrong. Let's tell the user in a friendly way
-        print(f"\n❌ Oops! We ran into an issue with '{task_name}': {str(e)}")
+        print(f"\n Oops! We ran into an issue with '{task_name}': {str(e)}")
         print("   Don't worry, check the error message above for clues on what happened.")
         raise
 
 
 def run_example_scenarios():
     """
-    Run through example scenarios to show off what our orchestrator can do! 🎬
+    Run through example scenarios to show off what our orchestrator can do! 
     
     This function runs a collection of example scenarios that demonstrate
     different capabilities of the orchestrator. It's great for:
@@ -123,14 +123,14 @@ def run_example_scenarios():
     """
     # Welcome message - let's be friendly!
     print("\n" + "=" * 60)
-    print("  🤖 MASTER ORCHESTRATOR - Retail Agent Coordination")
+    print("   MASTER ORCHESTRATOR - Retail Agent Coordination")
     print("=" * 60)
     print("\nThis orchestrator coordinates all your retail agents:")
-    print("  📦 Inventory Agent      → Stock checks, transfers, procurement")
-    print("  🚚 Fulfillment Agent    → Shipping, in-store reservations")
-    print("  💳 Payment Agent        → Transactions, payments, kiosk handoffs")
-    print("  🎁 Loyalty Agent        → Points, offers, pricing calculations")
-    print("  🎧 Support Agent        → Order tracking, returns, feedback")
+    print("   Inventory Agent      → Stock checks, transfers, procurement")
+    print("   Fulfillment Agent    → Shipping, in-store reservations")
+    print("   Payment Agent        → Transactions, payments, kiosk handoffs")
+    print("   Loyalty Agent        → Points, offers, pricing calculations")
+    print("   Support Agent        → Order tracking, returns, feedback")
     print("\n" + "=" * 60)
     print()
     
@@ -163,14 +163,14 @@ def run_example_scenarios():
     # Run each scenario and collect the results
     for scenario_name, scenario_task in scenarios_to_run:
         try:
-            print(f"\n🔄 Running scenario: {scenario_name}...")
+            print(f"\n Running scenario: {scenario_name}...")
             result = run_orchestrator(scenario_task, scenario_name)
             scenario_results[scenario_name] = result
-            print(f"✨ Successfully completed: {scenario_name}")
+            print(f" Successfully completed: {scenario_name}")
             
         except Exception as e:
             # Something went wrong with this scenario, but let's continue with others
-            print(f"⚠️  Couldn't complete '{scenario_name}': {e}")
+            print(f"  Couldn't complete '{scenario_name}': {e}")
             scenario_results[scenario_name] = None
             print("   Moving on to the next scenario...")
         
@@ -179,9 +179,9 @@ def run_example_scenarios():
     
     # Summary of what we ran
     print("=" * 60)
-    print("📊 Scenario Summary:")
+    print(" Scenario Summary:")
     for name, result in scenario_results.items():
-        status = "✅ Success" if result else "❌ Failed"
+        status = " Success" if result else " Failed"
         print(f"   {status} - {name}")
     print("=" * 60)
     
@@ -190,7 +190,7 @@ def run_example_scenarios():
 
 def handle_custom_request(customer_request: str, expected_output: str = None):
     """
-    Handle any custom request - the easy way! 🎯
+    Handle any custom request - the easy way! 
     
     This is your go-to function when you have a specific customer request
     that doesn't fit into the pre-built scenarios. Just describe what you
@@ -234,7 +234,7 @@ if __name__ == "__main__":
     # First, let's check if the user has set up their API key
     # Some agents need this to work properly (though some have mock LLMs)
     if not os.getenv("OPENAI_API_KEY"):
-        print("⚠️  Hey there! 👋")
+        print("  Hey there! ")
         print("   I noticed you don't have OPENAI_API_KEY set up yet.")
         print("   To get the full experience, you can set it by running:")
         print()
@@ -249,7 +249,7 @@ if __name__ == "__main__":
     run_example_scenarios()
     
     # ========================================================================
-    # 🎨 CUSTOM REQUEST EXAMPLES (Uncomment to try them!)
+    #  CUSTOM REQUEST EXAMPLES (Uncomment to try them!)
     # ========================================================================
     # Want to try something specific? Just uncomment one of these:
     #

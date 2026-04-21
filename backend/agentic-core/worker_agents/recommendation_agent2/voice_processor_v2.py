@@ -15,7 +15,7 @@ try:
     QDRANT_AVAILABLE = True
 except ImportError:
     QDRANT_AVAILABLE = False
-    print("⚠️  Qdrant client not installed. Install with: pip install qdrant-client")
+    print("  Qdrant client not installed. Install with: pip install qdrant-client")
 
 # Load product and profile data
 def load_product_data():
@@ -44,6 +44,22 @@ def load_profile_data():
 PRODUCTS = load_product_data()
 PROFILES = load_profile_data()
 
+# Dynamic Model Loading from MLOps Registry
+try:
+    import sys
+    import os
+    registry_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))), "ai-ml")
+    if registry_path not in sys.path:
+        sys.path.append(registry_path)
+    from model_registry_manager import registry_manager
+    model_config = registry_manager.get_active_model("recommendation_model")
+    if model_config:
+        print(f" [MLOps] Loaded active recommendation model: {model_config.get('version')}")
+    else:
+        print(" [MLOps] No active recommendation model found, falling back to defaults.")
+except Exception as e:
+    print(f" [MLOps] Registry load failed: {e}. Falling back to default model.")
+
 # Initialize Ollama client
 ollama_client = OllamaClient()
 
@@ -52,9 +68,9 @@ qdrant_client = None
 if QDRANT_AVAILABLE:
     try:
         qdrant_client = Qdrant(host="localhost", port=6333)
-        print("✅ Connected to Qdrant at localhost:6333")
+        print(" Connected to Qdrant at localhost:6333")
     except Exception as e:
-        print(f"⚠️  Could not connect to Qdrant: {e}")
+        print(f"  Could not connect to Qdrant: {e}")
         print("   Using fallback search method")
 
 

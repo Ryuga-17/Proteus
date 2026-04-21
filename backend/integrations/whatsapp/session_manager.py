@@ -167,7 +167,7 @@ class SessionManager:
         session = self.get_session(whatsapp_user_id)
         if session and session.customer_id:
             return (
-                f"👋 Welcome back!\n\n"
+                f" Welcome back!\n\n"
                 f"You're already logged in. How can I help you today?\n\n"
                 f"Try asking:\n"
                 f"• 'Show me products'\n"

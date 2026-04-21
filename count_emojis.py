@@ -1,0 +1,34 @@
+import os
+import re
+
+emoji_pattern = re.compile(
+    u"(\ud83d[\ude00-\ude4f])|"  # emoticons
+    u"(\ud83c[\udf00-\uffff])|"  # symbols & pictographs (1 of 2)
+    u"(\ud83d[\u0000-\uddff])|"  # symbols & pictographs (2 of 2)
+    u"(\ud83d[\ude80-\udeff])|"  # transport & map symbols
+    u"(\ud83c[\udde0-\uddff])"  # flags (iOS)
+    "+", flags=re.UNICODE)
+
+generic_emoji_pattern = re.compile(r'[\U00010000-\U0010ffff]', flags=re.UNICODE)
+
+ignored_dirs = {'node_modules', '.git', 'venv', '__pycache__', 'dist', 'build'}
+allowed_exts = {'.py', '.md', '.js', '.jsx', '.ts', '.tsx', '.json', '.sh', '.txt', '.css', '.html'}
+
+affected_files = []
+
+for root, dirs, files in os.walk('.'):
+    dirs[:] = [d for d in dirs if d not in ignored_dirs]
+    for file in files:
+        ext = os.path.splitext(file)[1].lower()
+        if ext in allowed_exts:
+            filepath = os.path.join(root, file)
+            try:
+                with open(filepath, 'r', encoding='utf-8') as f:
+                    content = f.read()
+                    if generic_emoji_pattern.search(content):
+                        affected_files.append(filepath)
+            except Exception:
+                pass
+
+print(f"Total files with emojis: {len(affected_files)}")
+# print(affected_files[:10])

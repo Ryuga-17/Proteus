@@ -1,4 +1,4 @@
-# 🚀 Running the Complete System
+#  Running the Complete System
 
 ## Quick Start
 
@@ -193,7 +193,7 @@ kill -9 $(lsof -ti:5173)
   kill -9 $(lsof -ti:5173)
   ```
 
-Enjoy your agentic system! 🎉
+Enjoy your agentic system! 
 
 
 

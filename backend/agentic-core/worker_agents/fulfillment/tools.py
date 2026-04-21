@@ -1,5 +1,5 @@
 """
-Fulfillment Tools - The Helper Functions for Getting Orders Delivered! 🛠️
+Fulfillment Tools - The Helper Functions for Getting Orders Delivered! 
 
 These tools are what the fulfillment agent uses to actually get things done:
 1. book_shipment - Creates shipments with logistics partners for home delivery
@@ -26,7 +26,7 @@ class ShipmentInput(BaseModel):
 
 def book_shipment_func(order_id: str, address: str, items: list) -> str:
     """
-    Book a shipment with our logistics partner 📦
+    Book a shipment with our logistics partner 
     
     This function simulates calling a real shipping API (like FedEx, UPS, etc.)
     to create a shipment. In production, this would make actual API calls.
@@ -52,7 +52,7 @@ def book_shipment_func(order_id: str, address: str, items: list) -> str:
         ... )
         >>> print(result)  # Shows tracking number and delivery date
     """
-    print(f"\n📦 TOOL CALLED: book_shipment")
+    print(f"\n TOOL CALLED: book_shipment")
     print(f"   Order ID: {order_id}")
     print(f"   Delivery Address: {address}")
     print(f"   Items: {len(items)} item(s)")
@@ -86,7 +86,7 @@ class ReservationInput(BaseModel):
 
 def reserve_in_store_func(order_id: str, store_id: str, items: list) -> str:
     """
-    Reserve items at a store for customer pickup 🏪
+    Reserve items at a store for customer pickup 
     
     This function simulates calling a real store reservation system to hold
     items at a specific store location. In production, this would connect to
@@ -116,7 +116,7 @@ def reserve_in_store_func(order_id: str, store_id: str, items: list) -> str:
         ... )
         >>> print(result)  # Shows pickup code and store details
     """
-    print(f"\n🏪 TOOL CALLED: reserve_in_store")
+    print(f"\n TOOL CALLED: reserve_in_store")
     print(f"   Order ID: {order_id}")
     print(f"   Store: {store_id}")
     print(f"   Items: {len(items)} item(s) being reserved")
@@ -164,7 +164,7 @@ class NotificationInput(BaseModel):
 
 def notify_staff_func(queue: str, message: str) -> str:
     """
-    Send a notification to staff so they know about a new order 📢
+    Send a notification to staff so they know about a new order 
     
     This function simulates sending notifications to staff queues (like
     warehouse staff or store staff). In production, this would integrate
@@ -191,7 +191,7 @@ def notify_staff_func(queue: str, message: str) -> str:
         ... )
         >>> print(result)  # Confirms notification was sent
     """
-    print(f"\n📢 TOOL CALLED: notify_staff")
+    print(f"\n TOOL CALLED: notify_staff")
     print(f"   Queue: {queue}")
     print(f"   Message: {message}")
     

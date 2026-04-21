@@ -50,7 +50,7 @@ User can now use the system
 ```
 User sends "Hi" (with valid session)
   ↓
-System: "👋 Welcome back! You're already logged in."
+System: " Welcome back! You're already logged in."
   ↓
 User can immediately use the system
 ```
@@ -59,7 +59,7 @@ User can immediately use the system
 ```
 User: "I want to pay ₹15,000"
   ↓
-System: "⚠️ Security Check Required. Reply YES to continue."
+System: " Security Check Required. Reply YES to continue."
   ↓
 User: "YES"
   ↓
@@ -142,23 +142,23 @@ SESSION_AGE_FOR_STEPUP_HOURS = 24  # Sessions older than 24 hours need step-up
 ### Example 1: First-Time User
 ```
 User: Hi
-Bot: 👋 Hi! Welcome to our shopping assistant!
+Bot:  Hi! Welcome to our shopping assistant!
      To get started, I need to link your WhatsApp to your account.
      Please enter your registered mobile number (with country code, e.g., +1234567890):
 
 User: +918850833367
-Bot: ✅ Verification code sent to +918850833367
+Bot:  Verification code sent to +918850833367
      [DEV MODE] Your OTP: 123456
 
 User: 123456
-Bot: ✅ Account linked successfully!
+Bot:  Account linked successfully!
      You can now use our shopping assistant. How can I help you today?
 ```
 
 ### Example 2: Returning User
 ```
 User: Hi
-Bot: 👋 Welcome back!
+Bot:  Welcome back!
      You're already logged in. How can I help you today?
 
 User: Show me products
@@ -168,18 +168,18 @@ Bot: [Routes to orchestrator - shows products]
 ### Example 3: High-Risk Action (Payment)
 ```
 User: I want to pay ₹15,000
-Bot: ⚠️ Security Check Required
+Bot:  Security Check Required
      You are about to proceed with a payment of ₹15,000.00.
      This is a high-value transaction. For your security, we need to verify your identity.
      Reply 'YES' to continue, or 'NO' to cancel.
 
 User: YES
-Bot: ✅ Verification code sent to +918850833367
+Bot:  Verification code sent to +918850833367
      Please enter the 6-digit code to proceed.
      [DEV MODE] Your OTP: 654321
 
 User: 654321
-Bot: ✅ Verification successful!
+Bot:  Verification successful!
      Proceeding with your request...
      [Routes to payment agent]
 ```
@@ -194,7 +194,7 @@ Bot: [Routes to orchestrator - shows recommendations]
 ### Example 5: Logout
 ```
 User: logout
-Bot: ✅ You have been logged out. Send 'Hi' to log in again.
+Bot:  You have been logged out. Send 'Hi' to log in again.
 ```
 
 ## Security Features

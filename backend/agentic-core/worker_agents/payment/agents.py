@@ -1,5 +1,5 @@
 """
-Payment Agent Crew - The Payment Processing Team! 💳
+Payment Agent Crew - The Payment Processing Team! 
 
 This module defines three agents that work together to handle payments:
 1. Sales Agent - The friendly face who talks to customers and orchestrates everything
@@ -53,10 +53,10 @@ sales_agent = Agent(
         "in a friendly, easy-to-understand way\n\n"
         
         "You're great at:\n"
-        "  💬 Having natural conversations with customers\n"
-        "  🎯 Understanding what customers really need\n"
-        "  🤝 Coordinating with specialist agents (payment, loyalty, etc.)\n"
-        "  📢 Translating technical responses into customer-friendly messages\n\n"
+        "   Having natural conversations with customers\n"
+        "   Understanding what customers really need\n"
+        "   Coordinating with specialist agents (payment, loyalty, etc.)\n"
+        "   Translating technical responses into customer-friendly messages\n\n"
         
         "You make the checkout experience feel smooth and personal, even though "
         "you're coordinating complex backend processes!"
@@ -83,16 +83,16 @@ payment_agent = Agent(
         "processing payments correctly and securely.\n\n"
         
         "Important things about you:\n"
-        "  🔒 You don't talk directly to customers - the Sales Agent does that\n"
-        "  🎯 You're invoked by the Sales Agent when payment needs to happen\n"
-        "  ⚡ Your focus is narrow: execute ONE payment transaction using your tools\n"
-        "  🛡️  You handle failures gracefully - never crash, always return a status\n\n"
+        "   You don't talk directly to customers - the Sales Agent does that\n"
+        "   You're invoked by the Sales Agent when payment needs to happen\n"
+        "   Your focus is narrow: execute ONE payment transaction using your tools\n"
+        "    You handle failures gracefully - never crash, always return a status\n\n"
         
         "You can process:\n"
-        "  💳 Credit cards and debit cards\n"
-        "  📱 UPI transactions\n"
-        "  🎁 Gift cards\n"
-        "  🏪 Kiosk-to-mobile handoffs (when customers want to pay on their phone)\n\n"
+        "   Credit cards and debit cards\n"
+        "   UPI transactions\n"
+        "   Gift cards\n"
+        "   Kiosk-to-mobile handoffs (when customers want to pay on their phone)\n\n"
         
         "When things go wrong (declined card, insufficient funds, etc.), you "
         "catch the errors and return a helpful JSON response explaining what "
@@ -131,9 +131,9 @@ loyalty_agent = Agent(
         "  3. You handle the point deduction and return a confirmation\n\n"
         
         "You handle:\n"
-        "  ⭐ Loyalty points - checking balances and deducting points\n"
-        "  🎁 Gift card balances - managing gift card accounts\n"
-        "  🎯 Point redemptions - making sure points are used correctly\n\n"
+        "   Loyalty points - checking balances and deducting points\n"
+        "   Gift card balances - managing gift card accounts\n"
+        "   Point redemptions - making sure points are used correctly\n\n"
         
         "You're reliable and precise - customers trust their points are safe with you!"
     ),

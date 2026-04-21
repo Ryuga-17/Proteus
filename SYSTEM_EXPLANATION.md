@@ -1,4 +1,4 @@
-# How the Retail Agent System Works 🎯
+# How the Retail Agent System Works 
 
 ## Table of Contents
 1. [System Overview](#system-overview)
@@ -19,11 +19,11 @@ This is a **multi-agent retail management system** built with CrewAI. Think of i
 ### What It Does
 
 The system handles:
-- 📦 **Inventory Management** - Stock checks, transfers, ordering from suppliers
-- 🚚 **Order Fulfillment** - Shipping orders or reserving items for pickup
-- 💳 **Payment Processing** - Credit cards, UPI, kiosk-to-mobile, loyalty points
-- 🎁 **Loyalty & Offers** - Pricing calculations, discounts, point management
-- 🎧 **Customer Support** - Order tracking, returns, exchanges, feedback
+-  **Inventory Management** - Stock checks, transfers, ordering from suppliers
+-  **Order Fulfillment** - Shipping orders or reserving items for pickup
+-  **Payment Processing** - Credit cards, UPI, kiosk-to-mobile, loyalty points
+-  **Loyalty & Offers** - Pricing calculations, discounts, point management
+-  **Customer Support** - Order tracking, returns, exchanges, feedback
 
 ### The Big Idea
 
@@ -73,7 +73,7 @@ Instead of one monolithic system trying to do everything, we have **specialized 
 
 ### Key Components
 
-1. **Orchestrator** ⭐ - **THE CENTRAL HUB** - All requests flow through here
+1. **Orchestrator**  - **THE CENTRAL HUB** - All requests flow through here
    - Routes requests to the right agent(s)
    - Coordinates multi-agent workflows
    - Synthesizes and formats responses
@@ -90,27 +90,27 @@ Instead of one monolithic system trying to do everything, we have **specialized 
 
 ---
 
-## The Orchestrator: Your Central Command ⭐
+## The Orchestrator: Your Central Command 
 
-### 🎯 THE CRITICAL RULE: All Agents Interact Through Orchestrator
+###  THE CRITICAL RULE: All Agents Interact Through Orchestrator
 
 **The Orchestrator is the ONLY way to access agents in this system.** Think of it as the central nervous system - every request must go through it, and every response comes back through it.
 
 ### Why This Architecture?
 
 This design ensures:
-- ✅ **Single Point of Control** - One place to manage all agent interactions
-- ✅ **Consistent Routing** - Smart decisions about which agent handles what
-- ✅ **Unified Responses** - All outputs formatted consistently
-- ✅ **Multi-Agent Coordination** - Can seamlessly coordinate multiple agents
-- ✅ **Better Monitoring** - Track all requests and responses in one place
-- ✅ **Error Handling** - Centralized error management and recovery
+-  **Single Point of Control** - One place to manage all agent interactions
+-  **Consistent Routing** - Smart decisions about which agent handles what
+-  **Unified Responses** - All outputs formatted consistently
+-  **Multi-Agent Coordination** - Can seamlessly coordinate multiple agents
+-  **Better Monitoring** - Track all requests and responses in one place
+-  **Error Handling** - Centralized error management and recovery
 
 ### How It Routes Requests
 
 When a request comes in, the Orchestrator follows this process:
 
-1. **Intent Analysis** 🧠
+1. **Intent Analysis** 
    ```
    Request: "Check stock for red shirts"
    ↓
@@ -122,7 +122,7 @@ When a request comes in, the Orchestrator follows this process:
    Confidence: HIGH
    ```
 
-2. **Routing Decision** 🎯
+2. **Routing Decision** 
    ```
    Determined: Need Inventory Agent
    ↓
@@ -135,7 +135,7 @@ When a request comes in, the Orchestrator follows this process:
    Executes the request through the crew
    ```
 
-3. **Result Collection** 📥
+3. **Result Collection** 
    ```
    Inventory Agent completes task
    ↓
@@ -144,7 +144,7 @@ When a request comes in, the Orchestrator follows this process:
    Result includes all relevant information
    ```
 
-4. **Response Synthesis** ✨
+4. **Response Synthesis** 
    ```
    Orchestrator receives result(s)
    ↓
@@ -177,22 +177,22 @@ When the Orchestrator routes to an agent, the task includes this context:
 ```
 
 This tells agents:
-- ✅ They're being orchestrated (not called directly)
-- ✅ Their response will be returned to Orchestrator
-- ✅ They should format their response appropriately
+-  They're being orchestrated (not called directly)
+-  Their response will be returned to Orchestrator
+-  They should format their response appropriately
 
 ---
 
 ## How Agents Work Together
 
-### ⚠️ IMPORTANT: All Agents Interact Through Orchestrator
+###  IMPORTANT: All Agents Interact Through Orchestrator
 
 **Every agent in this system is accessed through the Orchestrator Agent.** Agents don't communicate directly with each other - the Orchestrator coordinates all interactions. This ensures:
-- ✅ Centralized routing and coordination
-- ✅ Consistent response formatting  
-- ✅ Better error handling
-- ✅ Easier monitoring and debugging
-- ✅ Ability to coordinate multi-agent workflows
+-  Centralized routing and coordination
+-  Consistent response formatting  
+-  Better error handling
+-  Easier monitoring and debugging
+-  Ability to coordinate multi-agent workflows
 
 ### Simple Workflow: Single Agent
 
@@ -245,8 +245,8 @@ Orchestrator formats unified final response
 ```
 
 **Example:** "Order SKU-123 and ship it to customer"
-- Orchestrator → Routes to Inventory Agent (check stock) → Gets: "In stock ✅"
-- Orchestrator → Routes to Fulfillment Agent (ship order) → Gets: "Tracking ABC123 ✅"
+- Orchestrator → Routes to Inventory Agent (check stock) → Gets: "In stock "
+- Orchestrator → Routes to Fulfillment Agent (ship order) → Gets: "Tracking ABC123 "
 - Orchestrator → Synthesizes: "Order confirmed! Stock verified. Tracking: ABC123"
 
 **Key Point:** Agents don't talk to each other - Orchestrator coordinates everything!
@@ -268,7 +268,7 @@ Sales Agent (Manager)
 
 ## Detailed Agent Breakdown
 
-### 1. Inventory Agent 📦
+### 1. Inventory Agent 
 
 **Role:** Manage stock levels, transfers, and procurement
 
@@ -315,7 +315,7 @@ Result returned to Orchestrator → Orchestrator formats → User
 
 ---
 
-### 2. Fulfillment Agent 🚚
+### 2. Fulfillment Agent 
 
 **Role:** Get orders to customers (shipping or store pickup)
 
@@ -357,7 +357,7 @@ Result returned to Orchestrator → Orchestrator formats → User
 
 ---
 
-### 3. Payment Agent 💳
+### 3. Payment Agent 
 
 **Role:** Process payments securely
 
@@ -409,7 +409,7 @@ Result returned to Orchestrator → Orchestrator formats → User
 
 ---
 
-### 4. Loyalty & Offers Agent 🎁
+### 4. Loyalty & Offers Agent 
 
 **Role:** Calculate pricing with discounts, coupons, and loyalty points
 
@@ -461,7 +461,7 @@ Result returned to Orchestrator → Orchestrator formats → User
 
 ---
 
-### 5. Post-Purchase Support Agent 🎧
+### 5. Post-Purchase Support Agent 
 
 **Role:** Help customers after purchase (tracking, returns, feedback)
 
@@ -518,22 +518,22 @@ Result returned to Orchestrator → Orchestrator formats → User
 ```
 User: "Check stock for SKU-123"
 
-1. ✅ Orchestrator receives request
-2. ✅ Orchestrator uses analyze_intent tool
+1.  Orchestrator receives request
+2.  Orchestrator uses analyze_intent tool
    → Analyzes keywords: "stock", "SKU-123"
    → Identifies: Primary agent = "inventory", Confidence: HIGH
-3. ✅ Orchestrator uses route_to_inventory tool
+3.  Orchestrator uses route_to_inventory tool
    → Creates temporary Inventory crew
    → Passes task: "This request is being processed through the Orchestrator Agent. Check stock for SKU-123"
-4. ✅ Inventory Orchestrator Agent receives task (knows it's from Orchestrator)
+4.  Inventory Orchestrator Agent receives task (knows it's from Orchestrator)
    → Uses check_stock_tool
    → Checks stock at all locations
-5. ✅ Inventory Agent returns result to Orchestrator
+5.  Inventory Agent returns result to Orchestrator
    → JSON with stock levels: {"store_a": 45, "store_b": 12, ...}
-6. ✅ Orchestrator receives result
+6.  Orchestrator receives result
    → Formats response nicely
    → Adds context if needed
-7. ✅ Orchestrator presents final formatted result to user
+7.  Orchestrator presents final formatted result to user
 
 Result: "SKU-123 stock levels: Store A: 45 units, Store B: 12 units, Godown Central: 200 units"
 ```
@@ -543,33 +543,33 @@ Result: "SKU-123 stock levels: Store A: 45 units, Store B: 12 units, Godown Cent
 ```
 User: "Order 2 red shirts and ship to customer C-456"
 
-1. ✅ Orchestrator receives request
-2. ✅ Orchestrator uses analyze_intent tool
+1.  Orchestrator receives request
+2.  Orchestrator uses analyze_intent tool
    → Identifies multiple keywords: "order", "ship"
    → Determines: Needs Inventory + Fulfillment agents
 
    STEP A: Inventory Check
-   3a. ✅ Orchestrator uses route_to_inventory tool
+   3a.  Orchestrator uses route_to_inventory tool
        → Creates Inventory crew
        → Task: "This request is being processed through the Orchestrator Agent. 
                 Check stock for 2 red shirts"
-   3b. ✅ Inventory Agent checks stock
+   3b.  Inventory Agent checks stock
        → Returns to Orchestrator: "Stock available: 10 units at warehouse"
-   3c. ✅ Orchestrator receives inventory result ✅
+   3c.  Orchestrator receives inventory result 
 
    STEP B: Fulfillment (using inventory result)
-   4a. ✅ Orchestrator uses route_to_fulfillment tool
+   4a.  Orchestrator uses route_to_fulfillment tool
        → Creates Fulfillment crew
        → Task: "This request is being processed through the Orchestrator Agent.
                 Ship 2 red shirts to customer C-456 address"
-   4b. ✅ Fulfillment Agent books shipment
+   4b.  Fulfillment Agent books shipment
        → Returns to Orchestrator: "Tracking: ABC123, ETA: Oct 22"
 
    STEP C: Synthesis
-   5. ✅ Orchestrator combines both results
-      → Inventory: Stock verified ✅
-      → Fulfillment: Shipment booked ✅
-   6. ✅ Orchestrator formats unified response
+   5.  Orchestrator combines both results
+      → Inventory: Stock verified 
+      → Fulfillment: Shipment booked 
+   6.  Orchestrator formats unified response
    
 Result: "Order confirmed! Stock verified (10 units available). 
          Shipment booked with tracking number ABC123. 
@@ -581,48 +581,48 @@ Result: "Order confirmed! Stock verified (10 units available).
 ```
 User: "Checkout with $50 order, use coupon SAVE20 and 500 loyalty points"
 
-1. ✅ Orchestrator receives request
-2. ✅ Orchestrator uses analyze_intent tool
+1.  Orchestrator receives request
+2.  Orchestrator uses analyze_intent tool
    → Identifies: "checkout", "coupon", "loyalty points"
    → Determines: Needs Loyalty + Payment agents (sequential)
 
    STEP A: Pricing Calculation
-   3a. ✅ Orchestrator uses route_to_loyalty tool
+   3a.  Orchestrator uses route_to_loyalty tool
        → Creates Loyalty crew
        → Task: "This request is being processed through the Orchestrator Agent.
                 Calculate price for $50 order with coupon SAVE20 and 500 loyalty points"
-   3b. ✅ Loyalty Agent calculates pricing
+   3b.  Loyalty Agent calculates pricing
        → Original: $50
        → Coupon SAVE20: -$10
        → 500 loyalty points: -$50
        → Final: $0
        → Returns to Orchestrator: Complete price breakdown
-   3c. ✅ Orchestrator receives pricing result ✅
+   3c.  Orchestrator receives pricing result 
 
    STEP B: Payment Processing (using pricing result)
-   4a. ✅ Orchestrator uses route_to_payment tool
+   4a.  Orchestrator uses route_to_payment tool
        → Creates Payment crew
        → Task: "This request is being processed through the Orchestrator Agent.
                 Process payment: Final amount $0, using 500 loyalty points"
-   4b. ✅ Payment crew processes:
+   4b.  Payment crew processes:
        → Sales Agent coordinates
        → Payment Agent processes transaction
        → Loyalty Agent (payment crew) deducts 500 points
        → Returns to Orchestrator: "Payment successful, points deducted"
-   4c. ✅ Orchestrator receives payment result ✅
+   4c.  Orchestrator receives payment result 
 
    STEP C: Synthesis
-   5. ✅ Orchestrator combines both results:
+   5.  Orchestrator combines both results:
       → Pricing: Final price calculated ($0)
       → Payment: Transaction completed, points deducted
-   6. ✅ Orchestrator formats comprehensive response
+   6.  Orchestrator formats comprehensive response
    
-Result: "Checkout complete! 💰\n"
+Result: "Checkout complete! \n"
         "Original price: $50.00\n"
         "Coupon SAVE20: -$10.00\n"
         "Loyalty points (500): -$50.00\n"
         "Final amount: $0.00\n"
-        "Payment successful ✅\n"
+        "Payment successful \n"
         "500 loyalty points deducted from your account."
 ```
 
@@ -631,27 +631,27 @@ Result: "Checkout complete! 💰\n"
 ```
 User: "Where is my order ORD-12345?"
 
-1. ✅ Orchestrator receives request
-2. ✅ Orchestrator uses analyze_intent tool
+1.  Orchestrator receives request
+2.  Orchestrator uses analyze_intent tool
    → Identifies keywords: "where", "order", "ORD-12345"
    → Determines: Primary agent = "support", Confidence: HIGH
-3. ✅ Orchestrator uses route_to_support tool
+3.  Orchestrator uses route_to_support tool
    → Creates Support crew
    → Task: "This request is being processed through the Orchestrator Agent.
             Where is my order ORD-12345?"
-4. ✅ Support Agent receives task (knows it's from Orchestrator)
+4.  Support Agent receives task (knows it's from Orchestrator)
    → Uses OrderManagementTool → Gets order details
    → Gets tracking number: "1Z987XYZ"
    → Uses CarrierAPITool → Gets real-time location
    → Formats friendly, empathetic response
-5. ✅ Support Agent returns result to Orchestrator
+5.  Support Agent returns result to Orchestrator
    → Complete tracking information with status
-6. ✅ Orchestrator receives result
+6.  Orchestrator receives result
    → Formats if needed (usually Support Agent already formats well)
    → Adds any additional context
-7. ✅ Orchestrator presents final response to user
+7.  Orchestrator presents final response to user
 
-Result: "I'm happy to help you track your order! 📦\n"
+Result: "I'm happy to help you track your order! \n"
         "Your order ORD-12345 is currently in transit!\n"
         "Tracking Number: 1Z987XYZ\n"
         "Current Location: Mumbai Distribution Center\n"
@@ -844,7 +844,7 @@ Sales Agent (coordinates)
 
 ## Getting Started
 
-### ✅ Recommended: Always Use Orchestrator
+###  Recommended: Always Use Orchestrator
 
 **The Orchestrator is your single entry point to all agents!**
 
@@ -879,27 +879,27 @@ Sales Agent (coordinates)
    result = run_orchestrator(task, "Complete Order Processing")
    ```
 
-### ⚠️ Direct Agent Access (Testing Only)
+###  Direct Agent Access (Testing Only)
 
 While each agent has its own `main.py` for testing, **in production, always use the Orchestrator:**
 
 ```python
-# ❌ NOT RECOMMENDED for production
+#  NOT RECOMMENDED for production
 # Direct agent access bypasses orchestrator coordination
 from inventory_agent.main import run_crew
 run_crew()
 
-# ✅ RECOMMENDED - Use Orchestrator
+#  RECOMMENDED - Use Orchestrator
 from orchestrator.main import handle_custom_request
 handle_custom_request("Run inventory optimization")
 ```
 
 **Why use Orchestrator?**
-- ✅ Smart routing to the right agent
-- ✅ Multi-agent coordination
-- ✅ Consistent response formatting
-- ✅ Better error handling
-- ✅ Centralized monitoring
+-  Smart routing to the right agent
+-  Multi-agent coordination
+-  Consistent response formatting
+-  Better error handling
+-  Centralized monitoring
 
 ---
 
@@ -909,7 +909,7 @@ handle_custom_request("Run inventory optimization")
 
 This system is like a **smart retail management team with a central command center**:
 
-- **Orchestrator** ⭐ = **THE CENTRAL COMMAND** - All requests flow through here
+- **Orchestrator**  = **THE CENTRAL COMMAND** - All requests flow through here
   - Receives ALL requests from users
   - Analyzes intent and determines routing
   - Coordinates all agent interactions
@@ -932,23 +932,23 @@ This system is like a **smart retail management team with a central command cent
 
 ### Key Principles
 
-1. **🎯 Orchestrator-Centric Design**
+1. ** Orchestrator-Centric Design**
    - All requests → Orchestrator
    - Orchestrator → Routes to agents
    - Agents → Return to Orchestrator
    - Orchestrator → Returns to user
 
-2. **🔀 No Direct Agent Communication**
+2. ** No Direct Agent Communication**
    - Agents don't talk to each other
    - Orchestrator coordinates everything
    - Ensures consistent, managed interactions
 
-3. **🔄 Dynamic Crew Creation**
+3. ** Dynamic Crew Creation**
    - Orchestrator creates crews on-demand
    - Crews are temporary (per-request)
    - Right agents for the right job
 
-4. **✨ Unified Response Format**
+4. ** Unified Response Format**
    - All responses flow through Orchestrator
    - Consistent formatting
    - Better user experience
@@ -956,13 +956,13 @@ This system is like a **smart retail management team with a central command cent
 ### The Beauty of This Design
 
 You just **describe what you need in plain English**, and:
-- ✅ Orchestrator figures out which agent(s) to use
-- ✅ Orchestrator coordinates multi-agent workflows automatically
-- ✅ Everything flows through a single, manageable system
-- ✅ All responses are consistently formatted
-- ✅ Easy to monitor, debug, and extend
+-  Orchestrator figures out which agent(s) to use
+-  Orchestrator coordinates multi-agent workflows automatically
+-  Everything flows through a single, manageable system
+-  All responses are consistently formatted
+-  Easy to monitor, debug, and extend
 
-🎉 **That's how the whole system works - all agents interact through the Orchestrator Agent!**
+ **That's how the whole system works - all agents interact through the Orchestrator Agent!**
 
 ---
 
@@ -972,20 +972,20 @@ You just **describe what you need in plain English**, and:
 
 | From Agent | To Agent | Interaction Type | How |
 |------------|----------|------------------|-----|
-| **User** | **Any Agent** | ❌ **NONE** | Users NEVER call agents directly |
-| **User** | **Orchestrator** | ✅ **DIRECT** | Users always go through Orchestrator |
-| **Orchestrator** | **Any Agent** | ✅ **ROUTED** | Via routing tools (route_to_*) |
-| **Agent** | **Agent** | ❌ **NONE** | Agents don't communicate directly |
-| **Agent** | **Orchestrator** | ✅ **RETURN** | Agents return results to Orchestrator |
-| **Orchestrator** | **User** | ✅ **DIRECT** | Orchestrator returns final response |
+| **User** | **Any Agent** |  **NONE** | Users NEVER call agents directly |
+| **User** | **Orchestrator** |  **DIRECT** | Users always go through Orchestrator |
+| **Orchestrator** | **Any Agent** |  **ROUTED** | Via routing tools (route_to_*) |
+| **Agent** | **Agent** |  **NONE** | Agents don't communicate directly |
+| **Agent** | **Orchestrator** |  **RETURN** | Agents return results to Orchestrator |
+| **Orchestrator** | **User** |  **DIRECT** | Orchestrator returns final response |
 
 ### Key Takeaways
 
-- ✅ **All interactions flow through Orchestrator**
-- ❌ **No direct agent-to-agent communication**
-- ✅ **Orchestrator creates temporary crews for each request**
-- ✅ **Agents receive Orchestrator context in tasks**
-- ✅ **All responses return through Orchestrator**
+-  **All interactions flow through Orchestrator**
+-  **No direct agent-to-agent communication**
+-  **Orchestrator creates temporary crews for each request**
+-  **Agents receive Orchestrator context in tasks**
+-  **All responses return through Orchestrator**
 
 ---
 
@@ -1093,32 +1093,32 @@ You just **describe what you need in plain English**, and:
 
 ### Why Orchestrator-Centric Design?
 
-1. **🎯 Single Point of Control**
+1. ** Single Point of Control**
    - All requests go through one place
    - Easy to monitor and manage
    - Consistent behavior
 
-2. **🧠 Smart Routing**
+2. ** Smart Routing**
    - Automatic agent selection
    - Keyword-based intent analysis
    - Handles ambiguous requests
 
-3. **🤝 Multi-Agent Coordination**
+3. ** Multi-Agent Coordination**
    - Seamlessly coordinates multiple agents
    - Manages sequential workflows
    - Synthesizes complex results
 
-4. **✨ Consistent Formatting**
+4. ** Consistent Formatting**
    - All responses formatted uniformly
    - Better user experience
    - Easier integration
 
-5. **🔧 Easy Maintenance**
+5. ** Easy Maintenance**
    - Update one agent without affecting others
    - Centralized error handling
    - Simple to add new capabilities
 
-6. **📊 Better Observability**
+6. ** Better Observability**
    - Track all requests in one place
    - Monitor agent performance
    - Debug issues more easily
@@ -1129,19 +1129,19 @@ You just **describe what you need in plain English**, and:
 
 This system uses an **Orchestrator-Centric Architecture** where:
 
-- **Orchestrator = The Brain** 🧠
+- **Orchestrator = The Brain** 
   - Receives all requests
   - Makes routing decisions
   - Coordinates agents
   - Formats responses
 
-- **Agents = The Hands** 🤲
+- **Agents = The Hands** 
   - Execute specific tasks
   - Use their specialized tools
   - Return results to Orchestrator
   - Never communicate directly with each other
 
-- **Result = A Coordinated, Unified System** 🎯
+- **Result = A Coordinated, Unified System** 
   - Smart routing
   - Seamless coordination
   - Consistent experience
@@ -1149,5 +1149,5 @@ This system uses an **Orchestrator-Centric Architecture** where:
 
 **Remember:** Every agent interaction flows through the Orchestrator. It's the central command center that makes everything work together smoothly!
 
-🎉 **That's the complete system - Orchestrator-Centric Architecture in action!**
+ **That's the complete system - Orchestrator-Centric Architecture in action!**
 

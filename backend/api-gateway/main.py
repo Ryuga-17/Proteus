@@ -230,20 +230,20 @@ async def recommend_size(request: SizeRecommendationRequest):
     start_time = time.time()
     
     print("\n" + "="*70)
-    print("📏 SIZE RECOMMENDATION REQUEST RECEIVED")
+    print(" SIZE RECOMMENDATION REQUEST RECEIVED")
     print("="*70)
-    print(f"📦 Product ID: {request.product_id}")
-    print(f"👤 User ID: {request.user_id}")
-    print(f"📐 Body Measurements:")
+    print(f" Product ID: {request.product_id}")
+    print(f" User ID: {request.user_id}")
+    print(f" Body Measurements:")
     for key, value in request.body_measurements.items():
         print(f"   - {key}: {value}")
-    print(f"👔 Preferred Fit: {request.preferred_fit}")
+    print(f" Preferred Fit: {request.preferred_fit}")
     if request.material_preference:
-        print(f"🧵 Material Preference: {request.material_preference}")
+        print(f" Material Preference: {request.material_preference}")
     print("="*70 + "\n")
     
     try:
-        print("🔍 Step 1: Loading product size chart...")
+        print(" Step 1: Loading product size chart...")
         await asyncio.sleep(0.2)
         
         size_chart = {
@@ -254,10 +254,10 @@ async def recommend_size(request: SizeRecommendationRequest):
             "XXL": {"chest": 52, "waist": 46, "hip": 52, "shoulder": 20}
         }
         
-        print(f"✅ Size chart loaded: {len(size_chart)} sizes available")
+        print(f" Size chart loaded: {len(size_chart)} sizes available")
         print(f"   Available sizes: {', '.join(size_chart.keys())}")
         
-        print("\n🔍 Step 2: Analyzing body measurements...")
+        print("\n Step 2: Analyzing body measurements...")
         await asyncio.sleep(0.2)
         
         user_chest = request.body_measurements.get("chest", 0)
@@ -271,7 +271,7 @@ async def recommend_size(request: SizeRecommendationRequest):
         print(f"   - Hip: {user_hip} inches")
         print(f"   - Shoulder: {user_shoulder} inches")
         
-        print("\n🔍 Step 3: Matching measurements to size chart...")
+        print("\n Step 3: Matching measurements to size chart...")
         await asyncio.sleep(0.3)
         
         best_match = None
@@ -302,9 +302,9 @@ async def recommend_size(request: SizeRecommendationRequest):
         for size, comp in sorted(size_comparisons.items(), key=lambda x: x[1]["total_diff"]):
             print(f"   - {size}: Total difference = {comp['total_diff']:.1f} inches")
         
-        print(f"\n✅ Best match: {best_match} (difference: {best_score:.1f} inches)")
+        print(f"\n Best match: {best_match} (difference: {best_score:.1f} inches)")
         
-        print("\n🔍 Step 4: Considering material type and fit preference...")
+        print("\n Step 4: Considering material type and fit preference...")
         await asyncio.sleep(0.2)
         
         material_adjustment = 0
@@ -336,7 +336,7 @@ async def recommend_size(request: SizeRecommendationRequest):
             fit_analysis["recommendation"] = "Standard fit recommended"
             print(f"   Fit preference: {request.preferred_fit} (regular)")
         
-        print("\n🔍 Step 5: Calculating final size recommendation...")
+        print("\n Step 5: Calculating final size recommendation...")
         await asyncio.sleep(0.2)
         
         size_order = ["S", "M", "L", "XL", "XXL"]
@@ -368,19 +368,19 @@ async def recommend_size(request: SizeRecommendationRequest):
         
         processing_time = (time.time() - start_time) * 1000
         
-        print(f"\n✅ Final recommendation: {recommended_size}")
+        print(f"\n Final recommendation: {recommended_size}")
         print(f"   Confidence: {confidence:.1%}")
         print(f"   Reasoning: {reasoning}")
         print(f"   Base match: {best_match}")
         print(f"   Adjustments: Material ({material_adjustment:+.1f}), Fit ({fit_adjustment:+.1f})")
         
         print("\n" + "="*70)
-        print("✅ SIZE RECOMMENDATION RESPONSE")
+        print(" SIZE RECOMMENDATION RESPONSE")
         print("="*70)
-        print(f"✅ Success: True")
-        print(f"📏 Recommended Size: {recommended_size}")
-        print(f"📊 Confidence: {confidence:.1%}")
-        print(f"⏱️  Processing time: {processing_time:.2f}ms")
+        print(f" Success: True")
+        print(f" Recommended Size: {recommended_size}")
+        print(f" Confidence: {confidence:.1%}")
+        print(f"  Processing time: {processing_time:.2f}ms")
         print("="*70 + "\n")
         
         return SizeRecommendationResponse(
@@ -395,10 +395,10 @@ async def recommend_size(request: SizeRecommendationRequest):
     except Exception as e:
         processing_time = (time.time() - start_time) * 1000
         print("\n" + "="*70)
-        print("❌ SIZE RECOMMENDATION ERROR")
+        print(" SIZE RECOMMENDATION ERROR")
         print("="*70)
-        print(f"❌ Error: {str(e)}")
-        print(f"⏱️  Processing time: {processing_time:.2f}ms")
+        print(f" Error: {str(e)}")
+        print(f"  Processing time: {processing_time:.2f}ms")
         print("="*70 + "\n")
         raise HTTPException(
             status_code=500,
@@ -412,37 +412,37 @@ async def virtual_try_on(request: VirtualTryOnRequest):
     start_time = time.time()
     
     print("\n" + "="*70)
-    print("🖼️  VIRTUAL TRY-ON REQUEST RECEIVED")
+    print("  VIRTUAL TRY-ON REQUEST RECEIVED")
     print("="*70)
-    print(f"📦 Product ID: {request.product_id}")
-    print(f"👤 User ID: {request.user_id}")
-    print(f"📸 User Image URL: {request.user_image_url[:50]}...")
-    print(f"🎭 Pose Type: {request.pose_type}")
+    print(f" Product ID: {request.product_id}")
+    print(f" User ID: {request.user_id}")
+    print(f" User Image URL: {request.user_image_url[:50]}...")
+    print(f" Pose Type: {request.pose_type}")
     print("="*70 + "\n")
     
     try:
-        print("🔍 Step 1: Validating user image...")
+        print(" Step 1: Validating user image...")
         await asyncio.sleep(0.2)
         
         print(f"   - Image URL received: {request.user_image_url}")
         print(f"   - Pose type: {request.pose_type}")
         print(f"   - Validating image format and dimensions...")
         
-        print("✅ User image validated")
+        print(" User image validated")
         print("   - Format: JPEG/PNG")
         print("   - Dimensions: Detected")
         print("   - Pose detected: Standing")
         
-        print("\n🔍 Step 2: Loading product garment image...")
+        print("\n Step 2: Loading product garment image...")
         await asyncio.sleep(0.2)
         
         print(f"   - Product ID: {request.product_id}")
         print(f"   - Fetching garment image from product catalog...")
         
         garment_image_url = f"https://example.com/products/{request.product_id}/garment.jpg"
-        print(f"✅ Garment image loaded: {garment_image_url}")
+        print(f" Garment image loaded: {garment_image_url}")
         
-        print("\n🔍 Step 3: Initializing Nano Banana model...")
+        print("\n Step 3: Initializing Nano Banana model...")
         await asyncio.sleep(0.3)
         
         print("   - Loading Nano Banana virtual try-on model...")
@@ -450,9 +450,9 @@ async def virtual_try_on(request: VirtualTryOnRequest):
         print("   - Capabilities: Garment fitting, pose alignment, texture mapping")
         print("   - GPU: Enabled")
         
-        print("✅ Nano Banana model initialized")
+        print(" Nano Banana model initialized")
         
-        print("\n🔍 Step 4: Processing user pose detection...")
+        print("\n Step 4: Processing user pose detection...")
         await asyncio.sleep(0.4)
         
         pose_keypoints = {
@@ -471,12 +471,12 @@ async def virtual_try_on(request: VirtualTryOnRequest):
         for key, point in pose_keypoints.items():
             print(f"     • {key}: ({point['x']}, {point['y']})")
         
-        print("✅ Pose detection complete")
+        print(" Pose detection complete")
         print("   - Pose type: Standing")
         print("   - Confidence: 95%")
         print("   - Body alignment: Good")
         
-        print("\n🔍 Step 5: Aligning garment to user body...")
+        print("\n Step 5: Aligning garment to user body...")
         await asyncio.sleep(0.5)
         
         print("   - Mapping garment dimensions to user body...")
@@ -486,31 +486,31 @@ async def virtual_try_on(request: VirtualTryOnRequest):
         print("     • Waist positioning: Aligned")
         print("     • Length adjustment: Calculated")
         
-        print("✅ Garment alignment complete")
+        print(" Garment alignment complete")
         
-        print("\n🔍 Step 6: Applying garment to user image (Nano Banana)...")
+        print("\n Step 6: Applying garment to user image (Nano Banana)...")
         await asyncio.sleep(1.0)
         
         print("   - Processing with Nano Banana model...")
         print("   - Step 6.1: Garment segmentation...")
         await asyncio.sleep(0.3)
-        print("     ✅ Garment segmented from background")
+        print("      Garment segmented from background")
         
         print("   - Step 6.2: Body-garment mapping...")
         await asyncio.sleep(0.3)
-        print("     ✅ Garment mapped to body contours")
+        print("      Garment mapped to body contours")
         
         print("   - Step 6.3: Texture and lighting adjustment...")
         await asyncio.sleep(0.3)
-        print("     ✅ Lighting matched to user image")
+        print("      Lighting matched to user image")
         
         print("   - Step 6.4: Final composition...")
         await asyncio.sleep(0.3)
-        print("     ✅ Try-on image generated")
+        print("      Try-on image generated")
         
         result_image_url = f"https://example.com/tryon-results/{request.user_id}_{request.product_id}_{int(time.time())}.jpg"
         
-        print("\n🔍 Step 7: Analyzing fit quality...")
+        print("\n Step 7: Analyzing fit quality...")
         await asyncio.sleep(0.3)
         
         fit_analysis = {
@@ -532,17 +532,17 @@ async def virtual_try_on(request: VirtualTryOnRequest):
         print("   - Length fit: Good")
         print(f"   - Overall fit score: {fit_analysis['overall_fit_score']:.1%}")
         
-        print("✅ Fit analysis complete")
+        print(" Fit analysis complete")
         
         processing_time = (time.time() - start_time) * 1000
         
         print("\n" + "="*70)
-        print("✅ VIRTUAL TRY-ON RESPONSE")
+        print(" VIRTUAL TRY-ON RESPONSE")
         print("="*70)
-        print(f"✅ Success: True")
-        print(f"🖼️  Result Image: {result_image_url}")
-        print(f"📊 Overall Fit Score: {fit_analysis['overall_fit_score']:.1%}")
-        print(f"⏱️  Processing time: {processing_time:.2f}ms")
+        print(f" Success: True")
+        print(f"  Result Image: {result_image_url}")
+        print(f" Overall Fit Score: {fit_analysis['overall_fit_score']:.1%}")
+        print(f"  Processing time: {processing_time:.2f}ms")
         print("="*70 + "\n")
         
         return VirtualTryOnResponse(
@@ -555,10 +555,10 @@ async def virtual_try_on(request: VirtualTryOnRequest):
     except Exception as e:
         processing_time = (time.time() - start_time) * 1000
         print("\n" + "="*70)
-        print("❌ VIRTUAL TRY-ON ERROR")
+        print(" VIRTUAL TRY-ON ERROR")
         print("="*70)
-        print(f"❌ Error: {str(e)}")
-        print(f"⏱️  Processing time: {processing_time:.2f}ms")
+        print(f" Error: {str(e)}")
+        print(f"  Processing time: {processing_time:.2f}ms")
         print("="*70 + "\n")
         raise HTTPException(
             status_code=500,
@@ -573,22 +573,22 @@ async def book_instore_tryon(request: InStoreTryOnRequest):
     start_time = time.time()
     
     print("\n" + "="*70)
-    print("🏪 IN-STORE TRY-ON BOOKING REQUEST RECEIVED")
+    print(" IN-STORE TRY-ON BOOKING REQUEST RECEIVED")
     print("="*70)
-    print(f"📦 Product ID: {request.product_id}")
-    print(f"🏷️  SKU: {request.sku}")
-    print(f"👤 User ID: {request.user_id}")
-    print(f"📍 Store Location: {request.store_location}")
+    print(f" Product ID: {request.product_id}")
+    print(f"  SKU: {request.sku}")
+    print(f" User ID: {request.user_id}")
+    print(f" Store Location: {request.store_location}")
     if request.size:
-        print(f"📏 Size: {request.size}")
+        print(f" Size: {request.size}")
     if request.preferred_date:
-        print(f"📅 Preferred Date: {request.preferred_date}")
+        print(f" Preferred Date: {request.preferred_date}")
     if request.preferred_time:
-        print(f"🕐 Preferred Time: {request.preferred_time}")
+        print(f" Preferred Time: {request.preferred_time}")
     print("="*70 + "\n")
     
     try:
-        print("🔍 Step 1: Routing to Inventory Agent for stock check...")
+        print(" Step 1: Routing to Inventory Agent for stock check...")
         await asyncio.sleep(0.2)
         
         print(f"   - Requesting inventory check for SKU: {request.sku}")
@@ -596,20 +596,20 @@ async def book_instore_tryon(request: InStoreTryOnRequest):
         print(f"   - Checking availability at specified store...")
         
         print("\n" + "="*70)
-        print("📦 ROUTING TO INVENTORY AGENT")
+        print(" ROUTING TO INVENTORY AGENT")
         print("="*70)
-        print(f"📝 Request: Check stock for {request.sku} at {request.store_location}")
-        print(f"🔍 Analyzing inventory request...")
+        print(f" Request: Check stock for {request.sku} at {request.store_location}")
+        print(f" Analyzing inventory request...")
         print("="*70 + "\n")
         
-        print(f"🔧 [INVENTORY] Setting up inventory crew...")
+        print(f" [INVENTORY] Setting up inventory crew...")
         print(f"   - Agents: Orchestrator, Logistics, Procurement")
         print(f"   - Request: 'Check stock for {request.sku} at {request.store_location}'")
         
-        print(f"🚀 [INVENTORY] Starting inventory processing...")
+        print(f" [INVENTORY] Starting inventory processing...")
         await asyncio.sleep(0.3)
         
-        print(f"⚙️  [INVENTORY] Processing inventory request...")
+        print(f"  [INVENTORY] Processing inventory request...")
         print(f"   - Querying stock database...")
         print(f"   - Location: {request.store_location}")
         print(f"   - SKU: {request.sku}")
@@ -634,17 +634,17 @@ async def book_instore_tryon(request: InStoreTryOnRequest):
         
         print(f"   - Stock found at {request.store_location}: {store_stock} units")
         
-        print(f"\n✅ [INVENTORY] Inventory check complete!")
+        print(f"\n [INVENTORY] Inventory check complete!")
         print(f"   - Store: {request.store_location}")
         print(f"   - SKU: {request.sku}")
         print(f"   - Available stock: {store_stock} units")
         print("="*70 + "\n")
         
-        print("🔍 Step 2: Validating stock availability...")
+        print(" Step 2: Validating stock availability...")
         await asyncio.sleep(0.2)
         
         if store_stock <= 0:
-            print(f"   ⚠️  Stock unavailable at {request.store_location}")
+            print(f"     Stock unavailable at {request.store_location}")
             print(f"   - Current stock: {store_stock} units")
             print(f"   - Checking alternative locations...")
             
@@ -653,7 +653,7 @@ async def book_instore_tryon(request: InStoreTryOnRequest):
                     print(f"   - Found stock at {location}: {stock} units")
                     store_stock = stock
                     request.store_location = location
-                    print(f"   ✅ Using alternative location: {location}")
+                    print(f"    Using alternative location: {location}")
                     break
             else:
                 print(f"   - No stock found at any location")
@@ -661,13 +661,13 @@ async def book_instore_tryon(request: InStoreTryOnRequest):
                 store_stock = 0
         
         if store_stock > 0:
-            print(f"   ✅ Stock available: {store_stock} units")
+            print(f"    Stock available: {store_stock} units")
             print(f"   - Sufficient stock for try-on reservation")
         else:
-            print(f"   ⚠️  No current stock, but reservation will be created")
+            print(f"     No current stock, but reservation will be created")
             print(f"   - Store will notify when item is available")
         
-        print("\n🔍 Step 3: Creating reservation in inventory system...")
+        print("\n Step 3: Creating reservation in inventory system...")
         await asyncio.sleep(0.3)
         
         reservation_hours = 24
@@ -685,12 +685,12 @@ async def book_instore_tryon(request: InStoreTryOnRequest):
         
         booking_id = f"TRYON-{request.user_id[:6].upper()}-{int(time.time())}"
         
-        print(f"   ✅ Reservation created")
+        print(f"    Reservation created")
         print(f"   - Booking ID: {booking_id}")
         if reserved_until:
             print(f"   - Reserved until: {reserved_until}")
         
-        print("\n🔍 Step 4: Updating inventory system (reservation hold)...")
+        print("\n Step 4: Updating inventory system (reservation hold)...")
         await asyncio.sleep(0.2)
         
         if store_stock > 0:
@@ -703,7 +703,7 @@ async def book_instore_tryon(request: InStoreTryOnRequest):
             print(f"   - Store will reserve item when stock arrives")
             print(f"   - You will be notified when item is available")
         
-        print("\n🔍 Step 5: Generating booking confirmation...")
+        print("\n Step 5: Generating booking confirmation...")
         await asyncio.sleep(0.2)
         
         preferred_slot = ""
@@ -734,21 +734,21 @@ async def book_instore_tryon(request: InStoreTryOnRequest):
         if preferred_slot:
             confirmation_message += f" Your preferred time: {preferred_slot}."
         
-        print(f"   ✅ Confirmation message generated")
+        print(f"    Confirmation message generated")
         
         processing_time = (time.time() - start_time) * 1000
         
         print("\n" + "="*70)
-        print("✅ IN-STORE TRY-ON BOOKING RESPONSE")
+        print(" IN-STORE TRY-ON BOOKING RESPONSE")
         print("="*70)
-        print(f"✅ Success: True")
-        print(f"📋 Booking ID: {booking_id}")
-        print(f"📍 Store: {request.store_location}")
-        print(f"📦 Product: {request.product_id} ({request.sku})")
-        print(f"📊 Stock Available: {store_stock} units")
+        print(f" Success: True")
+        print(f" Booking ID: {booking_id}")
+        print(f" Store: {request.store_location}")
+        print(f" Product: {request.product_id} ({request.sku})")
+        print(f" Stock Available: {store_stock} units")
         if reserved_until:
-            print(f"⏰ Reserved Until: {reserved_until}")
-        print(f"⏱️  Processing time: {processing_time:.2f}ms")
+            print(f" Reserved Until: {reserved_until}")
+        print(f"  Processing time: {processing_time:.2f}ms")
         print("="*70 + "\n")
         
         return InStoreTryOnResponse(
@@ -766,10 +766,10 @@ async def book_instore_tryon(request: InStoreTryOnRequest):
     except Exception as e:
         processing_time = (time.time() - start_time) * 1000
         print("\n" + "="*70)
-        print("❌ IN-STORE TRY-ON BOOKING ERROR")
+        print(" IN-STORE TRY-ON BOOKING ERROR")
         print("="*70)
-        print(f"❌ Error: {str(e)}")
-        print(f"⏱️  Processing time: {processing_time:.2f}ms")
+        print(f" Error: {str(e)}")
+        print(f"  Processing time: {processing_time:.2f}ms")
         print("="*70 + "\n")
         raise HTTPException(
             status_code=500,
@@ -910,18 +910,18 @@ async def voice_recommendations(request: VoiceQueryRequest):
     start_time = time.time()
     
     print("\n" + "="*70)
-    print("🎤 VOICE RECOMMENDATION REQUEST RECEIVED")
+    print(" VOICE RECOMMENDATION REQUEST RECEIVED")
     print("="*70)
-    print(f"📝 Query: {request.query}")
-    print(f"👤 User ID: {request.user_id}")
+    print(f" Query: {request.query}")
+    print(f" User ID: {request.user_id}")
     print("="*70 + "\n")
     
     try:
         if DEMO_MODE:
-            print("🔧 Processing recommendations...")
+            print(" Processing recommendations...")
             await asyncio.sleep(0.5)
             
-            print(f"🔍 Query analysis:")
+            print(f" Query analysis:")
             print(f"   - Query text: '{request.query}'")
             print(f"   - Query length: {len(request.query)} characters")
             print(f"   - Query words: {len(request.query.split())} words")
@@ -931,12 +931,12 @@ async def voice_recommendations(request: VoiceQueryRequest):
             processing_time = (time.time() - start_time) * 1000
             
             print("\n" + "="*70)
-            print("✅ VOICE RECOMMENDATION RESPONSE")
+            print(" VOICE RECOMMENDATION RESPONSE")
             print("="*70)
-            print(f"✅ Success: True")
-            print(f"📦 Recommendations: {len(formatted_results)}")
-            print(f"⏱️  Processing time: {processing_time:.2f}ms")
-            print(f"\n📋 Top recommendations:")
+            print(f" Success: True")
+            print(f" Recommendations: {len(formatted_results)}")
+            print(f"  Processing time: {processing_time:.2f}ms")
+            print(f"\n Top recommendations:")
             for i, rec in enumerate(formatted_results[:3], 1):
                 print(f"   {i}. {rec.get('title', 'N/A')} - Score: {rec.get('score', 0):.2f}")
             print("="*70 + "\n")
@@ -948,11 +948,11 @@ async def voice_recommendations(request: VoiceQueryRequest):
                 message=f"Found {len(formatted_results)} recommendations"
             )
         else:
-            print("🔧 Processing with Recommendation Agent 2...")
+            print(" Processing with Recommendation Agent 2...")
             sys.path.insert(0, _RECOMMENDATION_PATH)
             from voice_processor_v2 import process_voice_query_v2
             
-            print(f"🔍 Starting voice query processing...")
+            print(f" Starting voice query processing...")
             print(f"   - Query: '{request.query}'")
             print(f"   - User: {request.user_id}")
             
@@ -961,7 +961,7 @@ async def voice_recommendations(request: VoiceQueryRequest):
                 user_id=request.user_id
             )
             
-            print(f"✅ Agent processing complete")
+            print(f" Agent processing complete")
             print(f"   - Raw results: {len(results)} items")
             
             formatted_results = []
@@ -982,12 +982,12 @@ async def voice_recommendations(request: VoiceQueryRequest):
             processing_time = (time.time() - start_time) * 1000
             
             print("\n" + "="*70)
-            print("✅ VOICE RECOMMENDATION RESPONSE")
+            print(" VOICE RECOMMENDATION RESPONSE")
             print("="*70)
-            print(f"✅ Success: True")
-            print(f"📦 Recommendations: {len(formatted_results)}")
-            print(f"⏱️  Processing time: {processing_time:.2f}ms")
-            print(f"\n📋 Top recommendations:")
+            print(f" Success: True")
+            print(f" Recommendations: {len(formatted_results)}")
+            print(f"  Processing time: {processing_time:.2f}ms")
+            print(f"\n Top recommendations:")
             for i, rec in enumerate(formatted_results[:3], 1):
                 print(f"   {i}. {rec.get('title', 'N/A')} - Score: {rec.get('score', 0):.2f}")
             print("="*70 + "\n")
@@ -1002,10 +1002,10 @@ async def voice_recommendations(request: VoiceQueryRequest):
     except Exception as e:
         processing_time = (time.time() - start_time) * 1000
         print("\n" + "="*70)
-        print("❌ VOICE RECOMMENDATION ERROR")
+        print(" VOICE RECOMMENDATION ERROR")
         print("="*70)
-        print(f"❌ Error: {str(e)}")
-        print(f"⏱️  Processing time: {processing_time:.2f}ms")
+        print(f" Error: {str(e)}")
+        print(f"  Processing time: {processing_time:.2f}ms")
         print("="*70 + "\n")
         raise HTTPException(
             status_code=500,
@@ -1027,11 +1027,11 @@ async def agent_query(request: AgentRequest):
     use_mcp = os.getenv("USE_MCP", "false").lower() == "true"
     
     print("\n" + "="*70)
-    print("🤖 AGENT QUERY REQUEST RECEIVED")
+    print(" AGENT QUERY REQUEST RECEIVED")
     print("="*70)
-    print(f"📝 Request: {request.request}")
-    print(f"👤 User ID: {request.user_id}")
-    print(f"🔌 MCP Mode: {use_mcp}")
+    print(f" Request: {request.request}")
+    print(f" User ID: {request.user_id}")
+    print(f" MCP Mode: {use_mcp}")
     print("="*70 + "\n")
     
     try:
@@ -1041,7 +1041,7 @@ async def agent_query(request: AgentRequest):
                 sys.path.insert(0, _ORCHESTRATION_PATH)
                 from mcp_client import SimpleOrchestratorClient
                 
-                print("🔌 Using MCP client for request handling...")
+                print(" Using MCP client for request handling...")
                 client = SimpleOrchestratorClient()
                 result = client.handle_request(request.request, request.user_id)
                 
@@ -1051,11 +1051,11 @@ async def agent_query(request: AgentRequest):
                 processing_time = (time.time() - start_time) * 1000
                 
                 print("\n" + "="*70)
-                print("✅ AGENT QUERY RESPONSE (MCP)")
+                print(" AGENT QUERY RESPONSE (MCP)")
                 print("="*70)
-                print(f"✅ Success: True")
-                print(f"🤖 Agent Used: {agent_used}")
-                print(f"⏱️  Processing time: {processing_time:.2f}ms")
+                print(f" Success: True")
+                print(f" Agent Used: {agent_used}")
+                print(f"  Processing time: {processing_time:.2f}ms")
                 print("="*70 + "\n")
                 
                 return AgentResponse(
@@ -1064,12 +1064,12 @@ async def agent_query(request: AgentRequest):
                     agent_used=agent_used
                 )
             except ImportError as e:
-                print(f"⚠️  MCP client not available, falling back to standard orchestrator: {e}")
+                print(f"  MCP client not available, falling back to standard orchestrator: {e}")
             except Exception as e:
-                print(f"⚠️  MCP client error, falling back to standard orchestrator: {e}")
+                print(f"  MCP client error, falling back to standard orchestrator: {e}")
         
         if DEMO_MODE:
-            print("🔍 [ORCHESTRATOR] Analyzing request intent...")
+            print(" [ORCHESTRATOR] Analyzing request intent...")
             await asyncio.sleep(0.3)
             
             request_lower = request.request.lower()
@@ -1077,7 +1077,7 @@ async def agent_query(request: AgentRequest):
             response_text = ""
             detected_keywords = []
             
-            print(f"🔍 [ORCHESTRATOR] Query analysis:")
+            print(f" [ORCHESTRATOR] Query analysis:")
             print(f"   - Original: '{request.request}'")
             print(f"   - Lowercase: '{request_lower}'")
             print(f"   - Word count: {len(request_lower.split())} words")
@@ -1085,7 +1085,7 @@ async def agent_query(request: AgentRequest):
             if any(word in request_lower for word in ["recommend", "find", "looking for", "show me"]):
                 agent_used = "recommendation_agent_2"
                 detected_keywords = [w for w in ["recommend", "find", "looking for", "show me"] if w in request_lower]
-                print(f"\n🎯 [ORCHESTRATOR] Intent detected: PRODUCT RECOMMENDATION")
+                print(f"\n [ORCHESTRATOR] Intent detected: PRODUCT RECOMMENDATION")
                 print(f"   - Keywords found: {detected_keywords}")
                 print(f"   - Routing to: Recommendation Agent 2")
                 print(f"   - Reason: User is searching for products")
@@ -1093,7 +1093,7 @@ async def agent_query(request: AgentRequest):
             elif any(word in request_lower for word in ["stock", "inventory"]):
                 agent_used = "inventory_agent"
                 detected_keywords = [w for w in ["stock", "inventory"] if w in request_lower]
-                print(f"\n📦 [ORCHESTRATOR] Intent detected: INVENTORY CHECK")
+                print(f"\n [ORCHESTRATOR] Intent detected: INVENTORY CHECK")
                 print(f"   - Keywords found: {detected_keywords}")
                 print(f"   - Routing to: Inventory Agent")
                 print(f"   - Reason: User wants to check stock levels")
@@ -1101,7 +1101,7 @@ async def agent_query(request: AgentRequest):
             elif any(word in request_lower for word in ["ship", "fulfill"]):
                 agent_used = "fulfillment_agent"
                 detected_keywords = [w for w in ["ship", "fulfill"] if w in request_lower]
-                print(f"\n🚚 [ORCHESTRATOR] Intent detected: FULFILLMENT")
+                print(f"\n [ORCHESTRATOR] Intent detected: FULFILLMENT")
                 print(f"   - Keywords found: {detected_keywords}")
                 print(f"   - Routing to: Fulfillment Agent")
                 print(f"   - Reason: User needs shipping/fulfillment service")
@@ -1109,7 +1109,7 @@ async def agent_query(request: AgentRequest):
             elif any(word in request_lower for word in ["pay", "payment"]):
                 agent_used = "payment_agent"
                 detected_keywords = [w for w in ["pay", "payment"] if w in request_lower]
-                print(f"\n💳 [ORCHESTRATOR] Intent detected: PAYMENT")
+                print(f"\n [ORCHESTRATOR] Intent detected: PAYMENT")
                 print(f"   - Keywords found: {detected_keywords}")
                 print(f"   - Routing to: Payment Agent")
                 print(f"   - Reason: User wants to process payment")
@@ -1117,28 +1117,28 @@ async def agent_query(request: AgentRequest):
             elif any(word in request_lower for word in ["price", "discount", "coupon", "checking discount"]):
                 agent_used = "loyalty_agent"
                 detected_keywords = [w for w in ["price", "discount", "coupon", "checking discount"] if w in request_lower]
-                print(f"\n🎁 [ORCHESTRATOR] Intent detected: LOYALTY/PRICING")
+                print(f"\n [ORCHESTRATOR] Intent detected: LOYALTY/PRICING")
                 print(f"   - Keywords found: {detected_keywords}")
                 print(f"   - Routing to: Loyalty Agent")
                 print(f"   - Reason: User is asking about prices/discounts")
                 print(f"\n" + "="*70)
-                print("🎁 ROUTING TO LOYALTY AGENT")
+                print(" ROUTING TO LOYALTY AGENT")
                 print("="*70)
-                print(f"📝 Request: {request.request}")
-                print(f"🔍 Analyzing loyalty/pricing request...")
+                print(f" Request: {request.request}")
+                print(f" Analyzing loyalty/pricing request...")
                 print("="*70 + "\n")
-                print(f"🔧 [LOYALTY] Setting up loyalty task...")
+                print(f" [LOYALTY] Setting up loyalty task...")
                 print(f"   - Request: '{request.request}'")
                 print(f"   - Request type: discount_application")
                 print(f"   - Agent: Loyalty and Offers Agent")
-                print(f"🚀 [LOYALTY] Starting loyalty processing...")
+                print(f" [LOYALTY] Starting loyalty processing...")
                 await asyncio.sleep(0.3)
-                print(f"⚙️  [LOYALTY] Processing loyalty/pricing request...")
+                print(f"  [LOYALTY] Processing loyalty/pricing request...")
                 print(f"   - Checking available discounts...")
                 print(f"   - Current promotions: 20% off on sweatshirts")
                 print(f"   - Loyalty points available: 500 points")
                 print(f"   - Best discount: 20% off + 5% loyalty discount")
-                print(f"\n✅ [LOYALTY] Loyalty processing complete!")
+                print(f"\n [LOYALTY] Loyalty processing complete!")
                 print(f"   - Discount found: 20% off")
                 print(f"   - Additional loyalty discount: 5%")
                 print(f"   - Total savings: 25% off")
@@ -1147,13 +1147,13 @@ async def agent_query(request: AgentRequest):
             elif any(word in request_lower for word in ["track", "return", "support"]):
                 agent_used = "support_agent"
                 detected_keywords = [w for w in ["track", "return", "support"] if w in request_lower]
-                print(f"\n🎧 [ORCHESTRATOR] Intent detected: SUPPORT")
+                print(f"\n [ORCHESTRATOR] Intent detected: SUPPORT")
                 print(f"   - Keywords found: {detected_keywords}")
                 print(f"   - Routing to: Support Agent")
                 print(f"   - Reason: User needs customer support")
                 response_text = f"I'm here to help! I can assist with order tracking, returns, or any other questions you have. What would you like help with?"
             else:
-                print(f"\n🤖 [ORCHESTRATOR] Intent detected: GENERAL")
+                print(f"\n [ORCHESTRATOR] Intent detected: GENERAL")
                 print(f"   - No specific keywords found")
                 print(f"   - Routing to: Orchestrator (default)")
                 print(f"   - Reason: General query, will be handled by orchestrator")
@@ -1162,11 +1162,11 @@ async def agent_query(request: AgentRequest):
             processing_time = (time.time() - start_time) * 1000
             
             print("\n" + "="*70)
-            print("✅ AGENT QUERY RESPONSE")
+            print(" AGENT QUERY RESPONSE")
             print("="*70)
-            print(f"✅ Success: True")
-            print(f"🤖 Agent Used: {agent_used}")
-            print(f"⏱️  Processing time: {processing_time:.2f}ms")
+            print(f" Success: True")
+            print(f" Agent Used: {agent_used}")
+            print(f"  Processing time: {processing_time:.2f}ms")
             print("="*70 + "\n")
             
             return AgentResponse(
@@ -1181,7 +1181,7 @@ async def agent_query(request: AgentRequest):
                     sys.path.insert(0, _ORCHESTRATION_PATH)
                     from mcp_client import SimpleOrchestratorClient
                     
-                    print("🔌 Using MCP client for request handling...")
+                    print(" Using MCP client for request handling...")
                     client = SimpleOrchestratorClient()
                     result = client.handle_request(request.request, request.user_id)
                     
@@ -1191,11 +1191,11 @@ async def agent_query(request: AgentRequest):
                     processing_time = (time.time() - start_time) * 1000
                     
                     print("\n" + "="*70)
-                    print("✅ AGENT QUERY RESPONSE (MCP)")
+                    print(" AGENT QUERY RESPONSE (MCP)")
                     print("="*70)
-                    print(f"✅ Success: True")
-                    print(f"🤖 Agent Used: {agent_used}")
-                    print(f"⏱️  Processing time: {processing_time:.2f}ms")
+                    print(f" Success: True")
+                    print(f" Agent Used: {agent_used}")
+                    print(f"  Processing time: {processing_time:.2f}ms")
                     print("="*70 + "\n")
                     
                     return AgentResponse(
@@ -1204,23 +1204,23 @@ async def agent_query(request: AgentRequest):
                         agent_used=agent_used
                     )
                 except ImportError as e:
-                    print(f"⚠️  MCP client not available, falling back to standard orchestrator: {e}")
+                    print(f"  MCP client not available, falling back to standard orchestrator: {e}")
                 except Exception as e:
-                    print(f"⚠️  MCP client error, falling back to standard orchestrator: {e}")
+                    print(f"  MCP client error, falling back to standard orchestrator: {e}")
             
-            print("🔧 Processing with Orchestrator...")
-            print(f"🔍 Analyzing request: '{request.request}'")
+            print(" Processing with Orchestrator...")
+            print(f" Analyzing request: '{request.request}'")
             
             sys.path.insert(0, _ORCHESTRATION_PATH)
             from main import handle_custom_request
             
-            print(f"🚀 Calling orchestrator...")
+            print(f" Calling orchestrator...")
             response = handle_custom_request(request.request)
             
             agent_used = "orchestrator"
             request_lower = request.request.lower()
             
-            print(f"🔍 Determining agent used...")
+            print(f" Determining agent used...")
             if any(word in request_lower for word in ["recommend", "find", "looking for", "show me"]):
                 agent_used = "recommendation_agent_2"
                 print(f"   → Agent: Recommendation Agent 2")
@@ -1245,11 +1245,11 @@ async def agent_query(request: AgentRequest):
             processing_time = (time.time() - start_time) * 1000
             
             print("\n" + "="*70)
-            print("✅ AGENT QUERY RESPONSE")
+            print(" AGENT QUERY RESPONSE")
             print("="*70)
-            print(f"✅ Success: True")
-            print(f"🤖 Agent Used: {agent_used}")
-            print(f"⏱️  Processing time: {processing_time:.2f}ms")
+            print(f" Success: True")
+            print(f" Agent Used: {agent_used}")
+            print(f"  Processing time: {processing_time:.2f}ms")
             print("="*70 + "\n")
             
             return AgentResponse(
@@ -1261,10 +1261,10 @@ async def agent_query(request: AgentRequest):
     except Exception as e:
         processing_time = (time.time() - start_time) * 1000
         print("\n" + "="*70)
-        print("❌ AGENT QUERY ERROR")
+        print(" AGENT QUERY ERROR")
         print("="*70)
-        print(f"❌ Error: {str(e)}")
-        print(f"⏱️  Processing time: {processing_time:.2f}ms")
+        print(f" Error: {str(e)}")
+        print(f"  Processing time: {processing_time:.2f}ms")
         print("="*70 + "\n")
         raise HTTPException(
             status_code=500,
@@ -1971,12 +1971,12 @@ try:
     try:
         initialize_whatsapp_integration()
     except Exception as e:
-        print(f"⚠️  Warning: Could not initialize WhatsApp integration: {e}")
-    print("✅ WhatsApp integration loaded")
+        print(f"  Warning: Could not initialize WhatsApp integration: {e}")
+    print(" WhatsApp integration loaded")
 except ImportError as e:
-    print(f"⚠️  WhatsApp integration not available: {e}")
+    print(f"  WhatsApp integration not available: {e}")
 except Exception as e:
-    print(f"⚠️  Error loading WhatsApp integration: {e}")
+    print(f"  Error loading WhatsApp integration: {e}")
 
 
 if __name__ == "__main__":

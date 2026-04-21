@@ -3,7 +3,7 @@
 # Start the complete Proteus Agentic System
 # This script starts both backend and frontend
 
-echo "🚀 Starting Proteus Agentic System..."
+echo " Starting Proteus Agentic System..."
 echo ""
 
 # Colors for output
@@ -14,13 +14,13 @@ NC='\033[0m' # No Color
 
 # Check if Python is installed
 if ! command -v python3 &> /dev/null; then
-    echo "❌ Python 3 is not installed. Please install Python 3.8+"
+    echo " Python 3 is not installed. Please install Python 3.8+"
     exit 1
 fi
 
 # Check if Node.js is installed
 if ! command -v node &> /dev/null; then
-    echo "❌ Node.js is not installed. Please install Node.js 18+"
+    echo " Node.js is not installed. Please install Node.js 18+"
     exit 1
 fi
 
@@ -35,20 +35,20 @@ check_port() {
 
 # Check backend port
 if check_port 8000; then
-    echo -e "${YELLOW}⚠️  Port 8000 is already in use. Backend may already be running.${NC}"
+    echo -e "${YELLOW}  Port 8000 is already in use. Backend may already be running.${NC}"
 else
-    echo -e "${GREEN}✅ Port 8000 is available for backend${NC}"
+    echo -e "${GREEN} Port 8000 is available for backend${NC}"
 fi
 
 # Check frontend port
 if check_port 5173; then
-    echo -e "${YELLOW}⚠️  Port 5173 is already in use. Frontend may already be running.${NC}"
+    echo -e "${YELLOW}  Port 5173 is already in use. Frontend may already be running.${NC}"
 else
-    echo -e "${GREEN}✅ Port 5173 is available for frontend${NC}"
+    echo -e "${GREEN} Port 5173 is available for frontend${NC}"
 fi
 
 echo ""
-echo "📦 Starting Backend Server..."
+echo " Starting Backend Server..."
 echo ""
 
 # Start backend in background
@@ -80,7 +80,7 @@ sleep 3
 cd ..
 
 echo ""
-echo "🎨 Starting Frontend Server..."
+echo " Starting Frontend Server..."
 echo ""
 
 # Start frontend
@@ -107,30 +107,30 @@ FRONTEND_PID=$!
 cd ../..
 
 echo ""
-echo -e "${GREEN}✅ System is starting!${NC}"
+echo -e "${GREEN} System is starting!${NC}"
 echo ""
-echo "📍 Services:"
+echo " Services:"
 echo "   • Backend API: http://localhost:8000"
 echo "   • API Docs: http://localhost:8000/docs"
 echo "   • Frontend: http://localhost:5173"
 echo ""
-echo "🛑 To stop the system, press Ctrl+C or run:"
+echo " To stop the system, press Ctrl+C or run:"
 echo "   kill $BACKEND_PID $FRONTEND_PID"
 echo ""
-echo "⏳ Waiting for services to start..."
+echo " Waiting for services to start..."
 sleep 5
 
 # Check if services are running
 if check_port 8000 && check_port 5173; then
-    echo -e "${GREEN}✅ Both services are running!${NC}"
+    echo -e "${GREEN} Both services are running!${NC}"
     echo ""
-    echo "🌐 Open http://localhost:5173 in your browser"
+    echo " Open http://localhost:5173 in your browser"
 else
-    echo -e "${YELLOW}⚠️  Some services may still be starting...${NC}"
+    echo -e "${YELLOW}  Some services may still be starting...${NC}"
 fi
 
 # Wait for user interrupt
-trap "echo ''; echo '🛑 Stopping services...'; kill $BACKEND_PID $FRONTEND_PID 2>/dev/null; exit" INT
+trap "echo ''; echo ' Stopping services...'; kill $BACKEND_PID $FRONTEND_PID 2>/dev/null; exit" INT
 
 wait
 

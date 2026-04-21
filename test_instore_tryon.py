@@ -8,7 +8,7 @@ API_BASE_URL = "http://localhost:8000"
 
 def test_instore_tryon():
     print("\n" + "="*70)
-    print("  🏪 TESTING IN-STORE TRY-ON BOOKING")
+    print("   TESTING IN-STORE TRY-ON BOOKING")
     print("="*70 + "\n")
     
     request_data = {
@@ -21,7 +21,7 @@ def test_instore_tryon():
         "size": "L"
     }
     
-    print(f"📝 Request:")
+    print(f" Request:")
     print(f"   Product ID: {request_data['product_id']}")
     print(f"   SKU: {request_data['sku']}")
     print(f"   Store: {request_data['store_location']}")
@@ -38,21 +38,21 @@ def test_instore_tryon():
         
         if response.status_code == 200:
             data = response.json()
-            print(f"✅ Success!")
-            print(f"📋 Booking ID: {data.get('booking_id')}")
-            print(f"📍 Store: {data.get('store_location')}")
-            print(f"📦 Product: {data.get('product_id')}")
-            print(f"📊 Stock Available: {data.get('current_stock')} units")
-            print(f"⏰ Reserved Until: {data.get('reserved_until')}")
-            print(f"💬 Message: {data.get('message', '')[:100]}...")
+            print(f" Success!")
+            print(f" Booking ID: {data.get('booking_id')}")
+            print(f" Store: {data.get('store_location')}")
+            print(f" Product: {data.get('product_id')}")
+            print(f" Stock Available: {data.get('current_stock')} units")
+            print(f" Reserved Until: {data.get('reserved_until')}")
+            print(f" Message: {data.get('message', '')[:100]}...")
         else:
-            print(f"❌ Error: {response.status_code}")
+            print(f" Error: {response.status_code}")
             print(response.text)
             
     except requests.exceptions.ConnectionError:
-        print("❌ Backend not running. Start it with: cd backend && python main.py")
+        print(" Backend not running. Start it with: cd backend && python main.py")
     except Exception as e:
-        print(f"❌ Error: {str(e)}")
+        print(f" Error: {str(e)}")
     
     print("\n" + "="*70)
     print("Check backend terminal for detailed logs!")

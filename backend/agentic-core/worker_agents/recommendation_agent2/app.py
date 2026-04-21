@@ -77,7 +77,7 @@ class OllamaClient:
     def set_model(self, model_name):
         """Change the model."""
         self.model = model_name
-        print(f"✅ Model switched to: {model_name}")
+        print(f" Model switched to: {model_name}")
 
     def get_embedding(self, text):
         url = f"{self.base_url}/v1/embeddings"
@@ -95,6 +95,6 @@ if __name__ == "__main__":
     client = OllamaClient(base_url="http://192.168.0.160:11434", model="qwen2.5:7b")
 
     # Non-streaming (gets full output)
-    print("\n🔹 Non-streaming example:")
+    print("\n Non-streaming example:")
     reply = client.chat("you are a ai agent that can assist users in finding products now tell me what you need", stream=False)
     print("Assistant:", reply)

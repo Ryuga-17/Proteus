@@ -395,9 +395,9 @@ if os.getenv("REDIS_URL") or os.getenv("REDIS_HOST"):
         except Exception:
             pass
         db = WhatsAppRedisStore(fallback_db=_pg)
-        logger.info("✅ Using Redis-backed session/OTP store")
+        logger.info(" Using Redis-backed session/OTP store")
     except Exception as redis_err:
-        logger.warning(f"⚠️  Redis not available ({str(redis_err)[:80]}), trying PostgreSQL")
+        logger.warning(f"  Redis not available ({str(redis_err)[:80]}), trying PostgreSQL")
         db = None
 
 if db is None:
@@ -407,20 +407,20 @@ if db is None:
             with test_db.get_connection():
                 pass
             db = test_db
-            logger.info("✅ Using PostgreSQL database")
+            logger.info(" Using PostgreSQL database")
         except Exception as conn_error:
             raise conn_error
     except Exception as e:
-        logger.warning(f"⚠️  PostgreSQL not available ({str(e)[:100]}), using in-memory database")
+        logger.warning(f"  PostgreSQL not available ({str(e)[:100]}), using in-memory database")
         db = None
 
 if db is None:
     try:
         from whatsapp.database_memory import WhatsAppDatabaseMemory
         db = WhatsAppDatabaseMemory()
-        logger.info("✅ Using in-memory database (no PostgreSQL/Redis required)")
+        logger.info(" Using in-memory database (no PostgreSQL/Redis required)")
     except ImportError as import_error:
-        logger.error(f"❌ Could not load in-memory database fallback: {import_error}")
+        logger.error(f" Could not load in-memory database fallback: {import_error}")
         class MinimalDB:
             def initialize_tables(self): return True
             def get_session(self, *args): return None
@@ -431,4 +431,4 @@ if db is None:
             def cleanup_expired_otps(self): return 0
             def cleanup_expired_sessions(self, *args): return 0
         db = MinimalDB()
-        logger.warning("⚠️  Using minimal fallback database (limited functionality)")
+        logger.warning("  Using minimal fallback database (limited functionality)")

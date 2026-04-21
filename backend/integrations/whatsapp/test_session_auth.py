@@ -24,7 +24,7 @@ def send_message(phone: str, message: str) -> Dict[str, Any]:
         "message_text": message
     }
     
-    print(f"\n📤 Sending: {message}")
+    print(f"\n Sending: {message}")
     print(f"   From: {phone}")
     
     try:
@@ -34,22 +34,22 @@ def send_message(phone: str, message: str) -> Dict[str, Any]:
             response.raise_for_status()
             result = response.json()
             
-            print(f"📥 Response: {result.get('response_text', result.get('message', 'No response'))[:200]}")
+            print(f" Response: {result.get('response_text', result.get('message', 'No response'))[:200]}")
             return result
         except requests.exceptions.HTTPError as e:
             if e.response.status_code == 404:
                 # Try alternate endpoint
-                print(f"   ⚠️  Primary endpoint not found, trying alternate...")
+                print(f"     Primary endpoint not found, trying alternate...")
                 response = requests.post(WHATSAPP_ENDPOINT_ALT, json=payload, timeout=5)
                 response.raise_for_status()
                 result = response.json()
                 
-                print(f"📥 Response: {result.get('response_text', result.get('message', 'No response'))[:200]}")
+                print(f" Response: {result.get('response_text', result.get('message', 'No response'))[:200]}")
                 return result
             else:
                 raise
     except Exception as e:
-        print(f"❌ Error: {e}")
+        print(f" Error: {e}")
         if hasattr(e, 'response') and e.response is not None:
             print(f"   Status: {e.response.status_code}")
             print(f"   Response: {e.response.text[:200]}")
@@ -59,7 +59,7 @@ def send_message(phone: str, message: str) -> Dict[str, Any]:
 def test_scenario(name: str, steps: list):
     """Run a test scenario"""
     print(f"\n{'='*70}")
-    print(f"🧪 TEST SCENARIO: {name}")
+    print(f" TEST SCENARIO: {name}")
     print(f"{'='*70}")
     
     for i, step in enumerate(steps, 1):
@@ -71,7 +71,7 @@ def test_scenario(name: str, steps: list):
 
 def main():
     """Run all test scenarios"""
-    print("🚀 Starting Session-Based Authentication Tests")
+    print(" Starting Session-Based Authentication Tests")
     print(f"Backend URL: {BASE_URL}")
     print(f"Make sure the backend is running on port 8000!")
     
@@ -141,9 +141,9 @@ def main():
     ])
     
     print(f"\n{'='*70}")
-    print("✅ All test scenarios completed!")
+    print(" All test scenarios completed!")
     print(f"{'='*70}")
-    print("\n📝 Note: Check the backend logs for actual OTP codes")
+    print("\n Note: Check the backend logs for actual OTP codes")
     print("   OTPs are displayed in DEV MODE in the response messages")
 
 

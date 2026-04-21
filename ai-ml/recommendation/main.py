@@ -19,8 +19,8 @@ async def test_voice_query():
     audio_input = b"mock_audio_data"
     user_id = "USER-123"
     
-    print(f"📝 Processing voice query for user: {user_id}")
-    print(f"🎤 Audio input: {len(audio_input)} bytes")
+    print(f" Processing voice query for user: {user_id}")
+    print(f" Audio input: {len(audio_input)} bytes")
     print()
     
     try:
@@ -32,10 +32,10 @@ async def test_voice_query():
         print()
         
         if not results:
-            print("❌ No recommendations found")
+            print(" No recommendations found")
             return
         
-        print(f"✅ Found {len(results)} recommendations:\n")
+        print(f" Found {len(results)} recommendations:\n")
         
         for i, result in enumerate(results, 1):
             print(f"{i}. Item ID: {result.item_id}")
@@ -52,7 +52,7 @@ async def test_voice_query():
         print(json.dumps(results_json, indent=2))
         
     except Exception as e:
-        print(f"❌ Error: {e}")
+        print(f" Error: {e}")
         import traceback
         traceback.print_exc()
 

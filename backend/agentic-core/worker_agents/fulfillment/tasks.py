@@ -1,5 +1,5 @@
 """
-Fulfillment Tasks - Getting Orders Where They Need to Go! 📦
+Fulfillment Tasks - Getting Orders Where They Need to Go! 
 
 These are the tasks our fulfillment agent handles. Each task represents a
 different way customers want to receive their orders:
@@ -46,10 +46,10 @@ task_ship_to_home = Task(
     ),
     expected_output=(
         "A final JSON status report that includes:\n"
-        "  ✅ Shipment confirmation (status: SUCCESS)\n"
-        "  📦 Tracking number (so customer can track their package)\n"
-        "  📅 Estimated delivery date\n"
-        "  ✅ Confirmation that warehouse staff were notified\n"
+        "   Shipment confirmation (status: SUCCESS)\n"
+        "   Tracking number (so customer can track their package)\n"
+        "   Estimated delivery date\n"
+        "   Confirmation that warehouse staff were notified\n"
         "\n"
         "Make sure everything is clear and complete!"
     ),
@@ -90,11 +90,11 @@ task_reserve_in_store = Task(
     ),
     expected_output=(
         "A final JSON status report that includes:\n"
-        "  ✅ Reservation confirmation (status: SUCCESS)\n"
-        "  🏪 Store ID where items are reserved\n"
-        "  🔢 Pickup code (customer uses this to pick up their order)\n"
-        "  ⏰ Hold expiry date (when the reservation expires)\n"
-        "  ✅ Confirmation that store staff were notified\n"
+        "   Reservation confirmation (status: SUCCESS)\n"
+        "   Store ID where items are reserved\n"
+        "   Pickup code (customer uses this to pick up their order)\n"
+        "   Hold expiry date (when the reservation expires)\n"
+        "   Confirmation that store staff were notified\n"
         "\n"
         "Everything the customer needs to know to pick up their order!"
     ),

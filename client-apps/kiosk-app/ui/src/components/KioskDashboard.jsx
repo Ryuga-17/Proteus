@@ -49,7 +49,7 @@ const KioskDashboard = ({ sessionId, onReset }) => {
   return (
     <div className="kiosk-container">
       <header className="kiosk-header">
-        <h1>🛍️ Kiosk System</h1>
+        <h1> Kiosk System</h1>
         <button onClick={onReset} className="reset-button">
           New Session
         </button>
@@ -68,11 +68,11 @@ const KioskDashboard = ({ sessionId, onReset }) => {
             </div>
             <div className="data-grid">
               <div className="data-panel">
-                <h2>🛒 Shopping Cart</h2>
+                <h2> Shopping Cart</h2>
                 <ShoppingCart cart={kioskData?.shopping_cart} />
               </div>
               <div className="data-panel">
-                <h2>📜 Purchase History</h2>
+                <h2> Purchase History</h2>
                 <PurchaseHistory history={kioskData?.purchase_history} />
               </div>
             </div>

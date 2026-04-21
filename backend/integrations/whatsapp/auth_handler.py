@@ -86,7 +86,7 @@ class AuthHandler:
                 response = WhatsAppResponse(
                     recipient_id=whatsapp_user_id,
                     message_text=(
-                        "👋 Hi! Welcome to our shopping assistant!\n\n"
+                        " Hi! Welcome to our shopping assistant!\n\n"
                         "To get started, I need to link your WhatsApp to your account.\n"
                         "Please enter your registered mobile number (with country code, e.g., +1234567890):"
                     )
@@ -97,7 +97,7 @@ class AuthHandler:
                 response = WhatsAppResponse(
                     recipient_id=whatsapp_user_id,
                     message_text=(
-                        "👋 Hello! To use our shopping assistant, please start by sending 'Hi' or 'Hello'.\n"
+                        " Hello! To use our shopping assistant, please start by sending 'Hi' or 'Hello'.\n"
                         "We'll help you link your WhatsApp account."
                     )
                 )
@@ -113,7 +113,7 @@ class AuthHandler:
                 response = WhatsAppResponse(
                     recipient_id=whatsapp_user_id,
                     message_text=(
-                        "👋 Hi! To get started, I need to link your WhatsApp to your account.\n"
+                        " Hi! To get started, I need to link your WhatsApp to your account.\n"
                         "Please enter your registered mobile number (with country code, e.g., +1234567890):"
                     )
                 )
@@ -141,7 +141,7 @@ class AuthHandler:
                     response = WhatsAppResponse(
                         recipient_id=whatsapp_user_id,
                         message_text=(
-                            "❌ We couldn't find an account with that phone number.\n\n"
+                            " We couldn't find an account with that phone number.\n\n"
                             "Please make sure you're using the same number you registered with.\n"
                             "Or send 'cancel' to start over."
                         )
@@ -155,7 +155,7 @@ class AuthHandler:
                 )
                 
                 if success:
-                    response_text = f"✅ {message}"
+                    response_text = f" {message}"
                     # In development, include OTP for testing
                     if test_otp:
                         response_text += f"\n\n[DEV MODE] Your OTP: {test_otp}"
@@ -168,7 +168,7 @@ class AuthHandler:
                 else:
                     response = WhatsAppResponse(
                         recipient_id=whatsapp_user_id,
-                        message_text=f"❌ {message}\n\nSend 'retry' to try again or 'cancel' to start over."
+                        message_text=f" {message}\n\nSend 'retry' to try again or 'cancel' to start over."
                     )
                     return response, True
             elif message_text.lower() in ['cancel', 'reset', 'start over']:
@@ -216,7 +216,7 @@ class AuthHandler:
                         response = WhatsAppResponse(
                             recipient_id=whatsapp_user_id,
                             message_text=(
-                                "✅ Account linked successfully!\n\n"
+                                " Account linked successfully!\n\n"
                                 "You can now use our shopping assistant. How can I help you today?\n"
                                 "Try asking:\n"
                                 "• 'Show me products'\n"
@@ -237,7 +237,7 @@ class AuthHandler:
                     response = WhatsAppResponse(
                         recipient_id=whatsapp_user_id,
                         message_text=(
-                            f"❌ {message}\n\n"
+                            f" {message}\n\n"
                             "Please check the code and try again, or send 'cancel' to start over."
                         )
                     )
@@ -250,7 +250,7 @@ class AuthHandler:
                         success, message, test_otp = otp_service.request_otp(
                             whatsapp_user_id, phone_number
                         )
-                        response_text = f"✅ {message}" if success else f"❌ {message}"
+                        response_text = f" {message}" if success else f" {message}"
                         if success and test_otp:
                             response_text += f"\n\n[DEV MODE] Your OTP: {test_otp}"
                         response = WhatsAppResponse(

@@ -1,5 +1,5 @@
 """
-Orchestrator Tasks - Pre-built Tasks Ready to Use! 🎬
+Orchestrator Tasks - Pre-built Tasks Ready to Use! 
 
 These are example tasks that show off what our orchestrator can do. You can
 run these directly to see how different scenarios work, or use them as
@@ -36,10 +36,10 @@ task_inventory_management = Task(
     ),
     expected_output=(
         "A comprehensive inventory report that includes:\n"
-        "  📊 Sales velocity analysis - how fast each SKU is selling\n"
-        "  📦 Current stock levels - what we have and where\n"
-        "  🔄 Transfer confirmations - if any items were moved between locations\n"
-        "  📝 Purchase order confirmations - if we ordered more from suppliers\n"
+        "   Sales velocity analysis - how fast each SKU is selling\n"
+        "   Current stock levels - what we have and where\n"
+        "   Transfer confirmations - if any items were moved between locations\n"
+        "   Purchase order confirmations - if we ordered more from suppliers\n"
         "\n"
         "Everything should be clear and actionable so the business knows exactly "
         "what happened and what's in stock!"
@@ -52,13 +52,13 @@ task_order_fulfillment = Task(
     description=(
         "Great news! A customer just placed an order and we need to get it to them. "
         "Here are the details:\n"
-        "  📋 Order ID: ORD-78901\n"
-        "  👤 Customer: C-456\n"
-        "  🛍️  Items:\n"
+        "   Order ID: ORD-78901\n"
+        "   Customer: C-456\n"
+        "    Items:\n"
         "     - 2x RED-SHIRT-SML (Red shirt, size small)\n"
         "     - 1x BLUE-JEANS-32 (Blue jeans, size 32)\n"
-        "  🚚 Fulfillment type: ship-to-home (we're shipping it to them)\n"
-        "  📍 Delivery address: 123 Green St, Bengaluru, KA 560001\n"
+        "   Fulfillment type: ship-to-home (we're shipping it to them)\n"
+        "   Delivery address: 123 Green St, Bengaluru, KA 560001\n"
         "\n"
         "Please handle this order from start to finish:\n"
         "  1. First, check if we have all the items in stock\n"
@@ -67,10 +67,10 @@ task_order_fulfillment = Task(
     ),
     expected_output=(
         "A complete order confirmation that tells the customer:\n"
-        "  ✅ Inventory status - do we have everything they ordered?\n"
-        "  ✅ Fulfillment booking - shipment is confirmed and booked\n"
-        "  ✅ Tracking information - tracking number and delivery estimate\n"
-        "  ✅ Staff notifications - warehouse staff have been notified\n"
+        "   Inventory status - do we have everything they ordered?\n"
+        "   Fulfillment booking - shipment is confirmed and booked\n"
+        "   Tracking information - tracking number and delivery estimate\n"
+        "   Staff notifications - warehouse staff have been notified\n"
         "\n"
         "Everything should be clear so the customer knows their order is being handled!"
     ),
@@ -89,10 +89,10 @@ task_payment_processing = Task(
     ),
     expected_output=(
         "Payment processing results showing:\n"
-        "  ✅ Payment status (success or failed)\n"
-        "  🆔 Transaction ID (if successful)\n"
-        "  💬 Clear error messages (if something went wrong)\n"
-        "  📋 Any other relevant details the customer needs to know"
+        "   Payment status (success or failed)\n"
+        "   Transaction ID (if successful)\n"
+        "   Clear error messages (if something went wrong)\n"
+        "   Any other relevant details the customer needs to know"
     ),
     agent=Orchestrator
 )
@@ -108,12 +108,12 @@ task_customer_support = Task(
     ),
     expected_output=(
         "A warm, helpful response that includes:\n"
-        "  📦 Current order status - where things stand right now\n"
-        "  🚚 Shipping carrier - which company is delivering\n"
-        "  🔢 Tracking number - so they can track it themselves too\n"
-        "  📍 Real-time location - where the package currently is\n"
-        "  📅 Estimated delivery - when they can expect it\n"
-        "  💬 Next steps - anything else they need to know\n"
+        "   Current order status - where things stand right now\n"
+        "   Shipping carrier - which company is delivering\n"
+        "   Tracking number - so they can track it themselves too\n"
+        "   Real-time location - where the package currently is\n"
+        "   Estimated delivery - when they can expect it\n"
+        "   Next steps - anything else they need to know\n"
         "\n"
         "Make it friendly and reassuring - good customer service matters!"
     ),
@@ -136,11 +136,11 @@ task_checkout_with_loyalty = Task(
     ),
     expected_output=(
         "A complete checkout summary that shows:\n"
-        "  💰 Original price - what everything costs before discounts\n"
-        "  🎁 Applied discounts - coupon savings and loyalty points used\n"
-        "  💵 Final price - what they actually paid (after all discounts)\n"
-        "  ✅ Payment confirmation - transaction was successful\n"
-        "  📋 Order confirmation number - their reference for tracking\n"
+        "   Original price - what everything costs before discounts\n"
+        "   Applied discounts - coupon savings and loyalty points used\n"
+        "   Final price - what they actually paid (after all discounts)\n"
+        "   Payment confirmation - transaction was successful\n"
+        "   Order confirmation number - their reference for tracking\n"
         "\n"
         "Everything should be clear so they know exactly what they got and how much they saved!"
     ),
@@ -164,10 +164,10 @@ task_return_exchange = Task(
     ),
     expected_output=(
         "A helpful response that includes:\n"
-        "  ✅ Order verification - confirming we found their order\n"
-        "  🔄 Exchange/refund confirmation - what we're doing to fix it\n"
-        "  📦 Return label URL - easy way for them to send the damaged item back\n"
-        "  📝 Next steps - what happens next and when they'll receive their replacement/refund\n"
+        "   Order verification - confirming we found their order\n"
+        "   Exchange/refund confirmation - what we're doing to fix it\n"
+        "   Return label URL - easy way for them to send the damaged item back\n"
+        "   Next steps - what happens next and when they'll receive their replacement/refund\n"
         "\n"
         "Make it clear, helpful, and reassuring - we want to turn this negative experience "
         "into a positive one!"
@@ -181,7 +181,7 @@ task_return_exchange = Task(
 
 def create_custom_task(customer_request: str, expected_output: str = None) -> Task:
     """
-    Create a custom task for the orchestrator - your way! 🎨
+    Create a custom task for the orchestrator - your way! 
     
     This function lets you create a task for any request you can think of.
     Just describe what you need, and optionally specify what kind of response

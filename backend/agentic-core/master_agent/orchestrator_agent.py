@@ -1,5 +1,5 @@
 """
-Orchestrator Agent - The Smart Coordinator 🎯
+Orchestrator Agent - The Smart Coordinator 
 
 This is our master agent - think of them as the head of operations who knows
 everyone's expertise and how to get things done. When a request comes in,
@@ -112,7 +112,7 @@ if llm is None:
     print("ERROR: llm is None! Cannot create Agent!", file=sys.stderr)
     raise RuntimeError("llm is None - this should not happen!")
 
-# Create our master orchestrator agent - this is the star of the show! ⭐
+# Create our master orchestrator agent - this is the star of the show! 
 Orchestrator = Agent(
     role="Master Orchestrator and Smart Request Router",
     goal=(
@@ -137,31 +137,31 @@ Orchestrator = Agent(
         "to you for final formatting. This ensures consistent, coordinated operations.\n\n"
         
         "Your day-to-day work involves:\n"
-        "  🧠 Analyzing incoming requests to figure out what customers really need\n"
-        "  🔀 Routing requests to the right specialist agents who can help best\n"
-        "  🤝 Coordinating multi-agent workflows when requests need multiple specialists\n"
-        "  ✨ Synthesizing results from different agents into clear, helpful responses\n"
-        "  🔄 Ensuring smooth handoffs as customers move through their journey\n"
-        "  📊 Monitoring all agent interactions to ensure quality service\n\n"
+        "   Analyzing incoming requests to figure out what customers really need\n"
+        "   Routing requests to the right specialist agents who can help best\n"
+        "   Coordinating multi-agent workflows when requests need multiple specialists\n"
+        "   Synthesizing results from different agents into clear, helpful responses\n"
+        "   Ensuring smooth handoffs as customers move through their journey\n"
+        "   Monitoring all agent interactions to ensure quality service\n\n"
         
         "You have access to these specialist teams (ALL accessed through your routing tools):\n"
-        "  📦 Inventory Agent → route_to_inventory() → Stock levels, transfers, supplier orders\n"
-        "  🚚 Fulfillment Agent → route_to_fulfillment() → Shipping, in-store reservations\n"
-        "  💳 Payment Agent → route_to_payment() → Payment processing, transactions, handoffs\n"
-        "  🎁 Loyalty Agent → route_to_loyalty() → Pricing calculations, discounts, points\n"
-        "  🎧 Support Agent → route_to_support() → Order tracking, returns, feedback\n"
-        "  🎯 Recommendation Agent → route_to_recommendation() → Voice search, product recommendations\n"
-        "  🚀 Recommendation Agent 2 → route_to_recommendation_v2() → Advanced recommendations with real data\n\n"
+        "   Inventory Agent → route_to_inventory() → Stock levels, transfers, supplier orders\n"
+        "   Fulfillment Agent → route_to_fulfillment() → Shipping, in-store reservations\n"
+        "   Payment Agent → route_to_payment() → Payment processing, transactions, handoffs\n"
+        "   Loyalty Agent → route_to_loyalty() → Pricing calculations, discounts, points\n"
+        "   Support Agent → route_to_support() → Order tracking, returns, feedback\n"
+        "   Recommendation Agent → route_to_recommendation() → Voice search, product recommendations\n"
+        "   Recommendation Agent 2 → route_to_recommendation_v2() → Advanced recommendations with real data\n\n"
         
         "When a new request comes in, here's how you handle it:\n"
-        "  1. 🤔 First, use 'analyze_intent' to understand what the customer needs\n"
-        "  2. 🎯 Route to the appropriate agent(s) using your routing tools\n"
+        "  1.  First, use 'analyze_intent' to understand what the customer needs\n"
+        "  2.  Route to the appropriate agent(s) using your routing tools\n"
         "     (Each routing tool creates a temporary crew with that agent)\n"
-        "  3. 🔗 If multiple agents are needed, coordinate them sequentially:\n"
+        "  3.  If multiple agents are needed, coordinate them sequentially:\n"
         "     - Route to Agent 1, get result\n"
         "     - Use that result to route to Agent 2\n"
         "     - Synthesize both results\n"
-        "  4. 📝 Bring everything together into a friendly, clear response that "
+        "  4.  Bring everything together into a friendly, clear response that "
         "     actually helps the customer or business\n\n"
         
         "**Remember:** Every agent interaction goes through you. Agents don't talk to each "

@@ -74,7 +74,7 @@ curl -X POST "http://localhost:8000/whatsapp/simulate/message" \
   }'
 ```
 
-**Expected Response:** "👋 Welcome back! You're already logged in..."
+**Expected Response:** " Welcome back! You're already logged in..."
 
 ### Test 3: Low-Risk Action (No Step-Up)
 
@@ -177,15 +177,15 @@ python test_session_auth.py
 ```
 
 This will test:
-1. ✅ First-time login
-2. ✅ Returning user welcome back
-3. ✅ Low-risk actions (no step-up)
-4. ✅ High-risk actions (step-up required)
-5. ✅ Payment flows
-6. ✅ Refund requests
-7. ✅ Address changes
-8. ✅ Logout
-9. ✅ Multiple users
+1.  First-time login
+2.  Returning user welcome back
+3.  Low-risk actions (no step-up)
+4.  High-risk actions (step-up required)
+5.  Payment flows
+6.  Refund requests
+7.  Address changes
+8.  Logout
+9.  Multiple users
 
 ### Customize Test Scenarios
 
@@ -202,20 +202,20 @@ test_scenario("My Custom Test", [
 
 ## Testing Scenarios Checklist
 
-### ✅ Authentication Flow
+###  Authentication Flow
 - [ ] First-time user sends "Hi" → Asks for phone number
 - [ ] User enters phone number → Sends OTP
 - [ ] User enters correct OTP → Authenticated
 - [ ] User enters wrong OTP → Error message
 - [ ] User sends "Hi" again (with valid session) → Welcome back message
 
-### ✅ Session Management
+###  Session Management
 - [ ] Valid session persists across messages
 - [ ] Logout command works
 - [ ] After logout, user must re-authenticate
 - [ ] Multiple users can have separate sessions
 
-### ✅ Low-Risk Actions (No Step-Up)
+###  Low-Risk Actions (No Step-Up)
 - [ ] Browse products → Works immediately
 - [ ] Check inventory → Works immediately
 - [ ] Get recommendations → Works immediately
@@ -223,14 +223,14 @@ test_scenario("My Custom Test", [
 - [ ] Reserve items → Works immediately
 - [ ] Check order status → Works immediately
 
-### ✅ High-Risk Actions (Step-Up Required)
+###  High-Risk Actions (Step-Up Required)
 - [ ] Payment > ₹10,000 → Requests confirmation → Requests OTP
 - [ ] Payment < ₹10,000 → Requests confirmation → No OTP
 - [ ] Refund request → Requests confirmation → Requests OTP
 - [ ] Address change → Requests confirmation → Requests OTP
 - [ ] Cancel step-up (reply NO) → Cancels action
 
-### ✅ Edge Cases
+###  Edge Cases
 - [ ] Invalid phone number → Error message
 - [ ] Phone number not in database → Error message
 - [ ] Expired OTP → Error message
@@ -346,10 +346,10 @@ cd whatsapp_integration && python test_session_auth.py
 ## Next Steps
 
 After testing:
-1. ✅ Verify all scenarios work as expected
-2. ✅ Check logs for any errors
-3. ✅ Test with different phone numbers
-4. ✅ Test session expiry (wait 24+ hours)
-5. ✅ Test with real WhatsApp (if Twilio configured)
+1.  Verify all scenarios work as expected
+2.  Check logs for any errors
+3.  Test with different phone numbers
+4.  Test session expiry (wait 24+ hours)
+5.  Test with real WhatsApp (if Twilio configured)
 
 For more details, see `SESSION_BASED_AUTH.md`

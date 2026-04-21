@@ -40,7 +40,7 @@ def add_test_customer(phone_number: str, name: str = "Test User", email: str = N
         existing = cursor.fetchone()
         
         if existing:
-            print(f"✅ Customer already exists with phone {phone_number}")
+            print(f" Customer already exists with phone {phone_number}")
             print(f"   Customer ID: {existing[0]}")
             cursor.close()
             conn.close()
@@ -94,7 +94,7 @@ def add_test_customer(phone_number: str, name: str = "Test User", email: str = N
                     RETURNING customer_id
                 """, (customer_id, name, phone_number))
         else:
-            print("❌ Error: Could not find 'phone' or 'phone_number' column in customers table")
+            print(" Error: Could not find 'phone' or 'phone_number' column in customers table")
             print(f"   Available columns: {columns}")
             cursor.close()
             conn.close()
@@ -105,18 +105,18 @@ def add_test_customer(phone_number: str, name: str = "Test User", email: str = N
         cursor.close()
         conn.close()
         
-        print(f"✅ Test customer added successfully!")
+        print(f" Test customer added successfully!")
         print(f"   Customer ID: {customer_id}")
         print(f"   Phone: {phone_number}")
         print(f"   Name: {name}")
         return customer_id
         
     except psycopg2.OperationalError as e:
-        print(f"❌ Database connection error: {e}")
+        print(f" Database connection error: {e}")
         print("   Using in-memory database - customer will be auto-created for testing")
         return None
     except Exception as e:
-        print(f"❌ Error: {e}")
+        print(f" Error: {e}")
         import traceback
         traceback.print_exc()
         return None
@@ -134,7 +134,7 @@ if __name__ == "__main__":
     customer_id = add_test_customer(test_phone, "Vivek")
     
     if customer_id:
-        print("\n✅ You can now test WhatsApp authentication!")
+        print("\n You can now test WhatsApp authentication!")
         print("   Send 'Hi' to +1 415 523 8886 from WhatsApp")
     else:
-        print("\n⚠️  Could not add to database, but in-memory database will work for testing")
+        print("\n  Could not add to database, but in-memory database will work for testing")

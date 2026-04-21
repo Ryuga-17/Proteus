@@ -47,7 +47,7 @@ const LinkSession = () => {
     return (
       <div className="link-container">
         <div className="link-card error">
-          <h2>❌ Invalid Session</h2>
+          <h2> Invalid Session</h2>
           <p>No session ID provided in the URL.</p>
         </div>
       </div>
@@ -58,7 +58,7 @@ const LinkSession = () => {
     return (
       <div className="link-container">
         <div className="link-card success">
-          <h2>✅ Session Linked!</h2>
+          <h2> Session Linked!</h2>
           <p>Your device has been linked to the kiosk session.</p>
           <p className="sub-text">This window will close automatically.</p>
         </div>
@@ -69,7 +69,7 @@ const LinkSession = () => {
   return (
     <div className="link-container">
       <div className="link-card">
-        <h2>🔗 Link Kiosk Session</h2>
+        <h2> Link Kiosk Session</h2>
         <p className="instruction">
           Enter your User ID to link this device to the kiosk session.
         </p>

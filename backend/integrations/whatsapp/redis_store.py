@@ -35,7 +35,7 @@ class WhatsAppRedisStore:
             import redis
             self._redis = redis.from_url(redis_url, decode_responses=True)
             self._redis.ping()
-            logger.info("✅ Redis connected for session/OTP store")
+            logger.info(" Redis connected for session/OTP store")
         except ImportError:
             raise ImportError("redis package required. Install with: pip install redis")
         except Exception as e:

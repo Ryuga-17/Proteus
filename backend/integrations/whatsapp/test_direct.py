@@ -15,12 +15,12 @@ from whatsapp.message_handler import message_handler
 def test_scenario(name, steps):
     """Test a scenario"""
     print(f"\n{'='*70}")
-    print(f"🧪 TEST: {name}")
+    print(f" TEST: {name}")
     print(f"{'='*70}")
     
     for i, (message_text, description) in enumerate(steps, 1):
         print(f"\n--- Step {i}: {description} ---")
-        print(f"📤 Sending: {message_text}")
+        print(f" Sending: {message_text}")
         
         message = WhatsAppMessage(
             sender_id="whatsapp:+918850833367",
@@ -28,16 +28,16 @@ def test_scenario(name, steps):
         )
         
         response = message_handler.handle_message(message)
-        print(f"📥 Response: {response.message_text[:300]}")
+        print(f" Response: {response.message_text[:300]}")
         
         # Check if OTP is in response (for manual entry)
         if "[DEV MODE] Your OTP:" in response.message_text:
             otp_line = [line for line in response.message_text.split('\n') if 'OTP:' in line]
             if otp_line:
-                print(f"🔑 {otp_line[0]}")
+                print(f" {otp_line[0]}")
 
 def main():
-    print("🚀 Direct WhatsApp Integration Test")
+    print(" Direct WhatsApp Integration Test")
     print("This tests the integration directly without HTTP endpoints\n")
     
     # Test 1: First-time login
@@ -71,14 +71,14 @@ def main():
     ])
     
     print(f"\n{'='*70}")
-    print("✅ All tests completed!")
+    print(" All tests completed!")
     print(f"{'='*70}")
-    print("\n💡 Tip: Check the responses above for OTP codes in DEV MODE")
+    print("\n Tip: Check the responses above for OTP codes in DEV MODE")
 
 if __name__ == "__main__":
     try:
         main()
     except Exception as e:
-        print(f"\n❌ Error: {e}")
+        print(f"\n Error: {e}")
         import traceback
         traceback.print_exc()

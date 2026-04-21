@@ -97,7 +97,7 @@ const ProductDetail = () => {
                       </div>
                       <div className="flex items-center gap-1">
                         <span className="text-xs text-muted-foreground">
-                          ⭐ {similarProduct.rating}
+                           {similarProduct.rating}
                         </span>
                         <span className="text-xs text-muted-foreground">
                           ({similarProduct.reviews})

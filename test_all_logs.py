@@ -9,7 +9,7 @@ API_BASE_URL = "http://localhost:8000"
 
 def voice_query(query: str):
     """User voice search query"""
-    print(f"\n👤 User: {query}\n")
+    print(f"\n User: {query}\n")
     
     try:
         response = requests.post(
@@ -23,15 +23,15 @@ def voice_query(query: str):
         
         if response.status_code == 200:
             data = response.json()
-            print(f"✅ Found {len(data.get('recommendations', []))} recommendations\n")
+            print(f" Found {len(data.get('recommendations', []))} recommendations\n")
     except Exception as e:
-        print(f"❌ Error: {str(e)}\n")
+        print(f" Error: {str(e)}\n")
     
     time.sleep(1)
 
 def user_query(request_text: str):
     """User query to the system"""
-    print(f"\n👤 User: {request_text}\n")
+    print(f"\n User: {request_text}\n")
     
     try:
         response = requests.post(
@@ -45,15 +45,15 @@ def user_query(request_text: str):
         
         if response.status_code == 200:
             data = response.json()
-            print(f"✅ Processed by {data.get('agent_used', 'system')}\n")
+            print(f" Processed by {data.get('agent_used', 'system')}\n")
     except Exception as e:
-        print(f"❌ Error: {str(e)}\n")
+        print(f" Error: {str(e)}\n")
     
     time.sleep(0.5)
 
 def size_recommendation():
     """User requests size recommendation"""
-    print(f"\n👤 User: What size should I get for this product?\n")
+    print(f"\n User: What size should I get for this product?\n")
     
     try:
         response = requests.post(
@@ -75,15 +75,15 @@ def size_recommendation():
         
         if response.status_code == 200:
             data = response.json()
-            print(f"✅ Recommended size: {data.get('recommended_size')}\n")
+            print(f" Recommended size: {data.get('recommended_size')}\n")
     except Exception as e:
-        print(f"❌ Error: {str(e)}\n")
+        print(f" Error: {str(e)}\n")
     
     time.sleep(1)
 
 def virtual_tryon():
     """User requests virtual try-on"""
-    print(f"\n👤 User: Can I see how this looks on me?\n")
+    print(f"\n User: Can I see how this looks on me?\n")
     
     try:
         response = requests.post(
@@ -99,15 +99,15 @@ def virtual_tryon():
         
         if response.status_code == 200:
             data = response.json()
-            print(f"✅ Virtual try-on complete. Fit score: {data.get('fit_analysis', {}).get('overall_fit_score', 0):.1%}\n")
+            print(f" Virtual try-on complete. Fit score: {data.get('fit_analysis', {}).get('overall_fit_score', 0):.1%}\n")
     except Exception as e:
-        print(f"❌ Error: {str(e)}\n")
+        print(f" Error: {str(e)}\n")
     
     time.sleep(1)
 
 def instore_tryon_booking():
     """User books in-store try-on"""
-    print(f"\n👤 User: I'd like to book an in-store try-on for this product\n")
+    print(f"\n User: I'd like to book an in-store try-on for this product\n")
     
     try:
         response = requests.post(
@@ -126,9 +126,9 @@ def instore_tryon_booking():
         
         if response.status_code == 200:
             data = response.json()
-            print(f"✅ Booking confirmed: {data.get('booking_id')}\n")
+            print(f" Booking confirmed: {data.get('booking_id')}\n")
     except Exception as e:
-        print(f"❌ Error: {str(e)}\n")
+        print(f" Error: {str(e)}\n")
     
     time.sleep(1)
 
@@ -153,7 +153,7 @@ def main():
         
         time.sleep(1)
         
-        print(f"\n👤 User: What size should I get for this product?\n")
+        print(f"\n User: What size should I get for this product?\n")
         try:
             response = requests.post(
                 f"{API_BASE_URL}/api/size/recommend",
@@ -174,13 +174,13 @@ def main():
             
             if response.status_code == 200:
                 data = response.json()
-                print(f"✅ Recommended size: {data.get('recommended_size')}\n")
+                print(f" Recommended size: {data.get('recommended_size')}\n")
         except Exception as e:
-            print(f"❌ Error: {str(e)}\n")
+            print(f" Error: {str(e)}\n")
         
         time.sleep(1)
         
-        print(f"\n👤 User: Can I see how this looks on me?\n")
+        print(f"\n User: Can I see how this looks on me?\n")
         try:
             response = requests.post(
                 f"{API_BASE_URL}/api/virtual-tryon",
@@ -195,13 +195,13 @@ def main():
             
             if response.status_code == 200:
                 data = response.json()
-                print(f"✅ Virtual try-on complete. Fit score: {data.get('fit_analysis', {}).get('overall_fit_score', 0):.1%}\n")
+                print(f" Virtual try-on complete. Fit score: {data.get('fit_analysis', {}).get('overall_fit_score', 0):.1%}\n")
         except Exception as e:
-            print(f"❌ Error: {str(e)}\n")
+            print(f" Error: {str(e)}\n")
         
         time.sleep(1)
         
-        print(f"\n👤 User: I'd like to book an in-store try-on for this product\n")
+        print(f"\n User: I'd like to book an in-store try-on for this product\n")
         try:
             response = requests.post(
                 f"{API_BASE_URL}/api/instore-tryon/book",
@@ -219,14 +219,14 @@ def main():
             
             if response.status_code == 200:
                 data = response.json()
-                print(f"✅ Booking confirmed: {data.get('booking_id')}\n")
+                print(f" Booking confirmed: {data.get('booking_id')}\n")
         except Exception as e:
-            print(f"❌ Error: {str(e)}\n")
+            print(f" Error: {str(e)}\n")
         
     except KeyboardInterrupt:
-        print("\n\n⚠️  Interrupted")
+        print("\n\n  Interrupted")
     except Exception as e:
-        print(f"\n\n❌ Error: {str(e)}")
+        print(f"\n\n Error: {str(e)}")
 
 if __name__ == "__main__":
     main()

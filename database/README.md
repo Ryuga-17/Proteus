@@ -15,13 +15,13 @@ This database schema supports the entire Retail Agent System, including all agen
 ### Recommended: PostgreSQL
 
 **Why PostgreSQL?**
-- ✅ Native support for JSON/JSONB (for flexible metadata)
-- ✅ Array types (for tags, preferences)
-- ✅ Excellent indexing capabilities
-- ✅ Full ACID compliance
-- ✅ Rich feature set (triggers, views, functions)
-- ✅ Strong performance for complex queries
-- ✅ Widely used and well-documented
+-  Native support for JSON/JSONB (for flexible metadata)
+-  Array types (for tags, preferences)
+-  Excellent indexing capabilities
+-  Full ACID compliance
+-  Rich feature set (triggers, views, functions)
+-  Strong performance for complex queries
+-  Widely used and well-documented
 
 ### Alternative Options
 

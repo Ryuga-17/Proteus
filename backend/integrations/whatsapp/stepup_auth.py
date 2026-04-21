@@ -60,7 +60,7 @@ class StepUpAuthHandler:
         if not session:
             return WhatsAppResponse(
                 recipient_id=whatsapp_user_id,
-                message_text="❌ Session error. Please send 'Hi' to restart."
+                message_text=" Session error. Please send 'Hi' to restart."
             )
         
         # Check current step-up state
@@ -84,7 +84,7 @@ class StepUpAuthHandler:
             )
             return WhatsAppResponse(
                 recipient_id=whatsapp_user_id,
-                message_text="✅ Action cancelled. How can I help you?"
+                message_text=" Action cancelled. How can I help you?"
             )
         elif self._looks_like_otp(message_text):
             # User entered OTP
@@ -107,28 +107,28 @@ class StepUpAuthHandler:
         # Build confirmation message
         if action_type == "payment" and amount:
             confirmation_text = (
-                f"⚠️ **Security Check Required**\n\n"
+                f" **Security Check Required**\n\n"
                 f"You are about to proceed with a payment of ₹{amount:,.2f}.\n\n"
                 f"This is a high-value transaction. For your security, we need to verify your identity.\n\n"
                 f"Reply 'YES' to continue, or 'NO' to cancel."
             )
         elif action_type == "refund":
             confirmation_text = (
-                f"⚠️ **Security Check Required**\n\n"
+                f" **Security Check Required**\n\n"
                 f"You are about to request a refund.\n\n"
                 f"For your security, we need to verify your identity.\n\n"
                 f"Reply 'YES' to continue, or 'NO' to cancel."
             )
         elif action_type == "address_change":
             confirmation_text = (
-                f"⚠️ **Security Check Required**\n\n"
+                f" **Security Check Required**\n\n"
                 f"You are about to change your delivery address.\n\n"
                 f"For your security, we need to verify your identity.\n\n"
                 f"Reply 'YES' to continue, or 'NO' to cancel."
             )
         else:
             confirmation_text = (
-                f"⚠️ **Security Check Required**\n\n"
+                f" **Security Check Required**\n\n"
                 f"This action requires additional verification.\n\n"
                 f"Reply 'YES' to continue, or 'NO' to cancel."
             )
@@ -155,7 +155,7 @@ class StepUpAuthHandler:
         if not session or not session.phone_number:
             return WhatsAppResponse(
                 recipient_id=whatsapp_user_id,
-                message_text="❌ Session error. Please send 'Hi' to restart."
+                message_text=" Session error. Please send 'Hi' to restart."
             )
         
         # Check if OTP is required based on action risk
@@ -181,7 +181,7 @@ class StepUpAuthHandler:
             
             if success:
                 response_text = (
-                    f"✅ Verification code sent to {session.phone_number}\n\n"
+                    f" Verification code sent to {session.phone_number}\n\n"
                     f"Please enter the 6-digit code to proceed."
                 )
                 if test_otp:
@@ -204,7 +204,7 @@ class StepUpAuthHandler:
             else:
                 return WhatsAppResponse(
                     recipient_id=whatsapp_user_id,
-                    message_text=f"❌ {message}\n\nPlease try again or contact support."
+                    message_text=f" {message}\n\nPlease try again or contact support."
                 )
         else:
             # No OTP needed - just confirmation was enough
@@ -223,7 +223,7 @@ class StepUpAuthHandler:
             return WhatsAppResponse(
                 recipient_id=whatsapp_user_id,
                 message_text=(
-                    "✅ Verification complete!\n\n"
+                    " Verification complete!\n\n"
                     "Proceeding with your request..."
                 )
             )
@@ -235,7 +235,7 @@ class StepUpAuthHandler:
         if not session or not session.phone_number:
             return WhatsAppResponse(
                 recipient_id=whatsapp_user_id,
-                message_text="❌ Session error. Please send 'Hi' to restart."
+                message_text=" Session error. Please send 'Hi' to restart."
             )
         
         # Verify OTP
@@ -261,7 +261,7 @@ class StepUpAuthHandler:
             return WhatsAppResponse(
                 recipient_id=whatsapp_user_id,
                 message_text=(
-                    "✅ Verification successful!\n\n"
+                    " Verification successful!\n\n"
                     "Proceeding with your request..."
                 )
             )
@@ -269,7 +269,7 @@ class StepUpAuthHandler:
             return WhatsAppResponse(
                 recipient_id=whatsapp_user_id,
                 message_text=(
-                    f"❌ {message}\n\n"
+                    f" {message}\n\n"
                     "Please check the code and try again, or reply 'NO' to cancel."
                 )
             )

@@ -18,10 +18,10 @@ def initialize_whatsapp_integration():
     try:
         logger.info("Initializing WhatsApp integration database tables...")
         db.initialize_tables()
-        logger.info("✅ WhatsApp integration database tables initialized successfully")
+        logger.info(" WhatsApp integration database tables initialized successfully")
         return True
     except Exception as e:
-        logger.error(f"❌ Error initializing WhatsApp integration: {e}")
+        logger.error(f" Error initializing WhatsApp integration: {e}")
         return False
 
 
@@ -34,10 +34,10 @@ def cleanup_expired_data():
         logger.info("Cleaning up expired WhatsApp data...")
         deleted_otps = db.cleanup_expired_otps()
         deleted_sessions = db.cleanup_expired_sessions()
-        logger.info(f"✅ Cleaned up: {deleted_otps} expired OTPs, {deleted_sessions} expired sessions")
+        logger.info(f" Cleaned up: {deleted_otps} expired OTPs, {deleted_sessions} expired sessions")
         return deleted_otps, deleted_sessions
     except Exception as e:
-        logger.error(f"❌ Error cleaning up WhatsApp data: {e}")
+        logger.error(f" Error cleaning up WhatsApp data: {e}")
         return 0, 0
 
 

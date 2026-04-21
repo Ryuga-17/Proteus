@@ -125,16 +125,16 @@ curl -X POST "http://localhost:8000/whatsapp/simulate/message" \
 
 ```
 User: Hi
-Bot: 👋 Hi! Welcome to our shopping assistant!
+Bot:  Hi! Welcome to our shopping assistant!
      To get started, I need to link your WhatsApp to your account.
      Please enter your registered mobile number (with country code, e.g., +1234567890):
 
 User: +1234567890
-Bot: ✅ An OTP has been sent to +1234567890. Please enter the 6-digit code to verify your account.
+Bot:  An OTP has been sent to +1234567890. Please enter the 6-digit code to verify your account.
      [DEV MODE] Your OTP: 123456
 
 User: 123456
-Bot: ✅ Account linked successfully!
+Bot:  Account linked successfully!
      You can now use our shopping assistant. How can I help you today?
      Try asking:
      • 'Show me products'

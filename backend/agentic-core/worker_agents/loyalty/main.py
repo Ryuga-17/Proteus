@@ -15,7 +15,7 @@ from tasks import sales_task
 
 # Check if API key is available
 if not os.getenv("OPENAI_API_KEY"):
-    print("⚠️  WARNING: OPENAI_API_KEY not found in environment variables.")
+    print("  WARNING: OPENAI_API_KEY not found in environment variables.")
     print("   Please set your OpenAI API key to test the agents.")
     print("   You can set it by running: export OPENAI_API_KEY='your-key-here'")
     print("   Or uncomment and set the line in main.py")

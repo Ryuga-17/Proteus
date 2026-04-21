@@ -19,7 +19,7 @@ BACKEND_URL = "http://localhost:8000"
 def log_test(test_name: str, message: str):
     """Log test information"""
     print(f"\n{'='*70}")
-    print(f"🧪 {test_name}")
+    print(f" {test_name}")
     print(f"{'='*70}")
     print(f"{message}")
     print(f"{'='*70}\n")
@@ -59,13 +59,13 @@ def test_transaction_state_machine():
 
     if result["success"]:
         data = result["data"]
-        print(f"✅ Purchase successful!")
+        print(f" Purchase successful!")
         print(f"   Transaction ID: {data.get('transaction_id')}")
         print(f"   State: {data.get('transaction_state')}")
         print(f"   Order ID: {data.get('order_id')}")
         print(f"   Items Processed: {len(data.get('items_processed', []))}")
     else:
-        print(f"❌ Purchase failed: {result['data']}")
+        print(f" Purchase failed: {result['data']}")
 
 def test_inventory_reservation_race_condition():
     """Test inventory reservation prevents race conditions"""
@@ -85,11 +85,11 @@ def test_inventory_reservation_race_condition():
         "simulate_payment_timeout": True  # Simulate slow payment
     }
 
-    print("🚀 First request (will timeout payment, but reserve inventory)...")
+    print(" First request (will timeout payment, but reserve inventory)...")
     result1 = make_purchase_request(payload1)
 
     if not result1["success"]:
-        print(f"✅ First request handled gracefully: {result1['data'].get('message', 'unknown')}")
+        print(f" First request handled gracefully: {result1['data'].get('message', 'unknown')}")
 
     # Second request - should fail due to reservation
     payload2 = {
@@ -102,13 +102,13 @@ def test_inventory_reservation_race_condition():
         "purchase_channel": "online"
     }
 
-    print("🚀 Second request (should fail due to reservation)...")
+    print(" Second request (should fail due to reservation)...")
     result2 = make_purchase_request(payload2)
 
     if not result2["success"]:
-        print(f"✅ Second request correctly failed: {result2['data'].get('message', 'unknown')}")
+        print(f" Second request correctly failed: {result2['data'].get('message', 'unknown')}")
     else:
-        print("❌ Second request should have failed due to inventory reservation")
+        print(" Second request should have failed due to inventory reservation")
 
 def test_payment_idempotency():
     """Test payment idempotency prevents double charges"""
@@ -127,23 +127,23 @@ def test_payment_idempotency():
     }
 
     # First attempt
-    print("🚀 First payment attempt...")
+    print(" First payment attempt...")
     result1 = make_purchase_request(payload)
-    print(f"Result 1: {'✅' if result1['success'] else '❌'} {result1['data'].get('message', 'no message')}")
+    print(f"Result 1: {'' if result1['success'] else ''} {result1['data'].get('message', 'no message')}")
 
     # Second attempt with same idempotency key
-    print("🚀 Second payment attempt (same idempotency key)...")
+    print(" Second payment attempt (same idempotency key)...")
     result2 = make_purchase_request(payload)
-    print(f"Result 2: {'✅' if result2['success'] else '❌'} {result2['data'].get('message', 'no message')}")
+    print(f"Result 2: {'' if result2['success'] else ''} {result2['data'].get('message', 'no message')}")
 
     # Check if both succeeded (should be same transaction)
     if result1["success"] and result2["success"]:
         if result1["data"].get("transaction_id") == result2["data"].get("transaction_id"):
-            print("✅ Idempotency working - same transaction returned")
+            print(" Idempotency working - same transaction returned")
         else:
-            print("❌ Idempotency failed - different transactions created")
+            print(" Idempotency failed - different transactions created")
     elif result1["success"] != result2["success"]:
-        print("❌ Inconsistent results - one succeeded, one failed")
+        print(" Inconsistent results - one succeeded, one failed")
 
 def test_payment_failure_handling():
     """Test payment failure handling with retries"""
@@ -165,11 +165,11 @@ def test_payment_failure_handling():
     end_time = time.time()
 
     if not result["success"]:
-        print("✅ Payment failure handled correctly")
+        print(" Payment failure handled correctly")
         print(f"   Message: {result['data'].get('message', 'unknown')}")
         print(f"   Time taken: {end_time - start_time:.2f}s")
     else:
-        print("❌ Payment failure not handled properly - should have failed")
+        print(" Payment failure not handled properly - should have failed")
 
 def test_circuit_breaker_inventory():
     """Test circuit breaker for inventory system"""
@@ -178,7 +178,7 @@ def test_circuit_breaker_inventory():
     user_id = f"circuit-test-{random.randint(1000, 9999)}"
 
     # First few requests will fail inventory, triggering circuit breaker
-    print("🚀 Triggering inventory circuit breaker...")
+    print(" Triggering inventory circuit breaker...")
     for i in range(3):
         payload = {
             "items": [
@@ -192,10 +192,10 @@ def test_circuit_breaker_inventory():
         }
 
         result = make_purchase_request(payload)
-        print(f"   Request {i+1}: {'❌' if not result['success'] else '✅'} {result['data'].get('message', 'unknown')[:50]}...")
+        print(f"   Request {i+1}: {'' if not result['success'] else ''} {result['data'].get('message', 'unknown')[:50]}...")
 
     # Next request should be queued (circuit breaker open)
-    print("🚀 Testing circuit breaker (should queue request)...")
+    print(" Testing circuit breaker (should queue request)...")
     payload = {
         "items": [
             {"product_id": "PROD-123", "sku": "sku_123", "quantity": 1}
@@ -208,9 +208,9 @@ def test_circuit_breaker_inventory():
 
     result = make_purchase_request(payload)
     if not result["success"] and "unavailable" in result["data"].get("message", "").lower():
-        print("✅ Circuit breaker working - request queued for later retry")
+        print(" Circuit breaker working - request queued for later retry")
     else:
-        print("❌ Circuit breaker not working as expected")
+        print(" Circuit breaker not working as expected")
 
 def test_session_consistency():
     """Test session consistency across devices"""
@@ -231,11 +231,11 @@ def test_session_consistency():
     try:
         response = requests.post(f"{BACKEND_URL}/api/session/register", json=payload1, timeout=5)
         if response.status_code == 200:
-            print("✅ Device 1 registered successfully")
+            print(" Device 1 registered successfully")
         else:
-            print(f"❌ Device 1 registration failed: {response.status_code}")
+            print(f" Device 1 registration failed: {response.status_code}")
     except Exception as e:
-        print(f"❌ Device 1 registration error: {e}")
+        print(f" Device 1 registration error: {e}")
 
     # Register device 2 (should detect conflict)
     payload2 = {
@@ -248,12 +248,12 @@ def test_session_consistency():
         response = requests.post(f"{BACKEND_URL}/api/session/register", json=payload2, timeout=5)
         data = response.json()
         if response.status_code == 200 and data.get("conflict"):
-            print("✅ Session conflict detected correctly")
+            print(" Session conflict detected correctly")
             print(f"   Conflict details: {data['conflict']}")
         else:
-            print("❌ Session conflict not detected")
+            print(" Session conflict not detected")
     except Exception as e:
-        print(f"❌ Device 2 registration error: {e}")
+        print(f" Device 2 registration error: {e}")
 
 def test_inventory_revalidation():
     """Test inventory revalidation before payment"""
@@ -277,19 +277,19 @@ def test_inventory_revalidation():
     result = make_purchase_request(payload)
 
     if result["success"]:
-        print("✅ Purchase completed successfully")
+        print(" Purchase completed successfully")
         print(f"   Transaction ID: {result['data'].get('transaction_id')}")
     else:
         message = result["data"].get("message", "")
         if "inventory" in message.lower() or "stock" in message.lower():
-            print("✅ Inventory issue detected correctly")
+            print(" Inventory issue detected correctly")
         else:
-            print(f"❌ Unexpected failure: {message}")
+            print(f" Unexpected failure: {message}")
 
 def main():
     """Run all resilience tests"""
     print("\n" + "="*80)
-    print("🛡️  RESILIENCE MECHANISM TEST SUITE")
+    print("  RESILIENCE MECHANISM TEST SUITE")
     print("="*80)
     print("Testing transaction state machine, circuit breakers, idempotency,")
     print("inventory reservations, session consistency, and failure handling.")
@@ -299,12 +299,12 @@ def main():
     try:
         response = requests.get(f"{BACKEND_URL}/api/health", timeout=3)
         if response.status_code == 200:
-            print("✅ Backend is running and healthy")
+            print(" Backend is running and healthy")
         else:
-            print(f"❌ Backend health check failed: {response.status_code}")
+            print(f" Backend health check failed: {response.status_code}")
             return
     except Exception as e:
-        print(f"❌ Cannot connect to backend: {e}")
+        print(f" Cannot connect to backend: {e}")
         print("Please start the backend with: cd backend && python main.py")
         return
 
@@ -323,35 +323,35 @@ def main():
 
     for test_name, test_func in tests:
         try:
-            print(f"\n🔬 Running: {test_name}")
+            print(f"\n Running: {test_name}")
             test_func()
             results.append((test_name, True, None))
         except Exception as e:
-            print(f"❌ Test '{test_name}' failed with exception: {e}")
+            print(f" Test '{test_name}' failed with exception: {e}")
             results.append((test_name, False, str(e)))
 
     # Summary
     print("\n" + "="*80)
-    print("📊 TEST RESULTS SUMMARY")
+    print(" TEST RESULTS SUMMARY")
     print("="*80)
 
     passed = 0
     total = len(results)
 
     for test_name, success, error in results:
-        status = "✅ PASS" if success else "❌ FAIL"
+        status = " PASS" if success else " FAIL"
         print(f"{status} {test_name}")
         if error:
             print(f"     Error: {error}")
         if success:
             passed += 1
 
-    print(f"\n📈 Overall: {passed}/{total} tests passed ({passed/total*100:.1f}%)")
+    print(f"\n Overall: {passed}/{total} tests passed ({passed/total*100:.1f}%)")
 
     if passed == total:
-        print("🎉 All resilience tests passed! The system is robust.")
+        print(" All resilience tests passed! The system is robust.")
     else:
-        print("⚠️  Some tests failed. Check the output above for details.")
+        print("  Some tests failed. Check the output above for details.")
 
     print("="*80)
 

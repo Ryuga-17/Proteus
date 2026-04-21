@@ -177,7 +177,7 @@ async def generate_qr_session():
     expires_at = datetime.fromtimestamp(expires_at_time).isoformat()
     
     print(f"\n{'='*70}")
-    print(f"📱 QR SESSION GENERATED")
+    print(f" QR SESSION GENERATED")
     print(f"{'='*70}")
     print(f"Session ID: {session_id}")
     print(f"Expires At: {expires_at}")
@@ -243,7 +243,7 @@ async def link_session(request: LinkSessionRequest):
     linked_at = datetime.fromtimestamp(session["linked_at"]).isoformat()
     
     print(f"\n{'='*70}")
-    print(f"🔗 SESSION LINKED")
+    print(f" SESSION LINKED")
     print(f"{'='*70}")
     print(f"Session ID: {request.session_id}")
     print(f"User ID: {request.user_id}")

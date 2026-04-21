@@ -1,5 +1,5 @@
 """
-Inter-Agent Communication System - Agents Talking Through Orchestrator 🤝
+Inter-Agent Communication System - Agents Talking Through Orchestrator 
 
 This module enables agents to communicate with each other through the Orchestrator.
 Agents can request help from other agents, share information, and coordinate
@@ -48,7 +48,7 @@ def _import_routing_tools():
 @tool("Request Help from Inventory Agent")
 def request_inventory_help(request_description: str, context: str = "") -> str:
     """
-    Request help from the Inventory Agent 📦
+    Request help from the Inventory Agent 
     
     Use this when your agent needs inventory-related information:
     - Checking stock levels
@@ -84,7 +84,7 @@ def request_inventory_help(request_description: str, context: str = "") -> str:
 @tool("Request Help from Fulfillment Agent")
 def request_fulfillment_help(request_description: str, context: str = "") -> str:
     """
-    Request help from the Fulfillment Agent 🚚
+    Request help from the Fulfillment Agent 
     
     Use this when your agent needs fulfillment-related help:
     - Shipping orders
@@ -114,7 +114,7 @@ def request_fulfillment_help(request_description: str, context: str = "") -> str
 @tool("Request Help from Payment Agent")
 def request_payment_help(request_description: str, context: str = "") -> str:
     """
-    Request help from the Payment Agent 💳
+    Request help from the Payment Agent 
     
     Use this when your agent needs payment-related help:
     - Processing payments
@@ -144,7 +144,7 @@ def request_payment_help(request_description: str, context: str = "") -> str:
 @tool("Request Help from Loyalty Agent")
 def request_loyalty_help(request_description: str, context: str = "") -> str:
     """
-    Request help from the Loyalty Agent 🎁
+    Request help from the Loyalty Agent 
     
     Use this when your agent needs loyalty/pricing-related help:
     - Calculating prices with discounts
@@ -174,7 +174,7 @@ def request_loyalty_help(request_description: str, context: str = "") -> str:
 @tool("Request Help from Support Agent")
 def request_support_help(request_description: str, context: str = "") -> str:
     """
-    Request help from the Support Agent 🎧
+    Request help from the Support Agent 
     
     Use this when your agent needs support-related help:
     - Order tracking information
@@ -204,7 +204,7 @@ def request_support_help(request_description: str, context: str = "") -> str:
 @tool("Request Help from Any Agent")
 def request_agent_help(target_agent: str, request_description: str, context: str = "") -> str:
     """
-    Request help from any agent (generic interface) 🔄
+    Request help from any agent (generic interface) 
     
     This is a smart routing function that automatically routes to the right agent
     based on the target_agent name. Use this when you're not sure which specific
@@ -234,7 +234,7 @@ def request_agent_help(target_agent: str, request_description: str, context: str
     
     if target_agent_lower not in routing_tools:
         return (
-            f"⚠️  Unknown agent: '{target_agent}'. "
+            f"  Unknown agent: '{target_agent}'. "
             f"Available agents: {', '.join(routing_tools.keys())}"
         )
     

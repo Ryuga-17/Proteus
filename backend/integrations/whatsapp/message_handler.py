@@ -78,7 +78,7 @@ class MessageHandler:
                 session_manager.invalidate_session(whatsapp_user_id)
                 return WhatsAppResponse(
                     recipient_id=whatsapp_user_id,
-                    message_text="✅ You have been logged out. Send 'Hi' to log in again."
+                    message_text=" You have been logged out. Send 'Hi' to log in again."
                 )
             else:
                 return WhatsAppResponse(
@@ -145,7 +145,7 @@ class MessageHandler:
                 return WhatsAppResponse(
                     recipient_id=whatsapp_user_id,
                     message_text=(
-                        "❌ Session error. Please send 'Hi' to re-authenticate."
+                        " Session error. Please send 'Hi' to re-authenticate."
                     )
                 )
             
@@ -165,7 +165,7 @@ class MessageHandler:
             return WhatsAppResponse(
                 recipient_id=whatsapp_user_id,
                 message_text=(
-                    "❌ Sorry, I encountered an error processing your request.\n"
+                    " Sorry, I encountered an error processing your request.\n"
                     "Please try again or send 'Hi' to restart."
                 )
             )

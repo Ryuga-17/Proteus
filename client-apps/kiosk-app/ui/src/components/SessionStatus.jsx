@@ -12,9 +12,9 @@ const SessionStatus = ({ session }) => {
   };
 
   const statusLabels = {
-    pending: '⏳ Waiting for QR Scan',
-    linked: '✅ Session Linked',
-    expired: '❌ Session Expired',
+    pending: ' Waiting for QR Scan',
+    linked: ' Session Linked',
+    expired: ' Session Expired',
   };
 
   return (

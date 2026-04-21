@@ -1,5 +1,5 @@
 """
-Payment Agent Tasks - Testing Different Payment Scenarios! 💳
+Payment Agent Tasks - Testing Different Payment Scenarios! 
 
 These tasks demonstrate how the payment crew handles different payment scenarios:
 1. Payment failures - When cards are declined or have insufficient funds
@@ -14,7 +14,7 @@ from crewai import Task
 # Import the sales agent who will orchestrate these payment scenarios
 from agents import sales_agent
 
-print("\n📋 Defining Payment Tasks...")
+print("\n Defining Payment Tasks...")
 
 # ============================================================================
 # SCENARIO 1: GRACEFUL FAILURE HANDLING - When payments don't go through
@@ -39,9 +39,9 @@ task_fail_scenario = Task(
     ),
     expected_output=(
         "A JSON string from the Payment Agent showing:\n"
-        "  ❌ Status: 'failed'\n"
-        "  💬 Error message explaining what went wrong (e.g., 'Insufficient funds')\n"
-        "  📋 Transaction ID: null (since payment didn't go through)\n\n"
+        "   Status: 'failed'\n"
+        "   Error message explaining what went wrong (e.g., 'Insufficient funds')\n"
+        "   Transaction ID: null (since payment didn't go through)\n\n"
         "This helps us ensure customers always get clear feedback when payments fail."
     ),
     agent=sales_agent  # Sales Agent orchestrates the payment flow
@@ -71,9 +71,9 @@ task_kiosk_scenario = Task(
     ),
     expected_output=(
         "A JSON string from the Payment Agent containing:\n"
-        "  ✅ Status: 'pending' or 'initiated'\n"
-        "  📱 payment_url_for_qr_code: The URL/QR code data the customer scans\n"
-        "  🔗 Additional handoff details if needed\n\n"
+        "   Status: 'pending' or 'initiated'\n"
+        "   payment_url_for_qr_code: The URL/QR code data the customer scans\n"
+        "   Additional handoff details if needed\n\n"
         "The kiosk can display this as a QR code that the customer scans with their phone!"
     ),
     agent=sales_agent
@@ -105,10 +105,10 @@ task_points_scenario = Task(
     ),
     expected_output=(
         "A JSON string from the Loyalty Agent showing:\n"
-        "  ✅ Status: 'success'\n"
-        "  ⭐ points_debited: 500\n"
-        "  💰 Equivalent value deducted from order\n"
-        "  📋 Updated point balance\n\n"
+        "   Status: 'success'\n"
+        "   points_debited: 500\n"
+        "   Equivalent value deducted from order\n"
+        "   Updated point balance\n\n"
         "This confirms the points were successfully used and the payment is complete!"
     ),
     agent=sales_agent

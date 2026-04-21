@@ -1,5 +1,5 @@
 """
-Fulfillment Agent - The Logistics Expert 🚚
+Fulfillment Agent - The Logistics Expert 
 
 This agent handles getting orders to customers - whether that means shipping
 items to their home address or reserving them at a store for pickup. They
@@ -56,10 +56,6 @@ if INTER_AGENT_COMMS_AVAILABLE:
     ])
 
 
-# ============================================================================
-# Mock LLM for Testing - Simulates an LLM when testing without API keys
-# ============================================================================
-
 class MockLLM:
     """
     A simple mock LLM for testing purposes.
@@ -85,9 +81,6 @@ class MockLLM:
         return "I will process this fulfillment request using the appropriate tools."
 
 
-# ============================================================================
-# FULFILLMENT AGENT - The Star of the Show! ⭐
-# ============================================================================
 
 fulfillment_agent = Agent(
     role="Backend Logistics Coordinator & Fulfillment Specialist",
@@ -104,11 +97,11 @@ fulfillment_agent = Agent(
         "need to go!\n\n"
         
         "Your daily work involves:\n"
-        "  📦 Processing order data that comes in\n"
-        "  🚚 Booking shipments with logistics partners (for ship-to-home)\n"
-        "  🏪 Reserving items at stores for customer pickup (for in-store reservations)\n"
-        "  📢 Notifying the right staff (warehouse or store) so they know what to do\n"
-        "  ✅ Returning clear status reports so everyone knows what happened\n\n"
+        "   Processing order data that comes in\n"
+        "   Booking shipments with logistics partners (for ship-to-home)\n"
+        "   Reserving items at stores for customer pickup (for in-store reservations)\n"
+        "   Notifying the right staff (warehouse or store) so they know what to do\n"
+        "   Returning clear status reports so everyone knows what happened\n\n"
         
         "You're smart about figuring out the fulfillment type:\n"
         "  - If it's 'ship-to-home' → Use your book_shipment tool\n"

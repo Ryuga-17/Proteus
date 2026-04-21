@@ -15,7 +15,7 @@ try:
     QDRANT_AVAILABLE = True
 except ImportError:
     QDRANT_AVAILABLE = False
-    print("⚠️  Qdrant client not installed. Install with: pip install qdrant-client")
+    print("  Qdrant client not installed. Install with: pip install qdrant-client")
 
 # Load product and profile data
 def load_product_data():
@@ -52,9 +52,9 @@ qdrant_client = None
 if QDRANT_AVAILABLE:
     try:
         qdrant_client = Qdrant(host="localhost", port=6333)
-        print("✅ Connected to Qdrant at localhost:6333")
+        print(" Connected to Qdrant at localhost:6333")
     except Exception as e:
-        print(f"⚠️  Could not connect to Qdrant: {e}")
+        print(f"  Could not connect to Qdrant: {e}")
         print("   Using fallback search method")
 
 

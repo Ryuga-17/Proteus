@@ -108,7 +108,7 @@ if __name__ == "__main__":
         print("="*70 + "\n")
         
     except Exception as e:
-        print(f"\n❌ Error running examples: {e}")
+        print(f"\n Error running examples: {e}")
         import traceback
         traceback.print_exc()
 

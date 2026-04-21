@@ -1,5 +1,5 @@
 """
-Inventory Agent Main Script - Managing Stock Like a Pro! 📦
+Inventory Agent Main Script - Managing Stock Like a Pro! 
 
 This script demonstrates how the Inventory Agent handles stock management,
 transfers between locations, and ordering from suppliers. It runs through
@@ -34,9 +34,9 @@ analysis_task = Task(
     ),
     expected_output=(
         "A clear plan in JSON format with two main sections:\n"
-        "  📝 'replenishments': List of what we need to order from suppliers "
+        "   'replenishments': List of what we need to order from suppliers "
         "(each item should have the SKU and quantity)\n"
-        "  🔄 'transfers': List of what needs to move between locations "
+        "   'transfers': List of what needs to move between locations "
         "(each transfer should show: from where, to where, which SKU, how many)\n"
         "\n"
         "Make it structured so the next agents can easily execute the plan!"
@@ -82,7 +82,7 @@ logistics_task = Task(
 
 def run_crew():
     """
-    Run the inventory crew through their workflow! 🚀
+    Run the inventory crew through their workflow! 
     
     This function:
     1. Shows what's in inventory before we start
@@ -92,7 +92,7 @@ def run_crew():
     """
     # Show what we're starting with
     print("=" * 60)
-    print("📦 INITIAL INVENTORY STATE")
+    print(" INITIAL INVENTORY STATE")
     print("=" * 60)
     print(db.inventory)
     print("=" * 60)
@@ -116,8 +116,8 @@ def run_crew():
         verbose=2                    # Show us what's happening (helpful for understanding!)
     )
     
-    # Let's go! 🚀
-    print("🚀 Starting the Inventory Management Crew...")
+    # Let's go! 
+    print(" Starting the Inventory Management Crew...")
     print("   They'll analyze, order, and transfer as needed!")
     print("-" * 60)
     print()
@@ -127,19 +127,19 @@ def run_crew():
     
     # Show the results
     print("\n" + "=" * 60)
-    print("✅ CREW WORK COMPLETE!")
+    print(" CREW WORK COMPLETE!")
     print("=" * 60)
-    print("\n📋 Final Result:")
+    print("\n Final Result:")
     print(result)
     print()
     
     # Show what changed in inventory
     print("=" * 60)
-    print("📦 FINAL INVENTORY STATE")
+    print(" FINAL INVENTORY STATE")
     print("=" * 60)
     print(db.inventory)
     print("=" * 60)
-    print("\n💡 Compare this with the initial state to see what changed!")
+    print("\n Compare this with the initial state to see what changed!")
 
 
 if __name__ == "__main__":

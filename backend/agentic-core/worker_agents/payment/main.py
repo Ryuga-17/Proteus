@@ -1,5 +1,5 @@
 """
-Payment Agent Main Script - Processing Payments Like a Pro! 💳
+Payment Agent Main Script - Processing Payments Like a Pro! 
 
 This script demonstrates how the Payment Agent handles various payment scenarios:
 1. Payment failures - Handling declined cards gracefully
@@ -19,7 +19,7 @@ from tasks import task_fail_scenario, task_kiosk_scenario, task_points_scenario
 
 # Welcome message
 print("=" * 60)
-print("💳 PAYMENT AGENT CREW - Demo Script")
+print(" PAYMENT AGENT CREW - Demo Script")
 print("=" * 60)
 print("This demonstrates the payment processing workflow with multiple agents")
 print("working together to handle various payment scenarios.")
@@ -59,7 +59,7 @@ crew = Crew(
 # RUN THE CREW
 # ============================================================================
 if __name__ == "__main__":
-    print("\n🚀 Starting the Payment Crew...")
+    print("\n Starting the Payment Crew...")
     print("-" * 60)
     print()
     
@@ -68,8 +68,8 @@ if __name__ == "__main__":
     
     # Show the final results
     print("\n" + "=" * 60)
-    print("✅ PAYMENT CREW EXECUTION COMPLETE!")
+    print(" PAYMENT CREW EXECUTION COMPLETE!")
     print("=" * 60)
-    print("\n📋 Final Result:")
+    print("\n Final Result:")
     print(result)
-    print("\n💡 Check the output above to see how each payment scenario was handled!")
+    print("\n Check the output above to see how each payment scenario was handled!")
