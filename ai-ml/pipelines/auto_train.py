@@ -22,7 +22,7 @@ except ImportError:
 
 class AutoTrainPipeline:
     """
-    Antigravity trigger: Automated Training Pipeline.
+    MLOps pipeline trigger: Automated Training Pipeline.
     Evaluates historical data, "trains" a new model, and evaluates it against
     current production metrics. Handles auto-promotion or rejections.
     """

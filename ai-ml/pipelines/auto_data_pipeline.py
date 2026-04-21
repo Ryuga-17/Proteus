@@ -6,7 +6,7 @@ from typing import List, Dict, Any
 
 class AutoDataPipeline:
     """
-    Antigravity trigger: Automated Data Pipeline
+    MLOps pipeline trigger: Automated Data Pipeline
     Parses logs, cleans data, and generates training datasets.
     """
     

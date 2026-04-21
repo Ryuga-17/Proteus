@@ -26,7 +26,7 @@ When a request comes in—whether through the physical kiosk, a WhatsApp message
 * **Advanced AI Features**:
   * AI-powered Size & Fit recommendations based on preferences.
   * Virtual Try-On API integrating the Nano Banana model.
-* **Production MLOps Pipeline ("Antigravity" Style)**:
+* **Production MLOps Pipeline**:
   * **Automated Training Loop**: APScheduler handles background jobs for compiling JSON-based ML Event logs and evaluating candidate models.
   * **Evaluation & Promotion Logic**: Seamless tracking of CTR and Conversion metrics to promote models safely without manual intervention.
   * **Registry & Rollback**: Uses `model_registry_manager` to support active versioning, graceful dynamic component loading, and explicit rollbacks for failing configurations.
