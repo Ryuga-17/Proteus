@@ -1,5 +1,5 @@
 """
-Orchestrator Tools - Your Trusty Routing Helpers 
+Orchestrator Tools - Your Trusty Routing Helpers 🛠️
 
 These tools are like the switchboard operators of our system! They know exactly
 which specialist agent to connect you with based on what you need.
@@ -51,7 +51,7 @@ def _structured_error(error_type: str, message: str, retryable: bool, user_messa
 @tool("Route to Inventory Agent")
 def route_to_inventory(customer_request: str) -> str:
     """
-    Send inventory-related requests to the Inventory Agent 
+    Send inventory-related requests to the Inventory Agent 📦
     
     This is your go-to function for anything related to stock levels, transfers
     between locations, or ordering from suppliers. The Inventory Agent knows
@@ -73,10 +73,10 @@ def route_to_inventory(customer_request: str) -> str:
         >>> print(result)  # Shows stock levels across all locations
     """
     print("\n" + "="*70)
-    print(" ROUTING TO INVENTORY AGENT")
+    print("📦 ROUTING TO INVENTORY AGENT")
     print("="*70)
-    print(f" Request: {customer_request}")
-    print(f" Analyzing inventory request...")
+    print(f"📝 Request: {customer_request}")
+    print(f"🔍 Analyzing inventory request...")
     print("="*70 + "\n")
     
     try:
@@ -91,7 +91,7 @@ def route_to_inventory(customer_request: str) -> str:
         )
         from crewai import Task
         
-        print(f" [INVENTORY] Setting up inventory crew...")
+        print(f"🔧 [INVENTORY] Setting up inventory crew...")
         print(f"   - Agents: Orchestrator, Logistics, Procurement")
         print(f"   - Request: '{customer_request}'")
         
@@ -108,7 +108,7 @@ def route_to_inventory(customer_request: str) -> str:
             agent=inventory_orchestrator_agent
         )
         
-        print(f" [INVENTORY] Starting inventory processing...")
+        print(f"🚀 [INVENTORY] Starting inventory processing...")
         inventory_crew = Crew(
             agents=[
                 inventory_orchestrator_agent,
@@ -120,10 +120,10 @@ def route_to_inventory(customer_request: str) -> str:
             verbose=False
         )
         
-        print(f"  [INVENTORY] Processing inventory request...")
+        print(f"⚙️  [INVENTORY] Processing inventory request...")
         result = inventory_crew.kickoff()
         
-        print(f"\n [INVENTORY] Inventory processing complete!")
+        print(f"\n✅ [INVENTORY] Inventory processing complete!")
         print("="*70 + "\n")
         
         return _structured_success(str(result))
@@ -173,10 +173,10 @@ def route_to_fulfillment(customer_request: str) -> str:
         >>> print(result)  # Shows tracking number and delivery estimate
     """
     print("\n" + "="*70)
-    print(" ROUTING TO FULFILLMENT AGENT")
+    print("🚚 ROUTING TO FULFILLMENT AGENT")
     print("="*70)
-    print(f" Request: {customer_request}")
-    print(f" Analyzing fulfillment request...")
+    print(f"📝 Request: {customer_request}")
+    print(f"🔍 Analyzing fulfillment request...")
     print("="*70 + "\n")
     
     try:
@@ -187,7 +187,7 @@ def route_to_fulfillment(customer_request: str) -> str:
         from agents import fulfillment_agent
         from crewai import Task
         
-        print(f" [FULFILLMENT] Setting up fulfillment task...")
+        print(f"🔧 [FULFILLMENT] Setting up fulfillment task...")
         print(f"   - Request: '{customer_request}'")
         print(f"   - Agent: Fulfillment Agent")
         
@@ -205,7 +205,7 @@ def route_to_fulfillment(customer_request: str) -> str:
             agent=fulfillment_agent
         )
         
-        print(f" [FULFILLMENT] Starting fulfillment processing...")
+        print(f"🚀 [FULFILLMENT] Starting fulfillment processing...")
         fulfillment_crew = Crew(
             agents=[fulfillment_agent],
             tasks=[fulfillment_task],
@@ -213,10 +213,10 @@ def route_to_fulfillment(customer_request: str) -> str:
             verbose=False
         )
         
-        print(f"  [FULFILLMENT] Processing fulfillment request...")
+        print(f"⚙️  [FULFILLMENT] Processing fulfillment request...")
         result = fulfillment_crew.kickoff()
         
-        print(f"\n [FULFILLMENT] Fulfillment processing complete!")
+        print(f"\n✅ [FULFILLMENT] Fulfillment processing complete!")
         print("="*70 + "\n")
         
         return _structured_success(str(result))
@@ -240,7 +240,7 @@ def route_to_fulfillment(customer_request: str) -> str:
 @tool("Route to Payment Agent")
 def route_to_payment(customer_request: str) -> str:
     """
-    Send payment requests to the Payment Agent 
+    Send payment requests to the Payment Agent 💳
     
     This handles all things payment-related! Whether it's processing a credit card,
     handling a UPI transaction, or setting up a kiosk-to-mobile payment handoff,
@@ -263,10 +263,10 @@ def route_to_payment(customer_request: str) -> str:
         >>> print(result)  # Shows transaction ID and status
     """
     print("\n" + "="*70)
-    print(" ROUTING TO PAYMENT AGENT")
+    print("💳 ROUTING TO PAYMENT AGENT")
     print("="*70)
-    print(f" Request: {customer_request}")
-    print(f" Analyzing payment request...")
+    print(f"📝 Request: {customer_request}")
+    print(f"🔍 Analyzing payment request...")
     print("="*70 + "\n")
     
     try:
@@ -281,7 +281,7 @@ def route_to_payment(customer_request: str) -> str:
             sys.path.insert(0, _loy_path)
         from agents import loyalty_agent
         
-        print(f" [PAYMENT] Setting up payment crew...")
+        print(f"🔧 [PAYMENT] Setting up payment crew...")
         print(f"   - Agents: Sales (coordinator), Payment, Loyalty")
         print(f"   - Request: '{customer_request}'")
         print(f"   - Process: Hierarchical (Sales manages Payment & Loyalty)")
@@ -300,7 +300,7 @@ def route_to_payment(customer_request: str) -> str:
             agent=sales_agent
         )
         
-        print(f" [PAYMENT] Starting payment processing...")
+        print(f"🚀 [PAYMENT] Starting payment processing...")
         payment_crew = Crew(
             agents=[sales_agent, payment_agent, loyalty_agent],
             tasks=[payment_task],
@@ -308,10 +308,10 @@ def route_to_payment(customer_request: str) -> str:
             verbose=False
         )
         
-        print(f"  [PAYMENT] Processing payment transaction...")
+        print(f"⚙️  [PAYMENT] Processing payment transaction...")
         result = payment_crew.kickoff()
         
-        print(f"\n [PAYMENT] Payment processing complete!")
+        print(f"\n✅ [PAYMENT] Payment processing complete!")
         print("="*70 + "\n")
         
         return _structured_success(str(result))
@@ -335,7 +335,7 @@ def route_to_payment(customer_request: str) -> str:
 @tool("Route to Loyalty and Offers Agent")
 def route_to_loyalty(customer_request: str) -> str:
     """
-    Send loyalty and pricing requests to the Loyalty Agent 
+    Send loyalty and pricing requests to the Loyalty Agent 🎁
     
     This agent is your go-to for anything related to pricing, discounts, coupons,
     loyalty points, and special offers. They calculate the best deals for customers
@@ -413,7 +413,7 @@ def route_to_loyalty(customer_request: str) -> str:
 @tool("Route to Post Purchase Support Agent")
 def route_to_support(customer_request: str) -> str:
     """
-    Send post-purchase support requests to the Support Agent 
+    Send post-purchase support requests to the Support Agent 🎧
     
     After a customer makes a purchase, this agent helps with everything that comes next:
     tracking orders, processing returns/exchanges, handling damaged items, and
@@ -439,10 +439,10 @@ def route_to_support(customer_request: str) -> str:
         >>> print(result)  # Shows tracking info in a friendly way
     """
     print("\n" + "="*70)
-    print(" ROUTING TO SUPPORT AGENT")
+    print("🎧 ROUTING TO SUPPORT AGENT")
     print("="*70)
-    print(f" Request: {customer_request}")
-    print(f" Analyzing support request...")
+    print(f"📝 Request: {customer_request}")
+    print(f"🔍 Analyzing support request...")
     print("="*70 + "\n")
     
     try:
@@ -464,7 +464,7 @@ def route_to_support(customer_request: str) -> str:
         elif "feedback" in request_lower or "survey" in request_lower:
             support_type = "feedback"
         
-        print(f" [SUPPORT] Setting up support task...")
+        print(f"🔧 [SUPPORT] Setting up support task...")
         print(f"   - Request: '{customer_request}'")
         print(f"   - Support type: {support_type}")
         print(f"   - Agent: Post Purchase Support Agent")
@@ -484,7 +484,7 @@ def route_to_support(customer_request: str) -> str:
             agent=post_purchase_agent
         )
         
-        print(f" [SUPPORT] Starting support processing...")
+        print(f"🚀 [SUPPORT] Starting support processing...")
         support_crew = Crew(
             agents=[post_purchase_agent],
             tasks=[support_task],
@@ -492,10 +492,10 @@ def route_to_support(customer_request: str) -> str:
             verbose=False
         )
         
-        print(f"  [SUPPORT] Processing support request...")
+        print(f"⚙️  [SUPPORT] Processing support request...")
         result = support_crew.kickoff()
         
-        print(f"\n [SUPPORT] Support processing complete!")
+        print(f"\n✅ [SUPPORT] Support processing complete!")
         print("="*70 + "\n")
         
         return _structured_success(str(result))
@@ -519,7 +519,7 @@ def route_to_support(customer_request: str) -> str:
 @tool("Route to Recommendation Agent")
 def route_to_recommendation(customer_request: str, user_id: str = "default_user") -> str:
     """
-    Send product recommendation requests to the Recommendation Agent 
+    Send product recommendation requests to the Recommendation Agent 🎯
     
     This handles voice-based and natural language product queries. The Recommendation
     Agent processes voice input, understands user intent, and returns personalized
@@ -545,11 +545,11 @@ def route_to_recommendation(customer_request: str, user_id: str = "default_user"
         >>> print(result)  # Shows ranked recommendations
     """
     print("\n" + "="*70)
-    print(" ROUTING TO RECOMMENDATION AGENT")
+    print("🎯 ROUTING TO RECOMMENDATION AGENT")
     print("="*70)
-    print(f" Query: {customer_request}")
-    print(f" User ID: {user_id}")
-    print(f" Analyzing query for product recommendations...")
+    print(f"📝 Query: {customer_request}")
+    print(f"👤 User ID: {user_id}")
+    print(f"🔍 Analyzing query for product recommendations...")
     print("="*70 + "\n")
     
     try:
@@ -560,7 +560,7 @@ def route_to_recommendation(customer_request: str, user_id: str = "default_user"
         from agents import recommendation_agent
         from crewai import Task
         
-        print(f" [RECOMMENDATION] Setting up recommendation task...")
+        print(f"🔧 [RECOMMENDATION] Setting up recommendation task...")
         print(f"   - Query: '{customer_request}'")
         print(f"   - User: {user_id}")
         print(f"   - Agent: Recommendation Agent")
@@ -579,7 +579,7 @@ def route_to_recommendation(customer_request: str, user_id: str = "default_user"
             agent=recommendation_agent
         )
         
-        print(f" [RECOMMENDATION] Starting recommendation crew...")
+        print(f"🚀 [RECOMMENDATION] Starting recommendation crew...")
         recommendation_crew = Crew(
             agents=[recommendation_agent],
             tasks=[recommendation_task],
@@ -587,17 +587,17 @@ def route_to_recommendation(customer_request: str, user_id: str = "default_user"
             verbose=False
         )
         
-        print(f"  [RECOMMENDATION] Processing recommendation request...")
+        print(f"⚙️  [RECOMMENDATION] Processing recommendation request...")
         result = recommendation_crew.kickoff()
         
-        print(f"\n [RECOMMENDATION] Recommendation complete!")
+        print(f"\n✅ [RECOMMENDATION] Recommendation complete!")
         print(f"   - Results received: {len(str(result))} characters")
         print("="*70 + "\n")
         
         return _structured_success(str(result))
         
     except ImportError as e:
-        print(f"\n [RECOMMENDATION] Import error: {str(e)}")
+        print(f"\n❌ [RECOMMENDATION] Import error: {str(e)}")
         print("="*70 + "\n")
         return _structured_error(
             "dependency_missing",
@@ -606,7 +606,7 @@ def route_to_recommendation(customer_request: str, user_id: str = "default_user"
             user_message="Recommendations are unavailable at the moment. We can browse manually.",
         )
     except Exception as e:
-        print(f"\n [RECOMMENDATION] Processing error: {str(e)}")
+        print(f"\n❌ [RECOMMENDATION] Processing error: {str(e)}")
         print("="*70 + "\n")
         return _structured_error(
             "recommendation_error",
@@ -619,7 +619,7 @@ def route_to_recommendation(customer_request: str, user_id: str = "default_user"
 @tool("Route to Recommendation Agent 2")
 def route_to_recommendation_v2(customer_request: str, user_id: str = "default_user") -> str:
     """
-    Send product recommendation requests to the Advanced Recommendation Agent 2 
+    Send product recommendation requests to the Advanced Recommendation Agent 2 🎯
     
     This uses real Ollama embeddings and Qdrant vector database for highly accurate,
     personalized product recommendations. It leverages real product data and customer
@@ -675,7 +675,7 @@ def route_to_recommendation_v2(customer_request: str, user_id: str = "default_us
             verbose=False  # Keep it quiet from orchestrator level
         )
         
-        # Process the recommendation request! 
+        # Process the recommendation request! 🎯
         result = recommendation_crew.kickoff()
         return _structured_success(str(result))
         
@@ -697,9 +697,9 @@ def route_to_recommendation_v2(customer_request: str, user_id: str = "default_us
 
 @tool("Analyze Request Intent")
 def analyze_intent(customer_request: str) -> str:
-    print(f"\n [ORCHESTRATOR] Analyzing intent for: '{customer_request}'")
+    print(f"\n🔍 [ORCHESTRATOR] Analyzing intent for: '{customer_request}'")
     """
-    Figure out which agent should handle this request - the smart way! 
+    Figure out which agent should handle this request - the smart way! 🧠
     
     This function reads through a customer request and figures out which specialist
     agent is best equipped to help. It looks for keywords and context clues to
@@ -807,7 +807,7 @@ def analyze_intent(customer_request: str) -> str:
 
 class OrchestratorTools:
     """
-    A handy container class that holds all our routing tools 
+    A handy container class that holds all our routing tools 🎒
     
     You can use this if you want to access the tools as attributes,
     but you can also import the functions directly. Both work fine!
